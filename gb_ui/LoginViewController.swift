@@ -48,18 +48,41 @@ class LoginViewController: UIViewController {
         }
     
     @IBAction func didTapButton(_ sender: UIButton) {
-        let login = userNameTextField.text!
-        let password = userPasswordTextField.text!
-        if login.isEmpty || password.isEmpty {
-                    textLabel.text = "Enter username and password"
-                }
-        if login == "admin" && password == "123456" {
-            print("успешная авторизация")
-            textLabel.text = "Welcome back!"
-            } else {
-                print("неуспешная авторизация")
-            }
+
     }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+            // Проверяем данные
+            let checkResult = checkUserData()
+            // Если данные не верны, покажем ошибку
+            if !checkResult {
+                showLoginError()
+            }
+            // Вернем результат
+            return checkResult
+        }
+        
+        func checkUserData() -> Bool {
+            guard let login = userNameTextField.text, let password = userPasswordTextField.text else { return false }
+            if login == "admin" && password == "123456" {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        func showLoginError() {
+            // Создаем контроллер
+            let alter = UIAlertController(title: "Sorry", message: "Wrong username or password", preferredStyle: .alert)
+            // Создаем кнопку для UIAlertController
+            let action = UIAlertAction(title: "Try again", style: .cancel, handler: nil)
+            // Добавляем кнопку на UIAlertController
+            alter.addAction(action)
+            // Показываем UIAlertController
+            present(alter, animated: true, completion: nil)
+        }
+
+
     /*
     // MARK: - Navigation
 
