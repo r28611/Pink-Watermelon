@@ -28,6 +28,55 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "to_signup_view":
+            if let destination = segue.destination as? SignupViewController {
+                destination.textForLabel = userNameTextField.text!
+            }
+        case "to_tabBarController":
+//             какой таб будет отображаться при загрузке tabbarcontroller
+//            let tabBarController = segue.destination as? UITabBarController
+//            tabBarController?.selectedIndex = 2
+            if let destinations = segue.destination as? UITabBarController {
+            let vc = destinations.viewControllers![2] as! ProfileViewController
+            vc.textForUsernameLabel = userNameTextField.text!
+            }
+        default:
+            break
+        }
+    }
+    
+   
+    /*
+    //проверка на админа
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        let checkResult = checkUserData()
+        if identifier == "to_tabBarController" {
+            if !checkResult {
+                showLoginError()
+            }
+        }
+        return checkResult
+    }
+        
+    func checkUserData() -> Bool {
+        guard let login = userNameTextField.text, let password = userPasswordTextField.text else { return false }
+        if login == "admin" && password == "123456" {
+            return true
+        } else {
+            return false
+        }
+    }
+        
+    func showLoginError() {
+        let alter = UIAlertController(title: "Sorry", message: "Wrong username or password", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alter.addAction(action)
+        present(alter, animated: true, completion: nil)
+    }
+*/
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -48,39 +97,15 @@ class LoginViewController: UIViewController {
         }
     
     @IBAction func didTapButton(_ sender: UIButton) {
-
+        performSegue(withIdentifier: "to_tabBarController", sender: self)
     }
     
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-            // Проверяем данные
-            let checkResult = checkUserData()
-            // Если данные не верны, покажем ошибку
-            if !checkResult {
-                showLoginError()
-            }
-            // Вернем результат
-            return checkResult
-        }
+    @IBAction func didTapSignupButton(_ sender: UIButton) {
+    }
+    
+    @IBAction func unwindSegueDidTap (_ segue: UIStoryboardSegue) {
         
-        func checkUserData() -> Bool {
-            guard let login = userNameTextField.text, let password = userPasswordTextField.text else { return false }
-            if login == "admin" && password == "123456" {
-                return true
-            } else {
-                return false
-            }
-        }
-        
-        func showLoginError() {
-            // Создаем контроллер
-            let alter = UIAlertController(title: "Sorry", message: "Wrong username or password", preferredStyle: .alert)
-            // Создаем кнопку для UIAlertController
-            let action = UIAlertAction(title: "Try again", style: .cancel, handler: nil)
-            // Добавляем кнопку на UIAlertController
-            alter.addAction(action)
-            // Показываем UIAlertController
-            present(alter, animated: true, completion: nil)
-        }
+    }
 
 
     /*

@@ -13,6 +13,8 @@
 		ABE5A638258E142F00CEFEA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A637258E142F00CEFEA1 /* Assets.xcassets */; };
 		ABE5A63B258E142F00CEFEA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A639258E142F00CEFEA1 /* LaunchScreen.storyboard */; };
 		ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF8885D258EAC1F00A29574 /* LoginViewController.swift */; };
+		ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */; };
+		ABF888E02596017200A29574 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF888DF2596017200A29574 /* SignupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		ABE5A63A258E142F00CEFEA1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABE5A63C258E142F00CEFEA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABF8885D258EAC1F00A29574 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		ABF888DF2596017200A29574 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,8 @@
 				ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */,
 				ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */,
 				ABE5A634258E142E00CEFEA1 /* Main.storyboard */,
+				ABF888DF2596017200A29574 /* SignupViewController.swift */,
+				ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */,
 				ABF8885D258EAC1F00A29574 /* LoginViewController.swift */,
 				ABE5A637258E142F00CEFEA1 /* Assets.xcassets */,
 				ABE5A639258E142F00CEFEA1 /* LaunchScreen.storyboard */,
@@ -139,6 +145,8 @@
 			files = (
 				ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */,
 				ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */,
+				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
+				ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */,
 				ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
