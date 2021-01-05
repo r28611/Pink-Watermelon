@@ -19,12 +19,34 @@ class RoundedImage: UIImageView {
 
 class Shedow: UIImageView {
     
+   
+    @IBInspectable
+    var color: UIColor = UIColor.black {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
+    @IBInspectable
+    var opacity: Float = 0.5 {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
+    @IBInspectable
+    var radius: CGFloat = 5 {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowRadius = 5
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = opacity
+        layer.shadowRadius = radius
         layer.shadowOffset = CGSize.zero
         
         layer.cornerRadius = frame.width / 2
