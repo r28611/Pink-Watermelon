@@ -12,6 +12,7 @@
 		AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */; };
 		AB340A8925A39A55000F6C34 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8825A39A55000F6C34 /* User.swift */; };
 		AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8B25A39BDE000F6C34 /* Group.swift */; };
+		AB9DBEE525A3D7F8002B9B8A /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEE425A3D7F8002B9B8A /* Avatar.swift */; };
 		ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */; };
 		ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */; };
 		ABE5A636258E142E00CEFEA1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A634258E142E00CEFEA1 /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 		AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableViewController.swift; sourceTree = "<group>"; };
 		AB340A8825A39A55000F6C34 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AB340A8B25A39BDE000F6C34 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		AB9DBEE425A3D7F8002B9B8A /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		ABE5A62B258E142E00CEFEA1 /* gb_ui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gb_ui.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				AB340A7E25A3571B000F6C34 /* GroupsTableViewController.swift */,
 				ABF88936259F846900A29574 /* FriendsPhotosCollectionViewController.swift */,
 				ABF88930259F7BFE00A29574 /* FriendsTableViewController.swift */,
+				AB9DBEE425A3D7F8002B9B8A /* Avatar.swift */,
 				ABF888DF2596017200A29574 /* SignupViewController.swift */,
 				ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */,
 				ABF8885D258EAC1F00A29574 /* LoginViewController.swift */,
@@ -189,6 +192,7 @@
 				AB340A8925A39A55000F6C34 /* User.swift in Sources */,
 				ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */,
 				AB340A7F25A3571B000F6C34 /* GroupsTableViewController.swift in Sources */,
+				AB9DBEE525A3D7F8002B9B8A /* Avatar.swift in Sources */,
 				ABF88937259F846900A29574 /* FriendsPhotosCollectionViewController.swift in Sources */,
 				ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */,
 				ABF8893A25A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift in Sources */,
