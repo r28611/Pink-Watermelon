@@ -7,7 +7,7 @@
 
 import UIKit
 
-@IBDesignable class LikeControl: UIControl {
+class LikeControl: UIControl {
 
     private var stackView: UIStackView!
     private let button = UIButton(type: .system)
@@ -41,11 +41,14 @@ import UIKit
     
     private func setupView() {
         
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
-        button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+//        button.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        button.tintColor = isLiked != true ? UIColor.gray : UIColor.red
+        
         button.addTarget(self, action: #selector(toogleIsLiked(_ :)), for: .touchUpInside)
         
         counterLabel.text = String(counter)
+        counterLabel.textColor = isLiked != true ? UIColor.gray : UIColor.red
         
         stackView = UIStackView(arrangedSubviews: [counterLabel, button])
 
@@ -62,7 +65,9 @@ import UIKit
     }
     
     private func updateControl() {
-        button.isSelected = isLiked == true
+//        button.isSelected = isLiked == true
+        button.tintColor = isLiked != true ? UIColor.gray : UIColor.red
+        counterLabel.textColor = isLiked != true ? UIColor.gray : UIColor.red
         counterLabel.text = String(counter)
     }
     

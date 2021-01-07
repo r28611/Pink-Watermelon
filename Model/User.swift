@@ -10,12 +10,13 @@ import UIKit
 struct User {
     let id: Int
     let username: String
-    let password: String
-    let name: String?
-    let surname: String?
-    let city: String?
-    
-    var photos: [UIImage?]
-    var friends: [User?]
+//    let password: String
+//    let name: String?
+//    let surname: String?
+//    let city: String?
+//    
+    var avatar: UIImage?
+//    var photos: [UIImage?]
+//    var friends: [User?]
     
 }
