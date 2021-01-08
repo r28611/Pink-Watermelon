@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FriendsViewController: UIViewController, UITableViewDataSource {
 
     var users = [User]()
     var sections = [String]()
@@ -33,6 +33,19 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Do any additional setup after loading the view.
     }
     
+    
+    @IBAction func characterPicked(_ sender: CharacterPicker) {
+        let selectedChar = charPicker.selectedChar
+        var indexPath = IndexPath(item: 0, section: 0)
+        for (index, section) in sections.enumerated() {
+            if selectedChar == section {
+                indexPath = IndexPath(item: 0, section: index)
+            }
+        }
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+    
+    
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -42,6 +55,10 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section]
     }
+    
+}
+
+extension FriendsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var tempArr = [User]()
@@ -54,6 +71,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
             var tempArr = [User]()
             for user in users {
@@ -63,11 +81,11 @@ class FriendsViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             cell.avatarImage.image = tempArr[indexPath.row].avatar
             cell.nameLabel.text = tempArr[indexPath.row].username
+            
             return cell
               
         }
         return UITableViewCell()
     }
-
-
+    
 }
