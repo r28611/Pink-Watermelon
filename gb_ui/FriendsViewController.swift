@@ -23,12 +23,14 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         
         for char in "AADVDRNASDC" {
             users.append(User(id: 1, username: "\(char)adam", avatar: UIImage(named: "photo_template")))
+        }
+        for user in users {
+            let char = user.username.prefix(1)
             if sections.contains(String(char)) { continue }
             sections.append(String(char))
-            charPicker.Chars.append(String(char))
         }
         sections.sort(by: <)
-        charPicker.Chars.sort(by: <)
+        charPicker.Chars = sections
         charPicker.setupUi()
         // Do any additional setup after loading the view.
     }

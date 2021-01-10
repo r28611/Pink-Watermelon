@@ -10,6 +10,7 @@ import UIKit
 class GroupsTableViewController: UITableViewController {
     
     var groups = [Group]()
+    var groupsNames = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +41,10 @@ class GroupsTableViewController: UITableViewController {
         
         let group = tableViewController.groups[indexPath.row]
 
-        // не поняла почему не работает. видимо только со стандартными типами?
-//        if groups.contains(group) { return }
+//        почему не работает такая проверка на наличие
+//        if groups.contains(group.name) { return }
+        if groupsNames.contains(group.name!) { return }
+        groupsNames.append(group.name!)
         
         groups.append(group)
         tableView.reloadData()
