@@ -8,7 +8,8 @@
 import UIKit
 
 class FriendsPhotosCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var photoImage: UIImageView!
+    
     
 }

@@ -16,15 +16,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="9Kb-4i-cbf">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
-                            </activityIndicatorView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SARA-N1072" translatesAutoresizingMaskIntoConstraints="NO" id="NEd-YJ-e3y">
+                                <rect key="frame" x="41.5" y="-213.5" width="331" height="1323"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="9Kb-4i-cbf" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Pel-oZ-R7t"/>
-                            <constraint firstItem="9Kb-4i-cbf" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Tdv-aH-e1m"/>
+                            <constraint firstItem="NEd-YJ-e3y" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="k6z-6S-Zlm"/>
+                            <constraint firstItem="NEd-YJ-e3y" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" multiplier="0.8" id="szh-Ut-Q6F"/>
+                            <constraint firstItem="NEd-YJ-e3y" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="uxH-Mc-vMU"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -34,6 +35,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="SARA-N1072" width="1071" height="1323"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

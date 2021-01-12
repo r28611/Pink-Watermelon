@@ -35,12 +35,12 @@ class LoginViewController: UIViewController {
                 destination.textForLabel = userNameTextField.text!
             }
         case "to_tabBarController":
-//             какой таб будет отображаться при загрузке tabbarcontroller
+//             какой таб будет отображаться при загрузке tabbarcontroller - но тогда не передает TextField.text
 //            let tabBarController = segue.destination as? UITabBarController
 //            tabBarController?.selectedIndex = 2
-            if let destinations = segue.destination as? UITabBarController {
-            let vc = destinations.viewControllers![1] as! ProfileViewController
-            vc.textForUsernameLabel = userNameTextField.text!
+            if let destinations = segue.destination as? UITabBarController,
+               let vc = destinations.viewControllers![1] as? ProfileViewController
+               { vc.textForUsernameLabel = userNameTextField.text!
             }
         default:
             break

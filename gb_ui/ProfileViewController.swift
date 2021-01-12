@@ -9,14 +9,19 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-    @IBOutlet private weak var usernameLabel: UILabel!
+    @IBOutlet weak var likeControl: LikeControl!
     
+    @IBOutlet private weak var usernameLabel: UILabel!
     public var textForUsernameLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        usernameLabel.text = textForUsernameLabel
+        if let text = textForUsernameLabel {
+            usernameLabel.text = "Hello again, dear \(text)"
+        } else {
+            usernameLabel.text = "Hello, stranger"
+        }
+         
         // Do any additional setup after loading the view.
     }
     
@@ -31,6 +36,10 @@ class ProfileViewController: UIViewController {
     }
     */
 
+    @IBAction func didDoubleTapOnImage(_ sender: UITapGestureRecognizer) {
+        likeControl.isLiked.toggle()
+    }
+    
     @IBAction func didTapLogOut(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }

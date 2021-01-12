@@ -11,6 +11,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
 
     var users = [User]()
     var sections = [String]()
+    var chosenUser: User!
     
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
@@ -21,8 +22,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        for char in "AADVDRNASDC" {
-            users.append(User(id: 1, username: "\(char)adam", avatar: UIImage(named: "photo_template")))
+        for char in "AKVMWEWEQGERWEL" {
+            users.append(User(id: 1, username: "\(char)adam", avatar: UIImage(named: "photo_template"), photos: [UIImage(named: "bear"), UIImage(named: "rabbit"), UIImage(named: "hey-mouse"), UIImage(named: "small-segment"), UIImage(named: "big-segment")]))
         }
         for user in users {
             let char = user.username.prefix(1)
@@ -45,6 +46,25 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
             }
         }
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+    
+    @IBAction func didMakePan(_ sender: UIPanGestureRecognizer) {
+        let location = sender.location(in: charPicker).y
+        let coef = Int(charPicker.frame.height) / sections.count
+        let letterIndex = Int(location) / coef
+        
+        if letterIndex >= 0 && letterIndex <= sections.count - 1 {
+            charPicker.selectedChar = sections[letterIndex]
+            print(sections[letterIndex])
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "to_collection" {
+                if let destination = segue.destination as? FriendsPhotosCollectionViewController {
+                    destination.friend = chosenUser
+                }
+            }
     }
     
     
@@ -88,6 +108,20 @@ extension FriendsViewController: UITableViewDelegate {
               
         }
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var tempArr = [User]()
+        for user in users {
+            if user.username.prefix(1) == sections[indexPath.section] {
+                tempArr.append(user)
+            }
+        }
+        
+        chosenUser = tempArr[indexPath.row]
+        
+        performSegue(withIdentifier: "to_collection", sender: self)
     }
     
 }
