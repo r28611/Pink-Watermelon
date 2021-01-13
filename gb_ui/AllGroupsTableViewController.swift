@@ -10,14 +10,14 @@ import UIKit
 class AllGroupsTableViewController: UITableViewController {
     
     var groups = [Group]()
+    var subscribedGroups = [Group]()
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        for index in 1...10 {
-            groups.append(Group(id: index, name: "Some group # \(index)", avatar: UIImage(named: "Day_off")!, city: nil, photos: [nil], subscribers: [nil]))
-        }
+        groups = GroupFactory.makeGroup(count: 15)
+        
     }
 
     // MARK: - Table view data source
@@ -28,12 +28,28 @@ class AllGroupsTableViewController: UITableViewController {
         return groups.count
     }
 
+//     let ot = subscribedGroups.contains { (group) -> Bool in
+//        return group == groups[indexPath.row]
+//    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell_allgroup", for: indexPath) as? GroupsTableViewCell {
             cell.avatarImage.image = groups[indexPath.row].avatar
             cell.nameLabel.text = groups[indexPath.row].name
-            cell.subscribeLabel.text = "Subscribe"
+            
+            for group in groups {
+                let isSubscribed = subscribedGroups.contains { (user) -> Bool in
+                    return group.name == subscribedGroups[0].name
+                }
+                if isSubscribed {
+                    cell.subscribeLabel.text = "Subscribed"
+                    cell.subscribeLabel.tintColor = .black
+                } else {
+                    cell.subscribeLabel.text = "Subscri"
+                    cell.subscribeLabel.tintColor = .systemPink
+                }
+            }
+            
             return cell
         }
 

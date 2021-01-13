@@ -22,9 +22,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        for char in "AKVMWEWEQGERWEL" {
-            users.append(User(id: 1, username: "\(char)adam", avatar: UIImage(named: "photo_template"), photos: [UIImage(named: "bear"), UIImage(named: "rabbit"), UIImage(named: "hey-mouse"), UIImage(named: "small-segment"), UIImage(named: "big-segment")]))
-        }
+        users = UserFactory.makeUsers(firstCharOfName: "sdkjnwevknkr")
+        
         for user in users {
             let char = user.username.prefix(1)
             if sections.contains(String(char)) { continue }
