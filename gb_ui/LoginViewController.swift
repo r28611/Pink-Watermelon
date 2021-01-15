@@ -39,7 +39,7 @@ class LoginViewController: UIViewController {
 //            let tabBarController = segue.destination as? UITabBarController
 //            tabBarController?.selectedIndex = 2
             if let destinations = segue.destination as? UITabBarController,
-               let vc = destinations.viewControllers![1] as? ProfileViewController
+               let vc = destinations.viewControllers![2] as? ProfileViewController
                { vc.textForUsernameLabel = userNameTextField.text!
             }
         default:
@@ -47,9 +47,8 @@ class LoginViewController: UIViewController {
         }
     }
     
-   
+    // MARK: - проверка на админа
     /*
-    //проверка на админа
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         let checkResult = checkUserData()
         if identifier == "to_tabBarController" {

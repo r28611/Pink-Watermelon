@@ -83,21 +83,16 @@ class GroupsTableViewController: UITableViewController {
     // MARK: - Navigation
 
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
-           guard let tableViewController = segue.source as? AllGroupsTableViewController,
-                 let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
-           
-           var group = tableViewController.groups[indexPath.row]
-           group.isSubscribed = true
-
-           /* переделать через
-           if groups.contains(where:) { return }
-           */
-           if groupsNames.contains(group.name!) { return }
-           groupsNames.append(group.name!)
-           
-           groups.append(group)
-           tableView.reloadData()
-       }
+            guard let tableViewController = segue.source as? AllGroupsTableViewController,
+                     let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
+               
+            let group = tableViewController.groups[indexPath.row]
+               
+            if !groups.contains(where: { group.id == $0.id }) {
+                groups.append(group)
+                tableView.reloadData()
+            }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "to_allgroups" {
@@ -107,5 +102,5 @@ class GroupsTableViewController: UITableViewController {
         }
     }
     
-
+    
 }

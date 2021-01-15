@@ -35,6 +35,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         // Do any additional setup after loading the view.
     }
     
+    // MARK: - Character Picker
     
     @IBAction func characterPicked(_ sender: CharacterPicker) {
         let selectedChar = charPicker.selectedChar
@@ -57,6 +58,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
             print(sections[letterIndex])
         }
     }
+    
+    // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             if segue.identifier == "to_collection" {
