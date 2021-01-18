@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FriendsViewController: UIViewController, UITableViewDataSource {
+class FriendsViewController: UIViewController {
 
     var users = [User]()
     var sections = [String]()
@@ -32,7 +32,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         sections.sort(by: <)
         charPicker.Chars = sections
         charPicker.setupUi()
-        // Do any additional setup after loading the view.
+       
+        tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
     }
     
     // MARK: - Character Picker
@@ -69,17 +70,19 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
             }
     }
     
-    
-    // MARK: - Table view data source
-    
+}
+
+// MARK: - Table view data source
+
+extension FriendsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
-    }
-    
+           return sections.count
+       }
+       
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//           return sections[section]
+//    }
+       
 }
 
 extension FriendsViewController: UITableViewDelegate {
@@ -126,4 +129,13 @@ extension FriendsViewController: UITableViewDelegate {
         performSegue(withIdentifier: "to_collection", sender: self)
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderView {
+//            header.configure(label: sections[section])
+            header.headerLabel.text = sections[section]
+            header.tintColor = #colorLiteral(red: 1, green: 0.9882953206, blue: 0.3568195872, alpha: 1)
+            return header
+        }
+        return nil
+    }
 }
