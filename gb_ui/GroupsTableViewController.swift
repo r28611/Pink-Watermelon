@@ -14,7 +14,7 @@ class GroupsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
 
     // MARK: - Table view data source
@@ -35,20 +35,7 @@ class GroupsTableViewController: UITableViewController {
         return UITableViewCell()
     }
     
-    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
-        guard let tableViewController = segue.source as? AllGroupsTableViewController,
-              let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
-        
-        let group = tableViewController.groups[indexPath.row]
-
-//        почему не работает такая проверка на наличие
-//        if groups.contains(group.name) { return }
-        if groupsNames.contains(group.name!) { return }
-        groupsNames.append(group.name!)
-        
-        groups.append(group)
-        tableView.reloadData()
-    }
+   
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -92,14 +79,28 @@ class GroupsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+            guard let tableViewController = segue.source as? AllGroupsTableViewController,
+                     let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
+               
+            let group = tableViewController.groups[indexPath.row]
+               
+            if !groups.contains(where: { group.id == $0.id }) {
+                groups.append(group)
+                tableView.reloadData()
+            }
     }
-    */
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "to_allgroups" {
+            if let destination = segue.destination as? AllGroupsTableViewController {
+                destination.subscribedGroups = self.groups
+            }
+        }
+    }
+    
+    
 }

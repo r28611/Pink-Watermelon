@@ -10,6 +10,7 @@ import UIKit
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var friend: User!
+    var chosenPhoto: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,15 +18,23 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         self.title = "\(friend.username)'s photos"
     }
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "to_photoScene" {
+            if let destination = segue.destination as? PhotoViewController {
+                destination.chosenPhoto = chosenPhoto
+            }
+        }
     }
-    */
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        chosenPhoto = friend.photos[indexPath.row]
+        performSegue(withIdentifier: "to_photoScene", sender: self)
+    }
+    
+    
 
     // MARK: UICollectionViewDataSource
 
@@ -45,7 +54,6 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     // MARK: UICollectionViewDelegate
 
-    
 }
 
 //при повороте экрана что-то работает не так, не правильно считает

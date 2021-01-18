@@ -22,9 +22,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         
-        for char in "AKVMWEWEQGERWEL" {
-            users.append(User(id: 1, username: "\(char)adam", avatar: UIImage(named: "photo_template"), photos: [UIImage(named: "bear"), UIImage(named: "rabbit"), UIImage(named: "hey-mouse"), UIImage(named: "small-segment"), UIImage(named: "big-segment")]))
-        }
+        users = UserFactory.makeUsers(firstCharOfName: "sdkjnwevknkr")
+        
         for user in users {
             let char = user.username.prefix(1)
             if sections.contains(String(char)) { continue }
@@ -36,6 +35,7 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
         // Do any additional setup after loading the view.
     }
     
+    // MARK: - Character Picker
     
     @IBAction func characterPicked(_ sender: CharacterPicker) {
         let selectedChar = charPicker.selectedChar
@@ -58,6 +58,8 @@ class FriendsViewController: UIViewController, UITableViewDataSource {
             print(sections[letterIndex])
         }
     }
+    
+    // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             if segue.identifier == "to_collection" {

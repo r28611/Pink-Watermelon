@@ -41,13 +41,6 @@ class Shedow: UIImageView {
         }
     }
     
-    @IBInspectable
-    var cornerRadius: CGFloat = 2 {
-        didSet {
-            setNeedsLayout()
-        }
-    }
-    
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -57,7 +50,7 @@ class Shedow: UIImageView {
         layer.shadowRadius = radius
         layer.shadowOffset = CGSize.zero
         
-        layer.cornerRadius = frame.width / cornerRadius
+        layer.cornerRadius = frame.width / 2
         layer.masksToBounds = false
     }
 }

@@ -11,6 +11,7 @@ class LikeControl: UIControl {
 
     private var stackView: UIStackView!
     private let button = UIButton(type: .system)
+    var counter: Int = 0
     var counterLabel = UILabel()
     
     var isLiked: Bool = false {
@@ -21,11 +22,9 @@ class LikeControl: UIControl {
             } else {
                 counter -= 1
             }
-            self.updateControl()
+            self.setupView()
         }
     }
-    var counter: Int = 0
-    
     
     override init(frame: CGRect) {
          super.init(frame: frame)
@@ -53,19 +52,12 @@ class LikeControl: UIControl {
 
         stackView.spacing = 3
         stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalCentering
+        stackView.alignment = .trailing
+//        stackView.distribution = .fillEqually
     }
 
     @objc func toogleIsLiked(_ sender: UIButton) {
         isLiked.toggle()
-    }
-    
-    private func updateControl() {
-        button.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
-        button.tintColor = isLiked ? UIColor.systemPink : UIColor.black
-        counterLabel.textColor = isLiked ? UIColor.systemPink : UIColor.black
-        counterLabel.text = String(counter)
     }
     
     override func layoutSubviews() {
