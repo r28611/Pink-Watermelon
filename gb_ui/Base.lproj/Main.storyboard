@@ -478,9 +478,14 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eMo-8W-eSR">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="C9w-YL-avI">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="91" id="rtu-Yd-IoH" customClass="FriendsTableViewCell" customModule="gb_ui" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="91"/>
+                                        <rect key="frame" x="0.0" y="72" width="414" height="91"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rtu-Yd-IoH" id="V2t-Oe-4B7">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="91"/>
@@ -568,6 +573,7 @@
                     <navigationItem key="navigationItem" title="Friends" id="e2Q-cR-9xk"/>
                     <connections>
                         <outlet property="charPicker" destination="IXL-fO-Jb5" id="g63-Ae-j56"/>
+                        <outlet property="searchBar" destination="C9w-YL-avI" id="szM-Ru-h3R"/>
                         <outlet property="tableView" destination="eMo-8W-eSR" id="Feg-bt-y2A"/>
                         <segue destination="yFn-x8-25e" kind="show" identifier="to_collection" id="2mD-m7-QGv"/>
                     </connections>

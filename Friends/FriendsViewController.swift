@@ -7,12 +7,18 @@
 
 import UIKit
 
+struct FriendSection {
+    var title: String
+    var items: [User]
+}
+
 class FriendsViewController: UIViewController {
 
-    var users = [User]()
-    var sections = [String]()
+    let users: [User] = UserFactory.makeUsers()
+    var sections = [FriendSection]()
     var chosenUser: User!
     
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
     
@@ -21,16 +27,13 @@ class FriendsViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
         
-        users = UserFactory.makeUsers(firstCharOfName: "sdkjnwevknkr")
-        
-        for user in users {
-            let char = user.username.prefix(1)
-            if sections.contains(String(char)) { continue }
-            sections.append(String(char))
-        }
-        sections.sort(by: <)
-        charPicker.Chars = sections
+        let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
+        sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
+        sections.sort {$0.title < $1.title}
+
+        charPicker.Chars = sections.map {$0.title}
         charPicker.setupUi()
        
         tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
@@ -39,24 +42,23 @@ class FriendsViewController: UIViewController {
     // MARK: - Character Picker
     
     @IBAction func characterPicked(_ sender: CharacterPicker) {
-        let selectedChar = charPicker.selectedChar
-        var indexPath = IndexPath(item: 0, section: 0)
+        var indexPath = IndexPath()
         for (index, section) in sections.enumerated() {
-            if selectedChar == section {
+            if sender.selectedChar == section.title {
                 indexPath = IndexPath(item: 0, section: index)
             }
         }
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
-    
+
     @IBAction func didMakePan(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: charPicker).y
         let coef = Int(charPicker.frame.height) / sections.count
         let letterIndex = Int(location) / coef
-        
+
         if letterIndex >= 0 && letterIndex <= sections.count - 1 {
-            charPicker.selectedChar = sections[letterIndex]
-            print(sections[letterIndex])
+            charPicker.selectedChar = sections[letterIndex].title
+//            print(sections[letterIndex].title)
         }
     }
     
@@ -79,35 +81,21 @@ extension FriendsViewController: UITableViewDataSource {
            return sections.count
        }
        
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//           return sections[section]
-//    }
-       
 }
 
 extension FriendsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var tempArr = [User]()
-        for user in users {
-            if user.username.prefix(1) == sections[section] {
-                tempArr.append(user)
-                }
-        }
-        return tempArr.count
+
+        return sections[section].items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
-            var tempArr = [User]()
-            for user in users {
-                if user.username.prefix(1) == sections[indexPath.section] {
-                    tempArr.append(user)
-                    }
-            }
-            cell.avatarImage.image = tempArr[indexPath.row].avatar
-            cell.nameLabel.text = tempArr[indexPath.row].username
+
+            cell.avatarImage.image = sections[indexPath.section].items[indexPath.row].avatar
+            cell.nameLabel.text = sections[indexPath.section].items[indexPath.row].username
             
             return cell
               
@@ -116,26 +104,48 @@ extension FriendsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        var tempArr = [User]()
-        for user in users {
-            if user.username.prefix(1) == sections[indexPath.section] {
-                tempArr.append(user)
-            }
-        }
-        
-        chosenUser = tempArr[indexPath.row]
+
+        chosenUser = sections[indexPath.section].items[indexPath.row]
         
         performSegue(withIdentifier: "to_collection", sender: self)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderView {
-//            header.configure(label: sections[section])
-            header.headerLabel.text = sections[section]
+            header.headerLabel.text = sections[section].title
             header.tintColor = #colorLiteral(red: 1, green: 0.9882953206, blue: 0.3568195872, alpha: 1)
             return header
         }
         return nil
     }
+}
+
+// MARK: - Searcn extension
+
+extension FriendsViewController: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
+            sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
+            sections.sort {$0.title < $1.title}
+        } else {
+            let filteredUsers = users.filter({$0.username.lowercased().contains(searchText.lowercased())})
+                    let friendsDictionary = Dictionary.init(grouping: filteredUsers) {$0.username.prefix(1)}
+                    sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
+                    sections.sort {$0.title < $1.title}
+            print(searchText)
+        }
+
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
+        sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
+        sections.sort {$0.title < $1.title}
+
+        tableView.reloadData()
+    }
+    
 }
