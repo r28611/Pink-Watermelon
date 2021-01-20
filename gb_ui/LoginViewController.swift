@@ -39,7 +39,7 @@ class LoginViewController: UIViewController {
 //            let tabBarController = segue.destination as? UITabBarController
 //            tabBarController?.selectedIndex = 2
             if let destinations = segue.destination as? UITabBarController,
-               let vc = destinations.viewControllers![2] as? ProfileViewController
+               let vc = destinations.viewControllers![3] as? ProfileViewController
                { vc.textForUsernameLabel = userNameTextField.text!
             }
         default:

@@ -14,6 +14,8 @@
 		AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8B25A39BDE000F6C34 /* Group.swift */; };
 		AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EB25A6603000D99269 /* СharacterPicker.swift */; };
 		AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EE25A669C900D99269 /* FriendsViewController.swift */; };
+		AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB5814E225B7220000C39ACB /* NewsCell.xib */; };
+		AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5814E525B732D900C39ACB /* NewsCell.swift */; };
 		AB6E424F25B1C75600E7FB2D /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E424E25B1C75600E7FB2D /* PhotoViewController.swift */; };
 		AB6E484725B6371A00F7B66B /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB6E484625B6371A00F7B66B /* HeaderView.xib */; };
 		AB6E484A25B637B400F7B66B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E484925B637B400F7B66B /* HeaderView.swift */; };
@@ -40,6 +42,8 @@
 		AB340A8B25A39BDE000F6C34 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		AB54E5EB25A6603000D99269 /* СharacterPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СharacterPicker.swift"; sourceTree = "<group>"; };
 		AB54E5EE25A669C900D99269 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		AB5814E225B7220000C39ACB /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
+		AB5814E525B732D900C39ACB /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		AB6E424E25B1C75600E7FB2D /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		AB6E484625B6371A00F7B66B /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		AB6E484925B637B400F7B66B /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 				ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */,
 				ABF8893925A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift */,
 				AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */,
+				AB5814E225B7220000C39ACB /* NewsCell.xib */,
+				AB5814E525B732D900C39ACB /* NewsCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -217,6 +223,7 @@
 			files = (
 				ABE5A63B258E142F00CEFEA1 /* LaunchScreen.storyboard in Resources */,
 				ABE5A638258E142F00CEFEA1 /* Assets.xcassets in Resources */,
+				AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */,
 				ABE5A636258E142E00CEFEA1 /* Main.storyboard in Resources */,
 				AB6E484725B6371A00F7B66B /* HeaderView.xib in Resources */,
 			);
@@ -243,6 +250,7 @@
 				AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */,
 				AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */,
 				ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */,
+				AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */,
 				AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */,
 				AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */,
 				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
@@ -394,6 +402,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 93LWHTP5BH;
 				INFOPLIST_FILE = gb_ui/Info.plist;
@@ -403,6 +412,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "rs.newhome.gb-ui";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -413,6 +423,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 93LWHTP5BH;
 				INFOPLIST_FILE = gb_ui/Info.plist;
@@ -422,6 +433,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "rs.newhome.gb-ui";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -33,7 +33,7 @@ class FriendsViewController: UIViewController {
         sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
         sections.sort {$0.title < $1.title}
 
-        charPicker.Chars = sections.map {$0.title}
+        charPicker.chars = sections.map {$0.title}
         charPicker.setupUi()
        
         tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
@@ -129,11 +129,15 @@ extension FriendsViewController: UISearchBarDelegate {
             let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
             sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
             sections.sort {$0.title < $1.title}
+            charPicker.chars = sections.map {$0.title}
+            charPicker.setupUi()
         } else {
             let filteredUsers = users.filter({$0.username.lowercased().contains(searchText.lowercased())})
                     let friendsDictionary = Dictionary.init(grouping: filteredUsers) {$0.username.prefix(1)}
                     sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
                     sections.sort {$0.title < $1.title}
+            charPicker.chars = sections.map {$0.title}
+            charPicker.setupUi()
             print(searchText)
         }
 
@@ -144,7 +148,8 @@ extension FriendsViewController: UISearchBarDelegate {
         let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
         sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
         sections.sort {$0.title < $1.title}
-
+        charPicker.chars = sections.map {$0.title}
+        charPicker.setupUi()
         tableView.reloadData()
     }
     
