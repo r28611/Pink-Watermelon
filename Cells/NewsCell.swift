@@ -10,13 +10,12 @@ import UIKit
 class NewsCell: UITableViewCell {
 
     
-    @IBOutlet weak var authorAvatar: UIImageView!
+    @IBOutlet weak var authorAvatar: RoundedImage!
     @IBOutlet weak var authorName: UILabel!
     
-    @IBOutlet weak var newsText: UITextView!
     @IBOutlet weak var newsImage: UIImageView!
     
-    
+    @IBOutlet weak var newsText: UILabel!
     @IBOutlet weak var likeControl: LikeControl!
     /*
     override func awakeFromNib() {

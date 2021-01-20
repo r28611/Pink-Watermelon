@@ -7,7 +7,6 @@
 
 import UIKit
 
-@IBDesignable
 class LikeControl: UIControl {
 
     private var stackView: UIStackView!
