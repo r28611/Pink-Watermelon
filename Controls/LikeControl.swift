@@ -46,7 +46,7 @@ class LikeControl: UIControl {
         counterLabel.textColor = isLiked ? UIColor.systemPink : UIColor.black
         button.addTarget(self, action: #selector(toogleIsLiked(_ :)), for: .touchUpInside)
         
-        stackView = UIStackView(arrangedSubviews: [counterLabel, button])
+        stackView = UIStackView(arrangedSubviews: [button, counterLabel])
 
         self.addSubview(stackView)
 

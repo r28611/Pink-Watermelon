@@ -1,62 +1,44 @@
 //
-//  AllGroupsTableViewController.swift
+//  NewsTableViewController.swift
 //  gb_ui
 //
-//  Created by Margarita Novokhatskaia on 04.01.2021.
+//  Created by Margarita Novokhatskaia on 20.01.2021.
 //
 
 import UIKit
 
-class AllGroupsTableViewController: UITableViewController {
-    
-    var groups = [Group]()
-    var subscribedGroups = [Group]()
-
+class NewsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        groups = GroupFactory.makeGroup(count: 15)
-        
+        tableView.register(UINib(nibName: "NewsCell", bundle: nil), forCellReuseIdentifier: "NewsCell")
     }
 
     // MARK: - Table view data source
 
 
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return groups.count
+        return 3
     }
 
-//     let ot = subscribedGroups.contains { (group) -> Bool in
-//        return group == groups[indexPath.row]
-//    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell_allgroup", for: indexPath) as? GroupsTableViewCell {
-            cell.avatarImage.image = groups[indexPath.row].avatar
-            cell.nameLabel.text = groups[indexPath.row].name
-            
-            for group in groups {
-                let isSubscribed = subscribedGroups.contains { (user) -> Bool in
-                    return group.name == subscribedGroups[0].name
-                }
-                if isSubscribed {
-                    cell.subscribeLabel.text = "Subscribed"
-                    cell.subscribeLabel.tintColor = .black
-                } else {
-                    cell.subscribeLabel.text = "Subscri"
-                    cell.subscribeLabel.tintColor = .systemPink
-                }
-            }
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsCell {
+//            cell.newsImage.image = UIImage(named: "big-segment")
+            cell.authorAvatar.image = UIImage(named: "bear")
+            cell.authorName.text = "Мишка косолапый"
+            cell.newsText.text = "Создание ячеек коллекции практически не отличается от добавления ячеек таблицы. Основной особенностью ячеек коллекции является то, что у них нет контейнеров. Ячейка коллекции — это обычный view, который можно наполнить чем угодно. Так сделано для того, чтобы можно было создать абсолютно любую ячейку, потому что коллекции могут выглядеть совершенно по-разному."
+            cell.newsText.numberOfLines = 5
             
             return cell
         }
-
         return UITableViewCell()
     }
-    
 
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
+//
+//    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
