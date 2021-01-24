@@ -93,7 +93,18 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
-
+            
+            cell.contentView.alpha = 0
+            
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0.3,
+                           options: [],
+                           animations: {
+                            cell.frame.origin.x -= 80
+                           })
+ 
             cell.avatar.image.image = sections[indexPath.section].items[indexPath.row].avatar
             cell.nameLabel.text = sections[indexPath.section].items[indexPath.row].username
             
@@ -101,6 +112,15 @@ extension FriendsViewController: UITableViewDelegate {
               
         }
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! FriendsTableViewCell
+        UIView.animate(withDuration: 1, animations: {
+            cell.contentView.alpha = 1
+        })
+            
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
