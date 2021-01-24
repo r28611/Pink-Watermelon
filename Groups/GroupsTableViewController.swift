@@ -27,7 +27,7 @@ class GroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GroupsTableViewCell {
-            cell.avatarImage.image = groups[indexPath.row].avatar
+            cell.avatar.image.image = groups[indexPath.row].avatar
             cell.nameLabel.text = groups[indexPath.row].name
             return cell
         }

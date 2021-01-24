@@ -10,7 +10,7 @@ import UIKit
 class NewsCell: UITableViewCell {
 
     
-    @IBOutlet weak var authorAvatar: RoundedImage!
+    @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
     @IBOutlet weak var authorName: UILabel!
     
     

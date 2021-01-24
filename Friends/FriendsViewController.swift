@@ -94,7 +94,7 @@ extension FriendsViewController: UITableViewDelegate {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
 
-            cell.avatarImage.image = sections[indexPath.section].items[indexPath.row].avatar
+            cell.avatar.image.image = sections[indexPath.section].items[indexPath.row].avatar
             cell.nameLabel.text = sections[indexPath.section].items[indexPath.row].username
             
             return cell
