@@ -23,13 +23,19 @@ class LikeControl: UIControl {
                 counter -= 1
             }
             self.setupView()
+            animate()
         }
     }
     
+    func animate() {
+        print("Tap Like")
+        UIView.animateKeyframes(withDuration: 0.1, delay: 0, animations: { self.button.frame.origin.y += 3 })
+    }
+    
     override init(frame: CGRect) {
-         super.init(frame: frame)
+        super.init(frame: frame)
         
-         self.setupView()
+        self.setupView()
      }
     
     required init?(coder: NSCoder) {
