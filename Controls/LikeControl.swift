@@ -11,6 +11,16 @@ class LikeControl: UIControl {
 
     private var stackView: UIStackView!
     private let button = UIButton(type: .system)
+    var imageForLiked: UIImage! = UIImage(systemName: "heart.fill") {
+        didSet{
+            self.setupView()
+        }
+    }
+    var imageForDisliked: UIImage! = UIImage(systemName: "heart") {
+        didSet{
+            self.setupView()
+        }
+    }
     var counter: Int = 0
     var counterLabel = UILabel()
     
@@ -29,7 +39,31 @@ class LikeControl: UIControl {
     
     func animate() {
         print("Tap Like")
-        UIView.animateKeyframes(withDuration: 0.1, delay: 0, animations: { self.button.frame.origin.y += 3 })
+        if isLiked {
+            UIView.animate(withDuration: 0.15, animations: {
+                        self.button.transform = .init(scaleX: 1.1, y: 1.1)
+                    }, completion: { _ in
+                        self.button.transform = .identity
+                    })
+        } else {
+            UIView.animate(withDuration: 0.15, animations: {
+                self.button.transform = .init(scaleX: 0.9, y: 0.9)
+                    }, completion: { _ in
+                        self.button.transform = .identity
+                    })
+        }
+        
+        UIView.animate(withDuration: 0.1, animations: {
+                self.counterLabel.frame.origin.x -= 5
+        })
+        //разобраться почему не работет transition
+//        UIView.transition(with: counterLabel,
+//                          duration: 0.5,
+//                          options: .transitionFlipFromRight,
+//                          animations: {
+//            self.counterLabel.text = String(self.counter)
+//        })
+
     }
     
     override init(frame: CGRect) {
@@ -46,7 +80,7 @@ class LikeControl: UIControl {
     
     private func setupView() {
         
-        button.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
+        button.setImage(isLiked ? imageForLiked : imageForDisliked, for: .normal)
         button.tintColor = isLiked ? UIColor.systemPink : UIColor.black
         counterLabel.text = String(counter)
         counterLabel.textColor = isLiked ? UIColor.systemPink : UIColor.black

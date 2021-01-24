@@ -525,7 +525,7 @@
                                                     </constraints>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="AyG-gh-9af">
-                                                    <rect key="frame" x="83" y="25.5" width="41.5" height="40.5"/>
+                                                    <rect key="frame" x="91" y="25.5" width="41.5" height="40.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ht7-7p-B4A">
                                                             <rect key="frame" x="0.0" y="0.0" width="41.5" height="20.5"/>
@@ -543,7 +543,7 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="AyG-gh-9af" firstAttribute="leading" secondItem="cip-ji-ezE" secondAttribute="trailingMargin" constant="8" id="N6c-1t-0qP"/>
+                                                <constraint firstItem="AyG-gh-9af" firstAttribute="leading" secondItem="cip-ji-ezE" secondAttribute="trailingMargin" constant="16" id="N6c-1t-0qP"/>
                                                 <constraint firstItem="cip-ji-ezE" firstAttribute="leading" secondItem="V2t-Oe-4B7" secondAttribute="leading" constant="8" id="cHo-7A-dtg"/>
                                                 <constraint firstItem="AyG-gh-9af" firstAttribute="centerY" secondItem="V2t-Oe-4B7" secondAttribute="centerY" id="d5y-qh-f3v"/>
                                                 <constraint firstAttribute="bottom" secondItem="cip-ji-ezE" secondAttribute="bottom" constant="8" id="pS5-Ul-dpk"/>
