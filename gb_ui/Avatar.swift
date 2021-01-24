@@ -14,6 +14,34 @@ class RoundedImage: UIImageView {
         
         layer.cornerRadius = frame.width / 2
         layer.masksToBounds = true
+        
+        self.isUserInteractionEnabled = true
+        self.addGestureRecognizer(tapGestureRecognizer)
+
+    }
+    
+    lazy var tapGestureRecognizer: UITapGestureRecognizer = {
+        let recognizer = UITapGestureRecognizer(target: self,
+                                                action: #selector(onTap))
+        recognizer.numberOfTapsRequired = 1
+        recognizer.numberOfTouchesRequired = 1
+        return recognizer
+    }()
+    
+    
+    
+    @objc func onTap() {
+        print("TAP")
+        let animation = CASpringAnimation(keyPath: "transform.scale")
+        animation.fromValue = 0.85
+        animation.toValue = 1
+        animation.stiffness = 100
+        animation.mass = 1
+        animation.duration = 0.2
+        animation.beginTime = CACurrentMediaTime()
+        animation.fillMode = CAMediaTimingFillMode.backwards
+            
+        self.layer.add(animation, forKey: nil)
     }
 }
 

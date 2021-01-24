@@ -113,7 +113,7 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderView {
             header.headerLabel.text = sections[section].title
-            header.tintColor = #colorLiteral(red: 1, green: 0.9882953206, blue: 0.3568195872, alpha: 1)
+            header.tintColor = UIColor.systemPink.withAlphaComponent(0.3)
             return header
         }
         return nil
