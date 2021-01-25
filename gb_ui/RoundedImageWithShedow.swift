@@ -28,6 +28,8 @@ class RoundedImageWithShadow: UIView {
         animation.duration = 0.2
         animation.beginTime = CACurrentMediaTime()
         animation.fillMode = CAMediaTimingFillMode.backwards
+        //разобраться зачем это
+//        animation.isRemovedOnCompletion = true
         layer.add(animation, forKey: nil)
     }
     

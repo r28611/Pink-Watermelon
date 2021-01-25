@@ -17,4 +17,13 @@ class HeaderView: UITableViewHeaderFooterView {
         self.headerLabel.text = nil
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        layer.cornerRadius = frame.height / 2
+        // какие углы скруглять
+        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        layer.masksToBounds = true
+    }
+    
 }

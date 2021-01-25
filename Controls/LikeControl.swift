@@ -41,10 +41,10 @@ class LikeControl: UIControl {
         print("Tap Like")
         if isLiked {
             UIView.animate(withDuration: 0.15, animations: {
-                        self.button.transform = .init(scaleX: 1.1, y: 1.1)
-                    }, completion: { _ in
-                        self.button.transform = .identity
-                    })
+                self.button.transform = .init(scaleX: 1.1, y: 1.1)
+            }, completion: { _ in
+                self.button.transform = .identity
+            })
         } else {
             UIView.animate(withDuration: 0.15, animations: {
                 self.button.transform = .init(scaleX: 0.9, y: 0.9)
