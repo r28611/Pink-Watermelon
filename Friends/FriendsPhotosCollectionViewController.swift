@@ -24,7 +24,8 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "to_photoScene" {
             if let destination = segue.destination as? PhotoViewController {
-                destination.chosenPhoto = chosenPhoto
+                destination.chosenPhoto = self.chosenPhoto
+                destination.photos = self.friend.photos
             }
         }
     }

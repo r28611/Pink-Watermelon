@@ -15,7 +15,7 @@ struct User {
 //    let surname: String?
 //    let city: String?
 //    
-    var avatar: UIImage?
+    var avatar: UIImage!
     var photos: [UIImage?]
 //    var friends: [User?]
     
