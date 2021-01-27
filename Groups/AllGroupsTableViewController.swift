@@ -33,7 +33,7 @@ class AllGroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell_allgroup", for: indexPath) as? GroupsTableViewCell {
-            cell.avatarImage.image = filteredGroups[indexPath.row].avatar
+            cell.avatar.image.image = groups[indexPath.row].avatar
             cell.nameLabel.text = filteredGroups[indexPath.row].name
             cell.subscribeLabel.text = "Subscribe"
             cell.subscribeLabel.tintColor = .black

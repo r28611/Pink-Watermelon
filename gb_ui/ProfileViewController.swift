@@ -10,15 +10,17 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     @IBOutlet private weak var usernameLabel: UILabel!
+    
+    @IBOutlet weak var avatar: RoundedImageWithShadow!
     public var textForUsernameLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        usernameLabel.text = "Hello again, dear \(textForUsernameLabel!)"
+//        usernameLabel.text = "Hello again, dear \(textForUsernameLabel!)"
         
-         
-        // Do any additional setup after loading the view.
+        avatar.image.image = UIImage(named: "bear")
+
     }
     
 

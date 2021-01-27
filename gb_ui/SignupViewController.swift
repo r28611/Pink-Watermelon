@@ -10,6 +10,8 @@ import UIKit
 class SignupViewController: UIViewController {
 
     @IBOutlet private weak var label: UILabel!
+
+    @IBOutlet weak var loadingView: LoadingView!
     
     public var textForLabel: String!
     
@@ -18,6 +20,19 @@ class SignupViewController: UIViewController {
 
         label.text = textForLabel
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+        for _ in 1...10 {
+            
+            loadingView.animate()
+        }
+        
+       
+            
+        
     }
     
 

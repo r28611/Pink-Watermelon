@@ -18,6 +18,16 @@ class FriendsViewController: UIViewController {
     var sections = [FriendSection]()
     var chosenUser: User!
     
+    
+    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
+    
+    @IBOutlet weak var searchImage: UIImageView!
+    @IBOutlet weak var searchImageCenterX: NSLayoutConstraint!
+    
+    @IBOutlet weak var searchCancelButton: UIButton!
+    @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
@@ -25,18 +35,61 @@ class FriendsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        searchTextField.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        searchBar.delegate = self
         
+        groupUsersForTable(users: self.users)
+       
+        tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        if self.searchTextField.text == "" {
+            self.searchTextField.endEditing(true)
+            self.searchTextFieldLeading.constant = 0
+            self.searchImageCenterX.constant = 0
+            self.searchCancelButtonLeading.constant = 0
+            self.searchImage.tintColor = .gray
+            
+            groupUsersForTable(users: self.users)
+            tableView.reloadData()
+        }
+    }
+    
+    @IBAction func searchCancelPressed(_ sender: Any) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchImage.tintColor = .gray
+            
+            self.searchTextFieldLeading.constant = 0
+            self.view.layoutIfNeeded()
+        })
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.2,
+                       options: [],
+                       animations: {
+                        self.searchImageCenterX.constant = 0
+                        self.searchCancelButtonLeading.constant = 0
+                        self.view.layoutIfNeeded()
+                       })
+        searchTextField.text = ""
+        searchTextField.endEditing(true)
+        
+        groupUsersForTable(users: self.users)
+        tableView.reloadData()
+    }
+    
+    func groupUsersForTable(users: [User]) {
         let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
         sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
         sections.sort {$0.title < $1.title}
-
         charPicker.chars = sections.map {$0.title}
         charPicker.setupUi()
-       
-        tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
     }
     
     // MARK: - Character Picker
@@ -93,14 +146,34 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
-
-            cell.avatarImage.image = sections[indexPath.section].items[indexPath.row].avatar
+            
+            cell.contentView.alpha = 0
+            
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0.3,
+                           options: [],
+                           animations: {
+                            cell.frame.origin.x -= 80
+                           })
+ 
+            cell.avatar.image.image = sections[indexPath.section].items[indexPath.row].avatar
             cell.nameLabel.text = sections[indexPath.section].items[indexPath.row].username
             
             return cell
               
         }
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! FriendsTableViewCell
+        UIView.animate(withDuration: 1, animations: {
+            cell.contentView.alpha = 1
+        })
+            
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -113,44 +186,50 @@ extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderView {
             header.headerLabel.text = sections[section].title
-            header.tintColor = #colorLiteral(red: 1, green: 0.9882953206, blue: 0.3568195872, alpha: 1)
+            header.tintColor = UIColor.systemPink.withAlphaComponent(0.3)
             return header
         }
         return nil
     }
 }
 
-// MARK: - Searcn extension
+// MARK: - Text Field extension
 
-extension FriendsViewController: UISearchBarDelegate {
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
-            sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
-            sections.sort {$0.title < $1.title}
-            charPicker.chars = sections.map {$0.title}
-            charPicker.setupUi()
-        } else {
-            let filteredUsers = users.filter({$0.username.lowercased().contains(searchText.lowercased())})
-                    let friendsDictionary = Dictionary.init(grouping: filteredUsers) {$0.username.prefix(1)}
-                    sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
-                    sections.sort {$0.title < $1.title}
-            charPicker.chars = sections.map {$0.title}
-            charPicker.setupUi()
-            print(searchText)
-        }
-
-        tableView.reloadData()
+extension FriendsViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchImage.tintColor = .white
+            
+            self.searchTextFieldLeading.constant = self.searchImage.frame.width + 3 + 3
+            self.view.layoutIfNeeded()
+        })
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.2,
+                       options: [],
+                       animations: {
+                        self.searchImageCenterX.constant = -((self.view.frame.width / 2) - (self.searchImage.frame.width / 2) - 3)
+                        self.searchCancelButtonLeading.constant = -self.searchCancelButton.frame.width + 3
+                        self.view.layoutIfNeeded()
+                       })
     }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
-        sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
-        sections.sort {$0.title < $1.title}
-        charPicker.chars = sections.map {$0.title}
-        charPicker.setupUi()
-        tableView.reloadData()
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = self.searchTextField.text {
+            if text == "" {
+                groupUsersForTable(users: self.users)
+            } else {
+                let filteredUsers = users.filter({$0.username.lowercased().contains(text.lowercased())})
+                groupUsersForTable(users: filteredUsers)
+                print(text)
+            }
+            tableView.reloadData()
+        }
+    return true
     }
     
 }
