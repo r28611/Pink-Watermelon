@@ -49,7 +49,8 @@ class PhotoViewController: UIViewController {
         for (index, photo) in photos.enumerated() {
             if chosenPhoto == photo {
                 if index > 0 {
-                    self.image.image = photos[index - 1]
+//                    self.image.image = photos[index - 1]
+                    animateTransitionPrevious(fromImage: self.image, toImage: UIImageView(image: photos[index - 1]))
                     break
                 }
             }
@@ -66,7 +67,10 @@ class PhotoViewController: UIViewController {
         for (index, photo) in photos.enumerated() {
             if index < photos.count - 1 {
                 if chosenPhoto == photo {
-                    self.image.image = photos[index + 1]
+//                    self.image.image = photos[index + 1]
+                    animateTransitionNext(
+                        fromImage: self.image, toImage: UIImageView(image: photos[index + 1]))
+
                     break
                 }
             }
@@ -75,14 +79,52 @@ class PhotoViewController: UIViewController {
         chosenPhoto = self.image.image
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func animateTransitionPrevious(fromImage: UIImageView, toImage: UIImageView) {
+        
+        UIView.transition(with: fromImage,
+                          duration: 0.5,
+//                          options: .transitionFlipFromRight,
+                          animations: {
+                            fromImage.image = toImage.image
+        })
+        
+        let translation = CGAffineTransform(translationX: -toImage.frame.width, y: 0)
+        let scale = CGAffineTransform(scaleX: 1.4, y: 1.4)
+        let concatenatedTransform = scale.concatenating(translation)
+        fromImage.transform = concatenatedTransform
+            
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           options: .curveEaseOut,
+                           animations: {
+                            fromImage.transform = .identity
+                           },
+                           completion: nil)
+        
     }
-    */
+    
+    func animateTransitionNext(fromImage: UIImageView, toImage: UIImageView) {
+        
+        UIView.transition(with: fromImage,
+                          duration: 0.5,
+//                          options: .transitionFlipFromRight,
+                          animations: {
+                            fromImage.image = toImage.image
+        })
+        
+        let translation = CGAffineTransform(translationX: toImage.frame.width, y: 0)
+        let scale = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        let concatenatedTransform = scale.concatenating(translation)
+        fromImage.transform = concatenatedTransform
+            
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           options: .curveEaseOut,
+                           animations: {
+                            fromImage.transform = .identity
+                           },
+                           completion: nil)
+        
+    }
 
 }
