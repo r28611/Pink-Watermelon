@@ -10,7 +10,7 @@ import UIKit
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var friend: User!
-    var chosenPhoto: UIImage!
+    var index = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,14 +24,14 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "to_photoScene" {
             if let destination = segue.destination as? PhotoViewController {
-                destination.chosenPhoto = self.chosenPhoto
+                destination.currentIndex = index
                 destination.photos = self.friend.photos
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        chosenPhoto = friend.photos[indexPath.row]
+        index = indexPath.item
         performSegue(withIdentifier: "to_photoScene", sender: self)
     }
     

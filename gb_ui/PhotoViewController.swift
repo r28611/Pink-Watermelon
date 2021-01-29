@@ -8,14 +8,16 @@
 import UIKit
 
 class PhotoViewController: UIViewController {
-
-    var chosenPhoto: UIImage?
-    var photos = [UIImage?]()
+    
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var likeControl: LikeControl!
-    
     @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    
+    var currentIndex: Int = 0
+    var photos: [UIImage] = [UIImage]()
+    var animator: UIViewPropertyAnimator!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -23,19 +25,19 @@ class PhotoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        if let photo = chosenPhoto {
-            image.image = photo
+        image.image = photos[currentIndex]
+        print("curentPhotoIndex = \(currentIndex)")
+        
+
+        if currentIndex == photos.count - 1 {
+            self.nextButton.isHidden = true
+        }
+        if currentIndex == 0 {
+            self.previousButton.isHidden = true
         }
         
-        for (index, photo) in photos.enumerated() {
-            if chosenPhoto == photo && index == photos.count - 1 {
-                self.nextButton.isHidden = true
-            }
-            if chosenPhoto == photo && index == 0 {
-                self.previousButton.isHidden = true
-            }
-        }
-        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPAn))
+        view.addGestureRecognizer(pan)
     }
     
     @IBAction func didDoubleTapOnImage(_ sender: UITapGestureRecognizer) {
@@ -44,39 +46,45 @@ class PhotoViewController: UIViewController {
     
     @IBAction func previousPressed(_ sender: UIButton) {
         
-        self.nextButton.isHidden = false
-        
-        for (index, photo) in photos.enumerated() {
-            if chosenPhoto == photo {
-                if index > 0 {
-//                    self.image.image = photos[index - 1]
-                    animateTransitionPrevious(fromImage: self.image, toImage: UIImageView(image: photos[index - 1]))
-                    break
-                }
-            }
+        if currentIndex > 0 {
+            animateTransitionPrevious(fromImage: self.image, toImage: UIImageView(image: photos[currentIndex - 1]))
+            currentIndex -= 1
         }
+        if currentIndex == photos.count - 1 {
+            self.nextButton.isHidden = true
+        } else {
+            self.nextButton.isHidden = false
+        }
+        if currentIndex == 0 {
+            self.previousButton.isHidden = true
+        } else {
+            self.previousButton.isHidden = false
+        }
+
         self.view.layoutIfNeeded()
-        chosenPhoto = self.image.image
+        
         
     }
     
     @IBAction func nextPressed(_ sender: UIButton) {
         
-        self.previousButton.isHidden = false
- 
-        for (index, photo) in photos.enumerated() {
-            if index < photos.count - 1 {
-                if chosenPhoto == photo {
-//                    self.image.image = photos[index + 1]
-                    animateTransitionNext(
-                        fromImage: self.image, toImage: UIImageView(image: photos[index + 1]))
-
-                    break
-                }
-            }
+        if currentIndex < photos.count - 1 {
+            animateTransitionNext(fromImage: self.image, toImage: UIImageView(image: photos[currentIndex + 1]))
+            currentIndex += 1
         }
+        if currentIndex == photos.count - 1 {
+            self.nextButton.isHidden = true
+        } else {
+            self.nextButton.isHidden = false
+        }
+        if currentIndex == 0 {
+            self.previousButton.isHidden = true
+        } else {
+            self.previousButton.isHidden = false
+        }
+        
         self.view.layoutIfNeeded()
-        chosenPhoto = self.image.image
+        
     }
     
     func animateTransitionPrevious(fromImage: UIImageView, toImage: UIImageView) {
@@ -125,6 +133,17 @@ class PhotoViewController: UIViewController {
                            },
                            completion: nil)
         
+    }
+    
+    @objc func onPAn(_ recognizer: UIPanGestureRecognizer) {
+//        switch recognizer.state {
+//        case .began:
+//        case .ended:
+//            animator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.5, animations: {
+//
+//            })
+//        default:
+//        }
     }
 
 }
