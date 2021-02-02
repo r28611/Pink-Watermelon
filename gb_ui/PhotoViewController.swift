@@ -37,7 +37,8 @@ class PhotoViewController: UIViewController {
         }
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(onPAn))
-        view.addGestureRecognizer(pan)
+        self.view.addGestureRecognizer(pan)
+        self.view.isUserInteractionEnabled = true
     }
     
     @IBAction func didDoubleTapOnImage(_ sender: UITapGestureRecognizer) {
@@ -46,32 +47,40 @@ class PhotoViewController: UIViewController {
     
     @IBAction func previousPressed(_ sender: UIButton) {
         
-        if currentIndex > 0 {
-            animateTransitionPrevious(fromImage: self.image, toImage: UIImageView(image: photos[currentIndex - 1]))
-            currentIndex -= 1
-        }
-        if currentIndex == photos.count - 1 {
-            self.nextButton.isHidden = true
-        } else {
-            self.nextButton.isHidden = false
-        }
-        if currentIndex == 0 {
-            self.previousButton.isHidden = true
-        } else {
-            self.previousButton.isHidden = false
-        }
+        changeImage(direction: .previous)
+        
+        hideButtonsIfNeed()
 
         self.view.layoutIfNeeded()
-        
         
     }
     
     @IBAction func nextPressed(_ sender: UIButton) {
         
-        if currentIndex < photos.count - 1 {
-            animateTransitionNext(fromImage: self.image, toImage: UIImageView(image: photos[currentIndex + 1]))
-            currentIndex += 1
+        changeImage(direction: .next)
+        
+        hideButtonsIfNeed()
+        
+        self.view.layoutIfNeeded()
+        
+    }
+    
+    private func changeImage(direction: Direction) {
+        switch direction {
+        case .next:
+            if currentIndex < photos.count - 1 {
+                animateTransition(view: self.image, toImage: photos[currentIndex + 1], direction: direction)
+                currentIndex += 1
+            }
+        case .previous:
+            if currentIndex > 0 {
+                animateTransition(view: self.image, toImage: photos[currentIndex - 1], direction: direction)
+                currentIndex -= 1
+            }
         }
+    }
+    
+    func hideButtonsIfNeed() {
         if currentIndex == photos.count - 1 {
             self.nextButton.isHidden = true
         } else {
@@ -82,68 +91,71 @@ class PhotoViewController: UIViewController {
         } else {
             self.previousButton.isHidden = false
         }
-        
-        self.view.layoutIfNeeded()
-        
     }
     
-    func animateTransitionPrevious(fromImage: UIImageView, toImage: UIImageView) {
-        
-        UIView.transition(with: fromImage,
-                          duration: 0.5,
-//                          options: .transitionFlipFromRight,
-                          animations: {
-                            fromImage.image = toImage.image
-        })
-        
-        let translation = CGAffineTransform(translationX: -toImage.frame.width, y: 0)
-        let scale = CGAffineTransform(scaleX: 1.4, y: 1.4)
-        let concatenatedTransform = scale.concatenating(translation)
-        fromImage.transform = concatenatedTransform
-            
-            UIView.animate(withDuration: 1,
-                           delay: 0,
-                           options: .curveEaseOut,
-                           animations: {
-                            fromImage.transform = .identity
-                           },
-                           completion: nil)
-        
+    private enum Direction {
+        case next, previous
     }
     
-    func animateTransitionNext(fromImage: UIImageView, toImage: UIImageView) {
+    private func animateTransition(view: UIImageView, toImage: UIImage, direction: Direction) {
         
-        UIView.transition(with: fromImage,
-                          duration: 0.5,
-//                          options: .transitionFlipFromRight,
-                          animations: {
-                            fromImage.image = toImage.image
-        })
+        view.image = toImage
         
-        let translation = CGAffineTransform(translationX: toImage.frame.width, y: 0)
-        let scale = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        var translation = CGAffineTransform()
+        var scale = CGAffineTransform()
+        switch direction {
+        case .next:
+            translation = CGAffineTransform(translationX: view.frame.width, y: 0)
+            scale = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        case .previous:
+            translation = CGAffineTransform(translationX: -view.frame.width, y: 0)
+            scale = CGAffineTransform(scaleX: 1.4, y: 1.4)
+        }
+        
         let concatenatedTransform = scale.concatenating(translation)
-        fromImage.transform = concatenatedTransform
-            
-            UIView.animate(withDuration: 1,
-                           delay: 0,
-                           options: .curveEaseOut,
-                           animations: {
-                            fromImage.transform = .identity
-                           },
-                           completion: nil)
+        view.transform = concatenatedTransform
+        
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       options: .curveEaseOut,
+                       animations: {
+                        view.transform = .identity
+                       },
+                       completion: nil)
         
     }
     
     @objc func onPAn(_ recognizer: UIPanGestureRecognizer) {
-//        switch recognizer.state {
-//        case .began:
-//        case .ended:
-//            animator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.5, animations: {
-//
-//            })
-//        default:
-//        }
+        let translation = recognizer.translation(in: self.view)
+        
+        switch recognizer.state {
+        case .began:
+            
+            print(translation.x)
+            animator = UIViewPropertyAnimator(duration: 1, curve: .easeIn, animations: {
+                if translation.x > 0 && self.currentIndex > 0 {
+                    self.image.transform = CGAffineTransform(translationX: self.image.frame.width, y: 0)
+                } else if translation.x < 0  && self.currentIndex < self.photos.count - 1 {
+                    self.image.transform = CGAffineTransform(translationX: -self.image.frame.width, y: 0)
+                }
+            })
+            
+            animator?.startAnimation()
+        case .changed:
+            animator.fractionComplete = abs(translation.x / 100)
+        case .ended:
+            // добавить отмену действия
+            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+            if translation.x > 0 {
+                changeImage(direction: .previous)
+            } else {
+                changeImage(direction: .next)
+            }
+            
+            hideButtonsIfNeed()
+        default:
+            break
+        }
     }
 
 }

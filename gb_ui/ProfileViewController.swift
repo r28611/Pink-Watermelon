@@ -10,31 +10,57 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     @IBOutlet private weak var usernameLabel: UILabel!
-    
     @IBOutlet weak var avatar: RoundedImageWithShadow!
-    public var textForUsernameLabel: String!
+    @IBOutlet weak var newsTableView: UITableView!
+    
+    var user: User = {
+        User(id: 24, username: "Marguerite Duras", avatar: UIImage(named: "photo_template"), photos: [
+            UIImage(named: "10")!,
+            UIImage(named: "11")!,
+            UIImage(named: "12")!,
+            UIImage(named: "13")!,
+            UIImage(named: "14")!
+        ])
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        usernameLabel.text = "Hello again, dear \(textForUsernameLabel!)"
+        avatar.image.image = user.avatar
+        usernameLabel.text = user.username
         
-        avatar.image.image = UIImage(named: "bear")
+        newsTableView.register(UINib(nibName: "NewsCell", bundle: nil), forCellReuseIdentifier: "NewsCell")
+        newsTableView.delegate = self
+        newsTableView.dataSource = self
 
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @IBAction func didTapLogOut(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
+}
+
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsCell {
+            cell.authorAvatar.image.image = user.avatar
+            cell.timeLabel.text = "01/01/2021"
+            cell.authorName.text = user.username
+            cell.newsText.text = "Французский Индокитай, 1931 г. На побережье Сиамского залива проживает французская семья: вдова и двое её детей: 19-ти и 16-ти лет. Продавая этот участок чиновники умолчали о ежегодном затоплении земли со стороны моря. Семейство едва сводит концы с концами. Чтобы отгородить себя ещё от большего разорения мадам объявляет о строительстве дамбы. Женщина отказывается сдаться и отчаянно борется и против моря и против коррумпированных колониальных бюрократов..."
+            cell.newsText.numberOfLines = 5
+            
+            cell.configureNewsPhotoCollection(photos: user.photos)
+            
+            return cell
+        }
+        return UITableViewCell()
+    }
+    
+    
 }
