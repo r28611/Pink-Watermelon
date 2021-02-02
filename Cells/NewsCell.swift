@@ -9,11 +9,11 @@ import UIKit
 
 class NewsCell: UITableViewCell {
 
+    private var newsPhotos = [UIImage]()
     
     @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
     @IBOutlet weak var authorName: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
-    
     
     @IBOutlet weak var photoCollection: UICollectionView!
     
@@ -49,19 +49,28 @@ class NewsCell: UITableViewCell {
         self.likeControl.counter = 0
     }
     
+    func configureNewsPhotoCollection(photos: [UIImage]) {
+        newsPhotos = photos
+    }
+    
 }
 
 // MARK: Extension Collection View
 
 extension NewsCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return newsPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        let image = UIImageView(image: UIImage(named: "big-segment"))
+        let image = UIImageView(image: newsPhotos[indexPath.row])
         cell.addSubview(image)
+        image.contentMode = .scaleAspectFit
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.widthAnchor.constraint(equalTo: cell.widthAnchor, multiplier: 1).isActive = true
+        image.heightAnchor.constraint(equalTo: cell.heightAnchor, multiplier: 1).isActive = true
+        
         return cell
     }
 }
