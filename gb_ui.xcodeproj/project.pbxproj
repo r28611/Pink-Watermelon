@@ -17,6 +17,8 @@
 		AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EE25A669C900D99269 /* FriendsViewController.swift */; };
 		AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB5814E225B7220000C39ACB /* NewsCell.xib */; };
 		AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5814E525B732D900C39ACB /* NewsCell.swift */; };
+		AB67F46A25CC2CD700EE957D /* AnimateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB67F46925CC2CD700EE957D /* AnimateTransition.swift */; };
+		AB67F46D25CC309100EE957D /* AnimatedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */; };
 		AB6E424F25B1C75600E7FB2D /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E424E25B1C75600E7FB2D /* PhotoViewController.swift */; };
 		AB6E484725B6371A00F7B66B /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB6E484625B6371A00F7B66B /* HeaderView.xib */; };
 		AB6E484A25B637B400F7B66B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E484925B637B400F7B66B /* HeaderView.swift */; };
@@ -47,6 +49,8 @@
 		AB54E5EE25A669C900D99269 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		AB5814E225B7220000C39ACB /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
 		AB5814E525B732D900C39ACB /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		AB67F46925CC2CD700EE957D /* AnimateTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateTransition.swift; sourceTree = "<group>"; };
+		AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedNavigationController.swift; sourceTree = "<group>"; };
 		AB6E424E25B1C75600E7FB2D /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		AB6E484625B6371A00F7B66B /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		AB6E484925B637B400F7B66B /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 		ABE5A622258E142E00CEFEA1 = {
 			isa = PBXGroup;
 			children = (
+				AB67F46925CC2CD700EE957D /* AnimateTransition.swift */,
+				AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */,
 				AB11236825B89F9B0082898E /* News */,
 				AB6E484D25B63B6800F7B66B /* Groups */,
 				AB6E484C25B63B3A00F7B66B /* Friends */,
@@ -264,11 +270,13 @@
 				AB6E424F25B1C75600E7FB2D /* PhotoViewController.swift in Sources */,
 				AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */,
 				AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */,
+				AB67F46A25CC2CD700EE957D /* AnimateTransition.swift in Sources */,
 				AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */,
 				ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */,
 				AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */,
 				AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */,
 				AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */,
+				AB67F46D25CC309100EE957D /* AnimatedNavigationController.swift in Sources */,
 				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
 				ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */,
 				ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */,
@@ -406,6 +414,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
