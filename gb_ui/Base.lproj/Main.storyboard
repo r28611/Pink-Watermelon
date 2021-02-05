@@ -70,7 +70,7 @@
                                                         <state key="normal" title="Sign up"/>
                                                         <connections>
                                                             <action selector="didTapSignupButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ufb-5b-Pg8"/>
-                                                            <segue destination="9Xf-KG-Fsv" kind="presentation" identifier="to_signup_view" id="dnI-aT-Frv"/>
+                                                            <segue destination="9Xf-KG-Fsv" kind="show" identifier="to_signup_view" id="lKm-w6-fUo"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -119,7 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-220" y="-198"/>
+            <point key="canvasLocation" x="-288" y="-198"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="V3Q-LA-nyn">
@@ -129,17 +129,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="105" translatesAutoresizingMaskIntoConstraints="NO" id="PzQ-Hi-CA6">
-                                <rect key="frame" x="186.5" y="411" width="41.5" height="20.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3m7-AD-Ej9">
-                                        <rect key="frame" x="0.0" y="0.0" width="41.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="close" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDa-Vb-66q">
                                 <rect key="frame" x="20" y="20" width="30" height="30"/>
                                 <connections>
@@ -147,34 +136,43 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5oh-Cs-4Ri" customClass="LoadingView" customModule="gb_ui" customModuleProvider="target">
-                                <rect key="frame" x="182" y="463.5" width="50" height="20"/>
+                                <rect key="frame" x="182" y="479" width="50" height="20"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="6nE-w8-2JW"/>
                                     <constraint firstAttribute="height" constant="20" id="gz9-dn-pio"/>
                                 </constraints>
                             </view>
+                            <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="NrF-5o-4mN" customClass="WatermelonLoadingView" customModule="gb_ui" customModuleProvider="target">
+                                <rect key="frame" x="152" y="381" width="110" height="80"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="110" id="Mo0-nB-fcO"/>
+                                    <constraint firstAttribute="height" constant="80" id="XcL-L5-QdN"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="CaW-Qf-gPk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="PzQ-Hi-CA6" firstAttribute="centerX" secondItem="mPD-Sd-yhI" secondAttribute="centerX" id="JeB-AS-EXz"/>
                             <constraint firstItem="QDa-Vb-66q" firstAttribute="leading" secondItem="CaW-Qf-gPk" secondAttribute="leading" constant="20" id="Lws-eA-eOu"/>
                             <constraint firstItem="QDa-Vb-66q" firstAttribute="top" secondItem="CaW-Qf-gPk" secondAttribute="top" constant="20" id="M8W-Z7-JU3"/>
-                            <constraint firstItem="PzQ-Hi-CA6" firstAttribute="centerY" secondItem="mPD-Sd-yhI" secondAttribute="centerY" id="Xpb-3D-RBV"/>
-                            <constraint firstItem="5oh-Cs-4Ri" firstAttribute="top" secondItem="PzQ-Hi-CA6" secondAttribute="bottom" constant="32" id="uh8-qz-csY"/>
+                            <constraint firstItem="NrF-5o-4mN" firstAttribute="centerX" secondItem="mPD-Sd-yhI" secondAttribute="centerX" id="WGq-sl-fQ9"/>
+                            <constraint firstItem="NrF-5o-4mN" firstAttribute="centerY" secondItem="mPD-Sd-yhI" secondAttribute="centerY" id="YWV-D0-xuv"/>
+                            <constraint firstItem="5oh-Cs-4Ri" firstAttribute="top" secondItem="NrF-5o-4mN" secondAttribute="bottom" constant="18" id="cQ9-e6-WFz"/>
                             <constraint firstItem="5oh-Cs-4Ri" firstAttribute="centerX" secondItem="mPD-Sd-yhI" secondAttribute="centerX" id="vhc-pI-Stj"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="IQI-rn-yBE"/>
                     <connections>
-                        <outlet property="label" destination="3m7-AD-Ej9" id="zOM-yz-VMA"/>
+                        <outlet property="cloudView" destination="NrF-5o-4mN" id="5Xv-fO-erH"/>
                         <outlet property="loadingView" destination="5oh-Cs-4Ri" id="1vJ-cR-C4q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1aI-89-r6L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="99o-Va-IQG" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-216" y="534"/>
+            <point key="canvasLocation" x="-288" y="534"/>
         </scene>
         <!--Groups-->
         <scene sceneID="6DH-R2-ea6">
@@ -308,26 +306,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-1R-jJg">
-                                <rect key="frame" x="20" y="158" width="374" height="580"/>
+                                <rect key="frame" x="0.0" y="158" width="414" height="580"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="pRJ-8D-y6u" appends="YES" id="4QS-Fe-1tc"/>
                                 </connections>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgC-P4-xmd" userLabel="Previous">
-                                <rect key="frame" x="3" y="437" width="14" height="22"/>
-                                <state key="normal" image="chevron.left" catalog="system"/>
-                                <connections>
-                                    <action selector="previousPressed:" destination="up4-0S-0Ku" eventType="touchUpInside" id="pwR-F1-VpC"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zwQ-70-qxL" userLabel="Next">
-                                <rect key="frame" x="397" y="437" width="14" height="22"/>
-                                <state key="normal" image="chevron.right" catalog="system"/>
-                                <connections>
-                                    <action selector="nextPressed:" destination="up4-0S-0Ku" eventType="touchUpInside" id="cZT-cu-edx"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9PP-0e-qBj" customClass="LikeControl" customModule="gb_ui" customModuleProvider="target">
                                 <rect key="frame" x="359" y="753" width="50" height="30"/>
                                 <constraints>
@@ -339,17 +323,11 @@
                         <viewLayoutGuide key="safeArea" id="7pM-Ec-qzg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="zgC-P4-xmd" firstAttribute="centerY" secondItem="QuW-1R-jJg" secondAttribute="centerY" id="29u-yY-tEM"/>
-                            <constraint firstItem="7pM-Ec-qzg" firstAttribute="trailing" secondItem="zwQ-70-qxL" secondAttribute="trailing" constant="3" id="5ew-fz-K6k"/>
                             <constraint firstItem="9PP-0e-qBj" firstAttribute="trailing" secondItem="7pM-Ec-qzg" secondAttribute="trailing" constant="-5" id="Nij-4t-5W7"/>
                             <constraint firstItem="QuW-1R-jJg" firstAttribute="centerY" secondItem="A9C-X2-hha" secondAttribute="centerY" id="U2L-uu-t9C"/>
                             <constraint firstItem="9PP-0e-qBj" firstAttribute="top" secondItem="QuW-1R-jJg" secondAttribute="bottom" constant="15" id="Xh7-FN-Ra5"/>
-                            <constraint firstItem="QuW-1R-jJg" firstAttribute="trailing" secondItem="7pM-Ec-qzg" secondAttribute="trailing" constant="-20" id="aaJ-Ik-G4E"/>
-                            <constraint firstItem="zgC-P4-xmd" firstAttribute="leading" secondItem="7pM-Ec-qzg" secondAttribute="leading" constant="3" id="cRy-LG-57S"/>
-                            <constraint firstItem="zwQ-70-qxL" firstAttribute="leading" secondItem="QuW-1R-jJg" secondAttribute="trailing" constant="3" id="hG1-FI-Tkw"/>
-                            <constraint firstItem="zwQ-70-qxL" firstAttribute="centerY" secondItem="QuW-1R-jJg" secondAttribute="centerY" id="hLC-D0-NA0"/>
-                            <constraint firstItem="QuW-1R-jJg" firstAttribute="leading" secondItem="zgC-P4-xmd" secondAttribute="trailing" constant="3" id="y67-eN-8cj"/>
-                            <constraint firstItem="QuW-1R-jJg" firstAttribute="leading" secondItem="7pM-Ec-qzg" secondAttribute="leading" constant="20" id="z2h-2p-5EX"/>
+                            <constraint firstItem="QuW-1R-jJg" firstAttribute="trailing" secondItem="7pM-Ec-qzg" secondAttribute="trailing" id="aaJ-Ik-G4E"/>
+                            <constraint firstItem="QuW-1R-jJg" firstAttribute="leading" secondItem="7pM-Ec-qzg" secondAttribute="leading" id="z2h-2p-5EX"/>
                             <constraint firstItem="QuW-1R-jJg" firstAttribute="height" secondItem="7pM-Ec-qzg" secondAttribute="height" multiplier="0.8" id="zPo-AS-zEV"/>
                         </constraints>
                     </view>
@@ -357,8 +335,6 @@
                     <connections>
                         <outlet property="image" destination="QuW-1R-jJg" id="7ij-8N-akz"/>
                         <outlet property="likeControl" destination="9PP-0e-qBj" id="FUX-CL-Teh"/>
-                        <outlet property="nextButton" destination="zwQ-70-qxL" id="VaX-wL-qkB"/>
-                        <outlet property="previousButton" destination="zgC-P4-xmd" id="H9r-dj-1Ne"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zz6-3P-sLx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -791,8 +767,6 @@
     </scenes>
     <resources>
         <image name="SARA-N1072" width="1071" height="1323"/>
-        <image name="chevron.left" catalog="system" width="96" height="128"/>
-        <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="list.bullet.rectangle" catalog="system" width="128" height="93"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="person" catalog="system" width="128" height="117"/>

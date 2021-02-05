@@ -11,8 +11,6 @@ class PhotoViewController: UIViewController {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var likeControl: LikeControl!
-    @IBOutlet weak var previousButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
     
     var currentIndex: Int = 0
     var photos: [UIImage] = [UIImage]()
@@ -20,21 +18,18 @@ class PhotoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .black
+        likeControl.set(colorDisliked: .gray,
+                        iconDisliked: UIImage(systemName: "heart")!,
+                        colorLiked: .systemPink,
+                        iconLiked: UIImage(systemName: "heart.fill")!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         image.image = photos[currentIndex]
-        print("curentPhotoIndex = \(currentIndex)")
-        
-
-        if currentIndex == photos.count - 1 {
-            self.nextButton.isHidden = true
-        }
-        if currentIndex == 0 {
-            self.previousButton.isHidden = true
-        }
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(onPAn))
         self.view.addGestureRecognizer(pan)
@@ -43,26 +38,6 @@ class PhotoViewController: UIViewController {
     
     @IBAction func didDoubleTapOnImage(_ sender: UITapGestureRecognizer) {
         likeControl.isLiked.toggle()
-    }
-    
-    @IBAction func previousPressed(_ sender: UIButton) {
-        
-        changeImage(direction: .previous)
-        
-        hideButtonsIfNeed()
-
-        self.view.layoutIfNeeded()
-        
-    }
-    
-    @IBAction func nextPressed(_ sender: UIButton) {
-        
-        changeImage(direction: .next)
-        
-        hideButtonsIfNeed()
-        
-        self.view.layoutIfNeeded()
-        
     }
     
     private func changeImage(direction: Direction) {
@@ -77,19 +52,6 @@ class PhotoViewController: UIViewController {
                 animateTransition(view: self.image, toImage: photos[currentIndex - 1], direction: direction)
                 currentIndex -= 1
             }
-        }
-    }
-    
-    func hideButtonsIfNeed() {
-        if currentIndex == photos.count - 1 {
-            self.nextButton.isHidden = true
-        } else {
-            self.nextButton.isHidden = false
-        }
-        if currentIndex == 0 {
-            self.previousButton.isHidden = true
-        } else {
-            self.previousButton.isHidden = false
         }
     }
     
@@ -151,8 +113,6 @@ class PhotoViewController: UIViewController {
             } else {
                 changeImage(direction: .next)
             }
-            
-            hideButtonsIfNeed()
         default:
             break
         }

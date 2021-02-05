@@ -26,6 +26,7 @@
 		AB98A30625CC7F0100E539F9 /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */; };
 		AB9DBEE525A3D7F8002B9B8A /* RoundedImageWithShedow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */; };
 		AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */; };
+		ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */; };
 		ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */; };
 		ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */; };
 		ABE5A636258E142E00CEFEA1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A634258E142E00CEFEA1 /* Main.storyboard */; };
@@ -59,6 +60,7 @@
 		AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveTransition.swift; sourceTree = "<group>"; };
 		AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageWithShedow.swift; sourceTree = "<group>"; };
 		AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
+		ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermelonLoadingView.swift; sourceTree = "<group>"; };
 		ABE5A62B258E142E00CEFEA1 /* gb_ui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gb_ui.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,26 @@
 				AB11236525B8952E0082898E /* NewsTableViewController.swift */,
 			);
 			path = News;
+			sourceTree = "<group>";
+		};
+		AB1C94C825CD8E5600E6A878 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */,
+				AB7CEF9725B9D37E0092EF04 /* LoadingView.swift */,
+				ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		AB1C94C925CD8E7A00E6A878 /* Transitions */ = {
+			isa = PBXGroup;
+			children = (
+				AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */,
+				AB67F46925CC2CD700EE957D /* AnimateTransition.swift */,
+				AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */,
+			);
+			path = Transitions;
 			sourceTree = "<group>";
 		};
 		AB340A8725A39A06000F6C34 /* Model */ = {
@@ -134,9 +156,8 @@
 		ABE5A622258E142E00CEFEA1 = {
 			isa = PBXGroup;
 			children = (
-				AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */,
-				AB67F46925CC2CD700EE957D /* AnimateTransition.swift */,
-				AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */,
+				AB1C94C925CD8E7A00E6A878 /* Transitions */,
+				AB1C94C825CD8E5600E6A878 /* CustomViews */,
 				AB11236825B89F9B0082898E /* News */,
 				AB6E484D25B63B6800F7B66B /* Groups */,
 				AB6E484C25B63B3A00F7B66B /* Friends */,
@@ -162,9 +183,7 @@
 				ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */,
 				ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */,
 				ABE5A634258E142E00CEFEA1 /* Main.storyboard */,
-				AB7CEF9725B9D37E0092EF04 /* LoadingView.swift */,
 				AB6E424E25B1C75600E7FB2D /* PhotoViewController.swift */,
-				AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */,
 				ABF888DF2596017200A29574 /* SignupViewController.swift */,
 				ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */,
 				ABF8885D258EAC1F00A29574 /* LoginViewController.swift */,
@@ -259,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */,
 				AB340A8925A39A55000F6C34 /* User.swift in Sources */,
 				ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */,
 				AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */,
