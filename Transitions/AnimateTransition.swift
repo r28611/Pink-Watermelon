@@ -8,6 +8,7 @@
 import UIKit
 
 final class CustomPushAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.6
     }
@@ -18,8 +19,6 @@ final class CustomPushAnimator: NSObject, UIViewControllerAnimatedTransitioning 
         
         transitionContext.containerView.addSubview(destination.view)
         destination.view.frame = source.view.frame
-        
-        
         
         let rotate = CGAffineTransform(rotationAngle: -(.pi/2))
         let translation = CGAffineTransform(translationX: 0, y: destination.view.frame.height)

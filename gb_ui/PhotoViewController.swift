@@ -31,13 +31,18 @@ class PhotoViewController: UIViewController {
         
         image.image = photos[currentIndex]
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPAn))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapOnImage))
+        tap.numberOfTapsRequired = 2
+        image.addGestureRecognizer(tap)
+        image.isUserInteractionEnabled = true
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPan))
         self.view.addGestureRecognizer(pan)
         self.view.isUserInteractionEnabled = true
     }
     
-    @IBAction func didDoubleTapOnImage(_ sender: UITapGestureRecognizer) {
-        likeControl.isLiked.toggle()
+    @IBAction func dismissDidTapped(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     private func changeImage(direction: Direction) {
@@ -87,7 +92,15 @@ class PhotoViewController: UIViewController {
         
     }
     
-    @objc func onPAn(_ recognizer: UIPanGestureRecognizer) {
+    // MARK: Tap function
+    
+    @objc func doubleTapOnImage() {
+        self.likeControl.isLiked.toggle()
+    }
+    
+    // MARK: Pan function
+    
+    @objc func onPan(_ recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: self.view)
         
         switch recognizer.state {

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB0F8BF125D16E9200E411E6 /* DismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0F8BF025D16E9200E411E6 /* DismissTransition.swift */; };
+		AB0F8BF425D1757600E411E6 /* CustomDismissSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0F8BF325D1757600E411E6 /* CustomDismissSegue.swift */; };
 		AB11236625B8952E0082898E /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB11236525B8952E0082898E /* NewsTableViewController.swift */; };
 		AB340A7F25A3571B000F6C34 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A7E25A3571B000F6C34 /* GroupsTableViewController.swift */; };
 		AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */; };
@@ -41,6 +43,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB0F8BF025D16E9200E411E6 /* DismissTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissTransition.swift; sourceTree = "<group>"; };
+		AB0F8BF325D1757600E411E6 /* CustomDismissSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDismissSegue.swift; sourceTree = "<group>"; };
 		AB11236525B8952E0082898E /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		AB340A7E25A3571B000F6C34 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewCell.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */,
+				AB0F8BF025D16E9200E411E6 /* DismissTransition.swift */,
 				AB67F46925CC2CD700EE957D /* AnimateTransition.swift */,
 				AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */,
 			);
@@ -156,6 +161,7 @@
 		ABE5A622258E142E00CEFEA1 = {
 			isa = PBXGroup;
 			children = (
+				AB0F8BF325D1757600E411E6 /* CustomDismissSegue.swift */,
 				AB1C94C925CD8E7A00E6A878 /* Transitions */,
 				AB1C94C825CD8E5600E6A878 /* CustomViews */,
 				AB11236825B89F9B0082898E /* News */,
@@ -301,8 +307,10 @@
 				AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */,
 				AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */,
 				AB67F46D25CC309100EE957D /* AnimatedNavigationController.swift in Sources */,
+				AB0F8BF425D1757600E411E6 /* CustomDismissSegue.swift in Sources */,
 				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
 				ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */,
+				AB0F8BF125D16E9200E411E6 /* DismissTransition.swift in Sources */,
 				ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
