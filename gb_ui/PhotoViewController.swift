@@ -103,10 +103,30 @@ class PhotoViewController: UIViewController {
     @objc func onPan(_ recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: self.view)
         
+        if abs(translation.y) > abs(translation.x) {
+            switch recognizer.state {
+            case .began:
+                animator = UIViewPropertyAnimator(duration: 1, curve: .easeIn, animations: {
+                    if translation.y > 0 {
+                        self.image.transform = CGAffineTransform(translationX: 0, y: self.image.frame.height)
+                        
+                    } else if translation.y < 0 {
+                        self.image.transform = CGAffineTransform(translationX: 0, y: -self.image.frame.height)
+                    }
+                })
+                animator?.startAnimation()
+            case .changed:
+                animator.fractionComplete = abs(translation.y / 100)
+            case .ended:
+                animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+                dismiss(animated: true, completion: nil)
+            default:
+                break
+            }
+        }
+        
         switch recognizer.state {
         case .began:
-            
-            print(translation.x)
             animator = UIViewPropertyAnimator(duration: 1, curve: .easeIn, animations: {
                 if translation.x > 0 && self.currentIndex > 0 {
                     self.image.transform = CGAffineTransform(translationX: self.image.frame.width, y: 0)
@@ -115,7 +135,7 @@ class PhotoViewController: UIViewController {
                 }
             })
             
-            animator?.startAnimation()
+                    animator?.startAnimation()
         case .changed:
             animator.fractionComplete = abs(translation.x / 100)
         case .ended:
@@ -130,5 +150,5 @@ class PhotoViewController: UIViewController {
             break
         }
     }
-
+    
 }
