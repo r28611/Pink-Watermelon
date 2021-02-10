@@ -9,17 +9,13 @@ import UIKit
 
 class SignupViewController: UIViewController {
 
-    @IBOutlet private weak var label: UILabel!
-
     @IBOutlet weak var loadingView: LoadingView!
-    
+    @IBOutlet weak var cloudView: WatermelonLoadingView!
     public var textForLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        label.text = textForLabel
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,6 +26,7 @@ class SignupViewController: UIViewController {
             loadingView.animate()
         }
         
+        cloudView.setup()
        
             
         

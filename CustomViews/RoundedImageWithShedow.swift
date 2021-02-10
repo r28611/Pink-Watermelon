@@ -7,9 +7,15 @@
 
 import UIKit
 
-class RoundedImageWithShadow: UIView {
+final class RoundedImageWithShadow: UIView {
     
     public var image: UIImageView!
+    
+    var cornerRadius: CGFloat = 2 {
+        didSet {
+            layoutIfNeeded()
+        }
+    }
     
     lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
@@ -54,6 +60,7 @@ class RoundedImageWithShadow: UIView {
         super.layoutSubviews()
 
         image.frame = bounds
+        image.contentMode = .scaleAspectFill
         layer.backgroundColor = UIColor.clear.cgColor
         
         layer.shadowColor = UIColor.black.cgColor
@@ -61,7 +68,7 @@ class RoundedImageWithShadow: UIView {
         layer.shadowRadius = 5
         layer.shadowOffset = CGSize(width: 0, height: 1)
         
-        image.layer.cornerRadius = frame.width / 2
+        image.layer.cornerRadius = frame.width / cornerRadius
         image.layer.masksToBounds = true
 
 //        self.isUserInteractionEnabled = true

@@ -28,7 +28,6 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var searchCancelButton: UIButton!
     @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
     
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
     
@@ -160,6 +159,7 @@ extension FriendsViewController: UITableViewDelegate {
  
             cell.avatar.image.image = sections[indexPath.section].items[indexPath.row].avatar
             cell.nameLabel.text = sections[indexPath.section].items[indexPath.row].username
+            cell.cityLabel.text = sections[indexPath.section].items[indexPath.row].city
             
             return cell
               

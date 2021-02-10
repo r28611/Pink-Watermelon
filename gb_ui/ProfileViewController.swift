@@ -10,11 +10,14 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     @IBOutlet private weak var usernameLabel: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var logOutButton: UIButton!
+    
     @IBOutlet weak var avatar: RoundedImageWithShadow!
     @IBOutlet weak var newsTableView: UITableView!
     
-    var user: User = {
-        User(id: 24, username: "Marguerite Duras", avatar: UIImage(named: "photo_template"), photos: [
+    let user: User = {
+        User(id: 24, username: "Marguerite Duras", city: "Saigon", avatar: UIImage(named: "photo_template"), photos: [
             UIImage(named: "10")!,
             UIImage(named: "11")!,
             UIImage(named: "12")!,
@@ -26,13 +29,21 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        avatar.image.image = user.avatar
-        usernameLabel.text = user.username
+        setupUi()
         
         newsTableView.register(UINib(nibName: "NewsCell", bundle: nil), forCellReuseIdentifier: "NewsCell")
         newsTableView.delegate = self
         newsTableView.dataSource = self
 
+    }
+    
+    func setupUi() {
+        avatar.isUserInteractionEnabled = false
+        avatar.cornerRadius = 4
+        avatar.image.image = user.avatar
+        usernameLabel.text = user.username
+        cityLabel.text = user.city
+        logOutButton.layer.cornerRadius = logOutButton.frame.height / 5
     }
     
     @IBAction func didTapLogOut(_ sender: UIButton) {

@@ -11,8 +11,6 @@ class PhotoViewController: UIViewController {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var likeControl: LikeControl!
-    @IBOutlet weak var previousButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
     
     var currentIndex: Int = 0
     var photos: [UIImage] = [UIImage]()
@@ -20,49 +18,31 @@ class PhotoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .black
+        likeControl.set(colorDisliked: .gray,
+                        iconDisliked: UIImage(systemName: "heart")!,
+                        colorLiked: .systemPink,
+                        iconLiked: UIImage(systemName: "heart.fill")!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         image.image = photos[currentIndex]
-        print("curentPhotoIndex = \(currentIndex)")
         
-
-        if currentIndex == photos.count - 1 {
-            self.nextButton.isHidden = true
-        }
-        if currentIndex == 0 {
-            self.previousButton.isHidden = true
-        }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapOnImage))
+        tap.numberOfTapsRequired = 2
+        image.addGestureRecognizer(tap)
+        image.isUserInteractionEnabled = true
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPAn))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPan))
         self.view.addGestureRecognizer(pan)
         self.view.isUserInteractionEnabled = true
     }
     
-    @IBAction func didDoubleTapOnImage(_ sender: UITapGestureRecognizer) {
-        likeControl.isLiked.toggle()
-    }
-    
-    @IBAction func previousPressed(_ sender: UIButton) {
-        
-        changeImage(direction: .previous)
-        
-        hideButtonsIfNeed()
-
-        self.view.layoutIfNeeded()
-        
-    }
-    
-    @IBAction func nextPressed(_ sender: UIButton) {
-        
-        changeImage(direction: .next)
-        
-        hideButtonsIfNeed()
-        
-        self.view.layoutIfNeeded()
-        
+    @IBAction func dismissDidTapped(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     private func changeImage(direction: Direction) {
@@ -77,19 +57,6 @@ class PhotoViewController: UIViewController {
                 animateTransition(view: self.image, toImage: photos[currentIndex - 1], direction: direction)
                 currentIndex -= 1
             }
-        }
-    }
-    
-    func hideButtonsIfNeed() {
-        if currentIndex == photos.count - 1 {
-            self.nextButton.isHidden = true
-        } else {
-            self.nextButton.isHidden = false
-        }
-        if currentIndex == 0 {
-            self.previousButton.isHidden = true
-        } else {
-            self.previousButton.isHidden = false
         }
     }
     
@@ -125,13 +92,41 @@ class PhotoViewController: UIViewController {
         
     }
     
-    @objc func onPAn(_ recognizer: UIPanGestureRecognizer) {
+    // MARK: Tap function
+    
+    @objc func doubleTapOnImage() {
+        self.likeControl.isLiked.toggle()
+    }
+    
+    // MARK: Pan function
+    
+    @objc func onPan(_ recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: self.view)
+        
+        if abs(translation.y) > abs(translation.x) {
+            switch recognizer.state {
+            case .began:
+                animator = UIViewPropertyAnimator(duration: 1, curve: .easeIn, animations: {
+                    if translation.y > 0 {
+                        self.image.transform = CGAffineTransform(translationX: 0, y: self.image.frame.height)
+                        
+                    } else if translation.y < 0 {
+                        self.image.transform = CGAffineTransform(translationX: 0, y: -self.image.frame.height)
+                    }
+                })
+                animator?.startAnimation()
+            case .changed:
+                animator.fractionComplete = abs(translation.y / 100)
+            case .ended:
+                animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+                dismiss(animated: true, completion: nil)
+            default:
+                break
+            }
+        }
         
         switch recognizer.state {
         case .began:
-            
-            print(translation.x)
             animator = UIViewPropertyAnimator(duration: 1, curve: .easeIn, animations: {
                 if translation.x > 0 && self.currentIndex > 0 {
                     self.image.transform = CGAffineTransform(translationX: self.image.frame.width, y: 0)
@@ -140,7 +135,7 @@ class PhotoViewController: UIViewController {
                 }
             })
             
-            animator?.startAnimation()
+                    animator?.startAnimation()
         case .changed:
             animator.fractionComplete = abs(translation.x / 100)
         case .ended:
@@ -151,11 +146,9 @@ class PhotoViewController: UIViewController {
             } else {
                 changeImage(direction: .next)
             }
-            
-            hideButtonsIfNeed()
         default:
             break
         }
     }
-
+    
 }

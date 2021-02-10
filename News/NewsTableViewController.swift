@@ -8,6 +8,8 @@
 import UIKit
 
 class NewsTableViewController: UITableViewController, UICollectionViewDelegate {
+    
+    let users: [User] = UserFactory.makeUsers()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +26,10 @@ class NewsTableViewController: UITableViewController, UICollectionViewDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsCell {
             
-            cell.authorAvatar.image.image = UIImage(named: "bear")
-            cell.timeLabel.text = "01/01/2021"
-            cell.authorName.text = "Мишка косолапый"
+            let user = getRundomUser(users: users)
+            cell.authorAvatar.image.image = user.avatar
+            cell.timeLabel.text = "\(Int.random(in: 1...30))/01/2021"
+            cell.authorName.text = user.username
             cell.newsText.text = "Создание ячеек коллекции практически не отличается от добавления ячеек таблицы. Основной особенностью ячеек коллекции является то, что у них нет контейнеров. Ячейка коллекции — это обычный view, который можно наполнить чем угодно. Так сделано для того, чтобы можно было создать абсолютно любую ячейку, потому что коллекции могут выглядеть совершенно по-разному."
             cell.newsText.numberOfLines = 5
             

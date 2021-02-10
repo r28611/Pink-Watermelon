@@ -11,17 +11,15 @@ class LikeControl: UIControl {
 
     private var stackView: UIStackView!
     private let button = UIButton(type: .system)
-    var imageForLiked: UIImage! = UIImage(systemName: "heart.fill") {
-        didSet{
-            self.setupView()
+    private var imageForLiked: UIImage! = UIImage(systemName: "heart.fill")
+    private var colorForLiked: UIColor! = .systemPink
+    private var imageForDisliked: UIImage! = UIImage(systemName: "heart")
+    private var colorForDisliked: UIColor! = .darkGray
+    var counter: Int = 0 {
+        didSet {
+            setupView()
         }
     }
-    var imageForDisliked: UIImage! = UIImage(systemName: "heart") {
-        didSet{
-            self.setupView()
-        }
-    }
-    var counter: Int = 0
     var counterLabel = UILabel()
     
     var isLiked: Bool = false {
@@ -35,6 +33,14 @@ class LikeControl: UIControl {
             self.setupView()
             animate()
         }
+    }
+    
+    func set(colorDisliked: UIColor, iconDisliked: UIImage, colorLiked: UIColor, iconLiked: UIImage) {
+        imageForDisliked = iconDisliked
+        colorForDisliked = colorDisliked
+        imageForLiked = iconLiked
+        colorForLiked = colorLiked
+        self.setupView()
     }
     
     func animate() {
@@ -81,9 +87,9 @@ class LikeControl: UIControl {
     private func setupView() {
         
         button.setImage(isLiked ? imageForLiked : imageForDisliked, for: .normal)
-        button.tintColor = isLiked ? UIColor.systemPink : UIColor.black
+        button.tintColor = isLiked ? colorForLiked : colorForDisliked
         counterLabel.text = String(counter)
-        counterLabel.textColor = isLiked ? UIColor.systemPink : UIColor.black
+        counterLabel.textColor = isLiked ? colorForLiked : colorForDisliked
         button.addTarget(self, action: #selector(toogleIsLiked(_ :)), for: .touchUpInside)
         
         stackView = UIStackView(arrangedSubviews: [button, counterLabel])

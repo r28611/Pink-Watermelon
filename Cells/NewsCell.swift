@@ -8,7 +8,7 @@
 import UIKit
 
 class NewsCell: UITableViewCell {
-
+    
     private var newsPhotos = [UIImage]()
     
     @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
@@ -25,21 +25,31 @@ class NewsCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-       
-        commentControl.imageForLiked = UIImage(systemName: "doc.append.fill")
-        commentControl.imageForDisliked = UIImage(systemName: "doc.append")
         
-        shareControl.imageForLiked = UIImage(systemName: "arrowshape.turn.up.right.fill")
-        shareControl.imageForDisliked = UIImage(systemName: "arrowshape.turn.up.right")
+        likeControl.counter = Int.random(in: 1...100)
         
-        viewedControl.imageForDisliked = UIImage(systemName: "eye")
+        commentControl.counter = Int.random(in: 1...100)
+        commentControl.set(colorDisliked: .darkGray,
+                           iconDisliked: UIImage(systemName: "doc.append")!,
+                           colorLiked: .black,
+                           iconLiked: UIImage(systemName: "doc.append.fill")!)
+        shareControl.counter = Int.random(in: 1...100)
+        shareControl.set(colorDisliked: .darkGray,
+                         iconDisliked: UIImage(systemName: "arrowshape.turn.up.right")!,
+                         colorLiked: .systemBlue,
+                         iconLiked: UIImage(systemName: "arrowshape.turn.up.right.fill")!)
+        viewedControl.counter = Int.random(in: 1...100)
+        viewedControl.set(colorDisliked: .darkGray,
+                          iconDisliked: UIImage(systemName: "eye")!,
+                          colorLiked: .black,
+                          iconLiked: UIImage(systemName: "eye")!)
         viewedControl.isUserInteractionEnabled = false
         
         photoCollection.delegate = self
         photoCollection.dataSource = self
         photoCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         self.authorAvatar.image.image = nil
@@ -78,7 +88,7 @@ extension NewsCell: UICollectionViewDataSource {
 
 extension NewsCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           let cellWidth = (collectionView.bounds.width - 10) / 2
-           return CGSize(width: cellWidth, height: cellWidth)
-       }
+        let cellWidth = (collectionView.bounds.width - 10) / 2
+        return CGSize(width: cellWidth, height: cellWidth)
+    }
 }
