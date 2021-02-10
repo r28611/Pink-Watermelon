@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB11236625B8952E0082898E /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB11236525B8952E0082898E /* NewsTableViewController.swift */; };
+		AB326B4A25D44AD9002AFBF3 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB326B4925D44AD9002AFBF3 /* Session.swift */; };
 		AB340A7F25A3571B000F6C34 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A7E25A3571B000F6C34 /* GroupsTableViewController.swift */; };
 		AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */; };
 		AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		AB11236525B8952E0082898E /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
+		AB326B4925D44AD9002AFBF3 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		AB340A7E25A3571B000F6C34 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewCell.swift; sourceTree = "<group>"; };
 		AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,14 @@
 			path = Transitions;
 			sourceTree = "<group>";
 		};
+		AB326B4825D44AB2002AFBF3 /* NetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				AB326B4925D44AD9002AFBF3 /* Session.swift */,
+			);
+			path = NetworkManager;
+			sourceTree = "<group>";
+		};
 		AB340A8725A39A06000F6C34 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +166,7 @@
 		ABE5A622258E142E00CEFEA1 = {
 			isa = PBXGroup;
 			children = (
+				AB326B4825D44AB2002AFBF3 /* NetworkManager */,
 				AB1C94C925CD8E7A00E6A878 /* Transitions */,
 				AB1C94C825CD8E5600E6A878 /* CustomViews */,
 				AB11236825B89F9B0082898E /* News */,
@@ -295,6 +306,7 @@
 				AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */,
 				AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */,
 				AB67F46A25CC2CD700EE957D /* AnimateTransition.swift in Sources */,
+				AB326B4A25D44AD9002AFBF3 /* Session.swift in Sources */,
 				AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */,
 				ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */,
 				AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */,

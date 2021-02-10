@@ -51,11 +51,9 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
 
     return UICollectionViewCell()
     }
-    
-    // MARK: UICollectionViewDelegate
-
 }
 
+// MARK: UICollectionViewDelegateFlowLayout
 //при повороте экрана что-то работает не так, не правильно считает
 extension FriendsPhotosCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
