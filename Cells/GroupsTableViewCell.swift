@@ -8,11 +8,8 @@
 import UIKit
 
 class GroupsTableViewCell: UITableViewCell {
-    
-
 
     @IBOutlet weak var avatar: RoundedImageWithShadow!
     @IBOutlet weak var nameLabel: UILabel!
-    
     @IBOutlet weak var subscribeLabel: UILabel!
 }

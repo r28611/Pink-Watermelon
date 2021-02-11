@@ -93,7 +93,7 @@ class LikeControl: UIControl {
         button.addTarget(self, action: #selector(toogleIsLiked(_ :)), for: .touchUpInside)
         
         stackView = UIStackView(arrangedSubviews: [button, counterLabel])
-
+        stackView.frame = bounds
         self.addSubview(stackView)
 
         stackView.spacing = 3
@@ -104,11 +104,6 @@ class LikeControl: UIControl {
 
     @objc func toogleIsLiked(_ sender: UIButton) {
         isLiked.toggle()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.frame = bounds
     }
     
 }
