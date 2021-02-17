@@ -48,6 +48,7 @@ class ProfileViewController: UIViewController {
     
     @IBAction func didTapLogOut(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        Session.shared.token = ""
     }
 }
 

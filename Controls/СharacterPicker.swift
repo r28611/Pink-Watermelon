@@ -49,6 +49,7 @@ class CharacterPicker: UIControl {
         }
 
         stackView = UIStackView(arrangedSubviews: buttons)
+        stackView.frame = bounds
         addSubview(stackView)
         
         stackView.axis = .vertical

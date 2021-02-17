@@ -10,14 +10,21 @@ import UIKit
 class LoginViewController: UIViewController {
 
 
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var authVKButton: UIButton!
+    @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
-    
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var userPasswordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let buttons = [self.loginButton, self.authVKButton, self.signupButton]
+        for button in buttons {
+            button?.layer.cornerRadius = (button?.frame.height)! / 4
+        }
         
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
@@ -90,26 +97,12 @@ class LoginViewController: UIViewController {
             self.scrollView?.endEditing(true)
         }
     
-    @IBAction func didTapButton(_ sender: UIButton) {
+    @IBAction func loginButton(_ sender: UIButton) {
         performSegue(withIdentifier: "to_tabBarController", sender: self)
     }
     
-    @IBAction func didTapSignupButton(_ sender: UIButton) {
+    @IBAction func VKloginButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "VKlogin", sender: self)
     }
-    
-    @IBAction func unwindSegueDidTap (_ segue: UIStoryboardSegue) {
-        
-    }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
