@@ -74,8 +74,9 @@ extension VKLoginViewController: WKNavigationDelegate {
 //        NetworkManager.loadFriends(token: token)
 //        NetworkManager.loadPhotos(token: token)
 //        NetworkManager.searchGroup(token: token, group: "Quest")
-        NetworkManager.loadAllPhotos(token: token)
+//        NetworkManager.loadAllPhotos(token: token)
         
         decisionHandler(.cancel)
+        performSegue(withIdentifier: "to_tabBarControllerVK", sender: self)
     }
 }
