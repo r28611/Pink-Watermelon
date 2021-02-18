@@ -18,7 +18,6 @@ class FriendsViewController: UIViewController {
     var sections = [FriendSection]()
     var chosenUser: User!
     
-    
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
     
@@ -41,7 +40,11 @@ class FriendsViewController: UIViewController {
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             self?.users = users
             self?.groupUsersForTable(users: users)
-            self?.tableView.reloadData()
+            
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+            
         }
         
         tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
@@ -164,7 +167,7 @@ extension FriendsViewController: UITableViewDelegate {
             cell.avatar.image.load(url: URL(string: user.avatar)!)
             cell.nameLabel.text = user.surname + " " + user.name
             if let city = user.city {
-            cell.cityLabel.text = city
+                cell.cityLabel.text = city.title
             }
             return cell
             

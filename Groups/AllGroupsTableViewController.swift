@@ -10,56 +10,61 @@ import UIKit
 class AllGroupsTableViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    let groups: [Group] = GroupFactory.makeGroup(count: 15)
-    var filteredGroups = [Group]()
-
+    var groups = [Group]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchBar.delegate = self
-        filteredGroups = groups
+        
+        NetworkManager.searchGroup(token: Session.shared.token, group: "VK") { [weak self] groups in
+            self?.groups = groups
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
         
     }
-
+    
     // MARK: - Table view data source
-
-
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return filteredGroups.count
+        return groups.count
     }
-
-
+    
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell_allgroup", for: indexPath) as? GroupsTableViewCell {
-            cell.avatar.image.image = groups[indexPath.row].avatar
-            cell.nameLabel.text = filteredGroups[indexPath.row].name
+            let group = groups[indexPath.row]
+            cell.avatar.image.load(url: URL(string: group.avatar)!)
+            cell.nameLabel.text = group.name
             cell.subscribeLabel.text = "Subscribe"
             cell.subscribeLabel.tintColor = .black
             return cell
         }
         return UITableViewCell()
     }
-
+    
 }
 
 // MARK: - Searcn extension
 
 extension AllGroupsTableViewController: UISearchBarDelegate {
- 
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if !searchText.isEmpty {
-            let groups = self.groups.filter({($0.name.lowercased().contains(searchText.lowercased()))})
-            self.filteredGroups = groups
+            NetworkManager.searchGroup(token: Session.shared.token, group: searchText.lowercased()) { [weak self] groups in
+                self?.groups = groups
+            }
         } else {
-            filteredGroups = groups
+            self.groups = [Group]()
         }
         tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        filteredGroups = groups
+        
         tableView.reloadData()
     }
 }

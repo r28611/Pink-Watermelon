@@ -10,25 +10,28 @@ import UIKit
 class GroupsTableViewController: UITableViewController {
     
     var groups = [Group]()
-    var groupsNames = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
+            self?.groups = groups
+            self?.tableView.reloadData()
+        }
         
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return groups.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GroupsTableViewCell {
-            cell.avatar.image.image = groups[indexPath.row].avatar
-            cell.nameLabel.text = groups[indexPath.row].name
+            let group = groups[indexPath.row]
+            cell.avatar.image.load(url: URL(string: group.avatar)!)
+            cell.nameLabel.text = group.name
             return cell
         }
 

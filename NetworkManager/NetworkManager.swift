@@ -24,54 +24,46 @@ class NetworkManager {
         
     }
     
-    static func loadGroups(token: String) {
+    static func loadGroups(token: String, completion: @escaping ([Group]) -> Void )  {
         let baseURL = "https://api.vk.com"
         let path = "/method/groups.get"
         
         let params: Parameters = [
             "access_token": token,
             "extended": 1,
+            "fields": "members_count",
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            guard let data = response.value else { return }
             
+            if let groups = try? JSONDecoder().decode(VKGroupsResponse.self, from: data).response.items {
+                completion(groups)
+                print(groups)
+            }
         }
+        
     }
     
-    static func searchGroup(token: String, group name: String) {
+    static func searchGroup(token: String, group name: String, completion: @escaping ([Group]) -> Void ) {
         let baseURL = "https://api.vk.com"
         let path = "/method/groups.search"
         
         let params: Parameters = [
             "access_token": token,
             "q": name, //текст поискового запроса
-            "count": 5,
+//            "count": 5,
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            guard let data = response.value else { return }
+
+            if let groups = try? JSONDecoder().decode(VKGroupsResponse.self, from: data).response.items {
+                completion(groups)
+                print(groups)
             }
-            
         }
     }
     
@@ -89,11 +81,10 @@ class NetworkManager {
         NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
             guard let data = response.value else { return }
             
-            if let friends = try? JSONDecoder().decode(VKResponse.self, from: data).response.items {
+            if let friends = try? JSONDecoder().decode(VKFriendsResponse.self, from: data).response.items {
                 completion(friends)
                 print(friends)
             }
-            
         }
     }
     
