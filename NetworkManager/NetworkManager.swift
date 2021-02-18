@@ -10,14 +10,6 @@ import Alamofire
 
 class NetworkManager {
     
-    private static let session: URLSession = {
-        let configuration = URLSessionConfiguration.default
-        configuration.allowsCellularAccess = false
-        let session = URLSession(configuration: configuration)
-
-        return session
-    }()
-    
     private static let sessionAF: Alamofire.Session = {
         let configuration = URLSessionConfiguration.default
         configuration.allowsCellularAccess = false
@@ -83,28 +75,23 @@ class NetworkManager {
         }
     }
     
-    static func loadFriends(token: String) {
+    static func loadFriends(token: String, completion: @escaping ([User]) -> Void ) {
         let baseURL = "https://api.vk.com"
         let path = "/method/friends.get"
         
         let params: Parameters = [
             "access_token": token,
             "order": "mobile",
-//            "count": 10,
-//            "fields": "nickname,domain,sex,bdate,city,online",
+            "fields": "city,photo_100",
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            guard let data = response.value else { return }
+            
+            if let friends = try? JSONDecoder().decode(VKResponse.self, from: data).response.items {
+                completion(friends)
+                print(friends)
             }
             
         }

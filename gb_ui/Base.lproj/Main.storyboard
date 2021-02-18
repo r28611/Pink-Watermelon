@@ -663,7 +663,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IXL-fO-Jb5" customClass="CharacterPicker" customModule="gb_ui" customModuleProvider="target">
-                                <rect key="frame" x="384" y="267" width="30" height="362.5"/>
+                                <rect key="frame" x="384" y="134" width="30" height="679"/>
                                 <color key="tintColor" systemColor="systemPinkColor"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -684,8 +684,8 @@
                             <constraint firstItem="1hz-KK-IcY" firstAttribute="trailing" secondItem="eMo-8W-eSR" secondAttribute="trailing" id="KMf-O6-fhB"/>
                             <constraint firstItem="1hz-KK-IcY" firstAttribute="top" secondItem="aTp-Ra-bVs" secondAttribute="top" id="NRo-0y-lsi"/>
                             <constraint firstItem="eMo-8W-eSR" firstAttribute="leading" secondItem="1hz-KK-IcY" secondAttribute="leading" id="RbU-vg-iHp"/>
-                            <constraint firstItem="IXL-fO-Jb5" firstAttribute="centerY" secondItem="CJP-B2-Boh" secondAttribute="centerY" id="UZf-IX-oxV"/>
-                            <constraint firstItem="IXL-fO-Jb5" firstAttribute="height" secondItem="1hz-KK-IcY" secondAttribute="height" multiplier="0.5" id="Z6e-u9-V4j"/>
+                            <constraint firstItem="IXL-fO-Jb5" firstAttribute="centerY" secondItem="eMo-8W-eSR" secondAttribute="centerY" id="UZf-IX-oxV"/>
+                            <constraint firstItem="IXL-fO-Jb5" firstAttribute="height" secondItem="eMo-8W-eSR" secondAttribute="height" id="Z6e-u9-V4j"/>
                             <constraint firstItem="aTp-Ra-bVs" firstAttribute="leading" secondItem="1hz-KK-IcY" secondAttribute="leading" id="vWc-Gb-MaI"/>
                             <constraint firstItem="1hz-KK-IcY" firstAttribute="trailing" secondItem="IXL-fO-Jb5" secondAttribute="trailing" id="xZc-z9-SgV"/>
                         </constraints>

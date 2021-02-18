@@ -71,7 +71,6 @@ extension VKLoginViewController: WKNavigationDelegate {
         Session.shared.token = token
         
 //        NetworkManager.loadGroups(token: token)
-//        NetworkManager.loadFriends(token: token)
 //        NetworkManager.loadPhotos(token: token)
 //        NetworkManager.searchGroup(token: token, group: "Quest")
 //        NetworkManager.loadAllPhotos(token: token)

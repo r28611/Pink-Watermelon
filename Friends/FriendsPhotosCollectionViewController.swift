@@ -15,7 +15,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "\(friend.username)'s photos"
+        self.title = "\(friend.name)'s photos"
     }
 
     
@@ -25,7 +25,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         if segue.identifier == "to_photoScene" {
             if let destination = segue.destination as? PhotoViewController {
                 destination.currentIndex = index
-                destination.photos = self.friend.photos
+//                destination.photos = self.friend.photos
             }
         }
     }
@@ -40,12 +40,12 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return friend.photos.count
+        return 3
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? FriendsPhotosCollectionViewCell {
-            cell.photoImage.image = friend.photos[indexPath.row]
+//            cell.photoImage.image = friend.photos[indexPath.row]
             return cell
         }
 
