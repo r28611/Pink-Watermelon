@@ -53,13 +53,13 @@ class NetworkManager {
         let params: Parameters = [
             "access_token": token,
             "q": name, //текст поискового запроса
-//            "count": 5,
+            //            "count": 5,
             "v": "5.130"
         ]
         
         NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
             guard let data = response.value else { return }
-
+            
             if let groups = try? JSONDecoder().decode(VKGroupsResponse.self, from: data).response.items {
                 completion(groups)
                 print(groups)
@@ -116,27 +116,32 @@ class NetworkManager {
         }
     }
     
-    static func loadAllPhotos(token: String) {
+    static func loadAllPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void ) {
         let baseURL = "https://api.vk.com"
         let path = "/method/photos.getAll"
         
         let params: Parameters = [
             "access_token": token,
+            "owner_id": ownerId,
+            "count" : 100, // по умолчанию 20
             "extended": 1,
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            
             switch response.result {
             case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
+                if let data = response.value,
+                    let photos = try? JSONDecoder().decode(VKPhotoResponse.self, from: data).response.items {
+                    completion(photos)
+                    print(photos)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
+            
+            
             
         }
     }

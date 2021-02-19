@@ -10,12 +10,21 @@ import UIKit
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var friend: User!
-    var index = Int()
+    var photos = [Photo]()
+    var chosenPhotoIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.title = "\(friend.name)'s photos"
+        
+        NetworkManager.loadAllPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
+            self?.photos = photos
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+            
+        }
     }
 
     
@@ -24,14 +33,14 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "to_photoScene" {
             if let destination = segue.destination as? PhotoViewController {
-                destination.currentIndex = index
-//                destination.photos = self.friend.photos
+                destination.currentIndex = chosenPhotoIndex
+                destination.photos = self.photos
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        index = indexPath.item
+        self.chosenPhotoIndex = indexPath.item
         performSegue(withIdentifier: "to_photoScene", sender: self)
     }
     
@@ -40,12 +49,15 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return photos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? FriendsPhotosCollectionViewCell {
-//            cell.photoImage.image = friend.photos[indexPath.row]
+            let photo = photos[indexPath.item]
+            if let url = photo.sizes.last?.url {
+            cell.photoImage.load(url: URL(string: url)!)
+            }
             return cell
         }
 

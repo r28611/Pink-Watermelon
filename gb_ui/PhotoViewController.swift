@@ -13,7 +13,7 @@ class PhotoViewController: UIViewController {
     @IBOutlet weak var likeControl: LikeControl!
     
     var currentIndex: Int = 0
-    var photos: [UIImage] = [UIImage]()
+    var photos = [Photo]()
     var animator: UIViewPropertyAnimator!
     
     override func viewDidLoad() {
@@ -29,7 +29,10 @@ class PhotoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        image.image = photos[currentIndex]
+        let currentPhoto = photos[currentIndex]
+        if let url = currentPhoto.sizes.last?.url {
+            image.load(url: URL(string: url)!)
+        }
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapOnImage))
         tap.numberOfTapsRequired = 2
@@ -49,12 +52,12 @@ class PhotoViewController: UIViewController {
         switch direction {
         case .next:
             if currentIndex < photos.count - 1 {
-                animateTransition(view: self.image, toImage: photos[currentIndex + 1], direction: direction)
+//                animateTransition(view: self.image, toImage: photos[currentIndex + 1], direction: direction)
                 currentIndex += 1
             }
         case .previous:
             if currentIndex > 0 {
-                animateTransition(view: self.image, toImage: photos[currentIndex - 1], direction: direction)
+//               animateTransition(view: self.image, toImage: photos[currentIndex - 1], direction: direction)
                 currentIndex -= 1
             }
         }
