@@ -10,6 +10,7 @@ import UIKit
 class FriendsPhotosCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var photoImage: UIImageView!
+    @IBOutlet weak var likeControl: LikeControl!
     
     
 }

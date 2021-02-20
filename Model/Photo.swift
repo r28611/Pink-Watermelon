@@ -10,10 +10,15 @@ import Foundation
 struct Photo: Decodable {
     var id: Int
     var sizes: [Size]
+    var likes: Like?
+    var isLiked: Bool {
+        self.likes?.isLiked == 1
+    }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case sizes
+        case likes
     }
 }
 
@@ -23,10 +28,12 @@ struct Size: Decodable {
     var url: String
 }
 
-struct VKPhotoResponse: Decodable {
-    var response: Response
+struct Like: Decodable {
+    var isLiked: Int
+    var count: Int
     
-    struct Response: Decodable {
-        var items: [Photo]
+    enum CodingKeys: String, CodingKey {
+        case isLiked = "user_likes"
+        case count
     }
 }

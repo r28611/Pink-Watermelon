@@ -18,6 +18,7 @@
 		AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */; };
 		AB340A8925A39A55000F6C34 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8825A39A55000F6C34 /* User.swift */; };
 		AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8B25A39BDE000F6C34 /* Group.swift */; };
+		AB371B1425E002B4003C5D52 /* VKGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB371B1325E002B4003C5D52 /* VKGetResponse.swift */; };
 		AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EB25A6603000D99269 /* СharacterPicker.swift */; };
 		AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EE25A669C900D99269 /* FriendsViewController.swift */; };
 		AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB5814E225B7220000C39ACB /* NewsCell.xib */; };
@@ -59,6 +60,7 @@
 		AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableViewController.swift; sourceTree = "<group>"; };
 		AB340A8825A39A55000F6C34 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AB340A8B25A39BDE000F6C34 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		AB371B1325E002B4003C5D52 /* VKGetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKGetResponse.swift; sourceTree = "<group>"; };
 		AB54E5EB25A6603000D99269 /* СharacterPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СharacterPicker.swift"; sourceTree = "<group>"; };
 		AB54E5EE25A669C900D99269 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		AB5814E225B7220000C39ACB /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				AB326B4925D44AD9002AFBF3 /* Session.swift */,
 				AB049AED25D49649002176EA /* NetworkManager.swift */,
+				AB371B1325E002B4003C5D52 /* VKGetResponse.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				AB049AEE25D49649002176EA /* NetworkManager.swift in Sources */,
 				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
 				ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */,
+				AB371B1425E002B4003C5D52 /* VKGetResponse.swift in Sources */,
 				ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

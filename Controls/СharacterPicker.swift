@@ -10,6 +10,7 @@ import UIKit
 class CharacterPicker: UIControl {
 
     var chars: [String] = []
+    private let maxCharsForUi = 15
     private var buttons: [UIButton] = []
     private var stackView: UIStackView!
     
@@ -22,19 +23,28 @@ class CharacterPicker: UIControl {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupUi()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         setupUi()
     }
     
     func setupUi() {
         buttons.removeAll()
-
+        
+        if chars.count > self.maxCharsForUi {
+            let step = Int(chars.count / maxCharsForUi)
+            var array = [String]()
+            for (index, _) in chars.enumerated() {
+                if index % step == 0 {
+                    array.append(chars[index])
+                }
+            }
+            chars = array
+        }
+        
         for char in chars {
             let button = UIButton(type: UIButton.ButtonType.system)
             button.setTitle(char, for: .normal)
@@ -63,10 +73,6 @@ class CharacterPicker: UIControl {
         if let index = buttons.firstIndex(of: sender) {
             selectedChar = chars[index]
         }
-        
-//        guard let index = buttons.firstIndex(of: sender),
-//              let char: String? = chars[index] else { return }
-//        selectedChar = chars[index]
 
     }
     

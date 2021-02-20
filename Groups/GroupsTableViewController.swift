@@ -13,12 +13,15 @@ class GroupsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
             self?.groups = groups
             self?.tableView.reloadData()
         }
-        
     }
 
     // MARK: - Table view data source
@@ -32,6 +35,11 @@ class GroupsTableViewController: UITableViewController {
             let group = groups[indexPath.row]
             cell.avatar.image.load(url: URL(string: group.avatar)!)
             cell.nameLabel.text = group.name
+            if let members = group.members {
+            cell.membersCountLabel.text = "\(members) members"
+            } else {
+                cell.membersCountLabel.isHidden = true
+            }
             return cell
         }
 

@@ -38,7 +38,7 @@ class NetworkManager {
         NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
             guard let data = response.value else { return }
             
-            if let groups = try? JSONDecoder().decode(VKGroupsResponse.self, from: data).response.items {
+            if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
                 completion(groups)
                 print(groups)
             }
@@ -60,7 +60,7 @@ class NetworkManager {
         NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
             guard let data = response.value else { return }
             
-            if let groups = try? JSONDecoder().decode(VKGroupsResponse.self, from: data).response.items {
+            if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
                 completion(groups)
                 print(groups)
             }
@@ -81,69 +81,69 @@ class NetworkManager {
         NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
             guard let data = response.value else { return }
             
-            if let friends = try? JSONDecoder().decode(VKFriendsResponse.self, from: data).response.items {
+            if let friends = try? JSONDecoder().decode(VKGetResponse<User>.self, from: data).response.items {
                 completion(friends)
                 print(friends)
             }
         }
     }
     
-    static func loadPhotos(token: String) {
+    static func loadPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void )  {
         let baseURL = "https://api.vk.com"
         let path = "/method/photos.get"
         
         let params: Parameters = [
             "access_token": token,
-            "album_id": "saved", //wall — фотографии со стены, profile — фотографии профиля, saved — сохраненные фотографии
+            "owner_id": ownerId,
+            "album_id": "profile", //wall — фотографии со стены, profile — фотографии профиля, saved — сохраненные фотографии
             "rev": 1, //антихронологический порядок
-            "count": 10,
+            "count": 100, //по умолчанию 50, максимальное значение 1000
             "extended": 1, //будут возвращены дополнительные поля likes, comments, tags, can_comment, reposts
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-            
-        }
-    }
-    
-    static func loadAllPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void ) {
-        let baseURL = "https://api.vk.com"
-        let path = "/method/photos.getAll"
-        
-        let params: Parameters = [
-            "access_token": token,
-            "owner_id": ownerId,
-            "count" : 100, // по умолчанию 20
-            "extended": 1,
-            "v": "5.130"
-        ]
-        
         NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
-            
             switch response.result {
             case .success:
                 if let data = response.value,
-                    let photos = try? JSONDecoder().decode(VKPhotoResponse.self, from: data).response.items {
+                    let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
                     completion(photos)
                     print(photos)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
-            
-            
-            
         }
     }
+    
+//    static func loadAllPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void ) {
+//        let baseURL = "https://api.vk.com"
+//        let path = "/method/photos.getAll"
+//
+//        let params: Parameters = [
+//            "access_token": token,
+//            "owner_id": ownerId,
+//            "count" : 100, // по умолчанию 20
+//            "extended": 1,
+//            "v": "5.130"
+//        ]
+//
+//        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+//
+//            switch response.result {
+//            case .success:
+//                if let data = response.value,
+//                    let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
+//                    completion(photos)
+//                    print(photos)
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//
+//
+//
+//        }
+//    }
     
 }

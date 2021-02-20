@@ -64,7 +64,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="VKloginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4cs-ju-YeK"/>
-                                                    <segue destination="b8m-o6-9rw" kind="show" identifier="VKlogin" id="niT-Dh-hcc"/>
+                                                    <segue destination="b8m-o6-9rw" kind="presentation" identifier="VKlogin" modalPresentationStyle="fullScreen" id="niT-Dh-hcc"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9X4-dI-DDd">
@@ -234,23 +234,33 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skS-X7-7BR">
-                                            <rect key="frame" x="66" y="23.5" width="320" height="21"/>
+                                            <rect key="frame" x="66" y="8" width="320" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o2J-Ep-bMu">
+                                            <rect key="frame" x="66" y="32" width="320" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="skS-X7-7BR" firstAttribute="leading" secondItem="Rfi-pW-Wid" secondAttribute="trailing" constant="8" id="Fyp-dO-n4y"/>
                                         <constraint firstItem="Rfi-pW-Wid" firstAttribute="leading" secondItem="bV7-zd-1ma" secondAttribute="leading" constant="8" id="NyQ-cv-nR3"/>
-                                        <constraint firstItem="skS-X7-7BR" firstAttribute="centerY" secondItem="bV7-zd-1ma" secondAttribute="centerY" id="hCE-td-hHp"/>
+                                        <constraint firstItem="skS-X7-7BR" firstAttribute="top" secondItem="Rfi-pW-Wid" secondAttribute="top" id="Uwc-zZ-2on"/>
+                                        <constraint firstItem="o2J-Ep-bMu" firstAttribute="leading" secondItem="Rfi-pW-Wid" secondAttribute="trailing" constant="8" id="ds2-ji-SAz"/>
                                         <constraint firstAttribute="bottom" secondItem="Rfi-pW-Wid" secondAttribute="bottom" constant="8" id="oEV-Yr-2YI"/>
                                         <constraint firstItem="Rfi-pW-Wid" firstAttribute="top" secondItem="bV7-zd-1ma" secondAttribute="top" constant="8" id="oSP-1L-Mbn"/>
+                                        <constraint firstItem="o2J-Ep-bMu" firstAttribute="top" secondItem="skS-X7-7BR" secondAttribute="bottom" constant="3" id="p5t-2s-UMa"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="o2J-Ep-bMu" secondAttribute="trailing" constant="8" id="rrT-FC-gMm"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="skS-X7-7BR" secondAttribute="trailing" constant="8" id="xY0-pg-iEF"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="avatar" destination="Rfi-pW-Wid" id="r0Y-cN-N19"/>
+                                    <outlet property="membersCountLabel" destination="o2J-Ep-bMu" id="L3q-mL-JjN"/>
                                     <outlet property="nameLabel" destination="skS-X7-7BR" id="VxO-18-pZT"/>
                                 </connections>
                             </tableViewCell>
@@ -314,6 +324,7 @@
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <connections>
+                                    <outlet property="likeControl" destination="hi4-bl-lc9" id="cTg-n6-pJV"/>
                                     <outlet property="photoImage" destination="7fr-SR-GZb" id="Mzf-jl-wqG"/>
                                 </connections>
                             </collectionViewCell>
@@ -386,11 +397,11 @@
             <objects>
                 <viewController id="b8m-o6-9rw" customClass="VKLoginViewController" customModule="gb_ui" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="je9-I5-kcK">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L85-Y7-BBf">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -634,7 +645,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yIO-Oz-HmN">
                                                             <rect key="frame" x="0.0" y="23.5" width="41.5" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -841,7 +852,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hVb-b9-yjk"/>
+        <segue reference="3BS-1W-p40"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="list.bullet.rectangle" catalog="system" width="128" height="93"/>

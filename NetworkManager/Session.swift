@@ -12,6 +12,8 @@ class Session {
     
     var token = ""
     var userId = Int()
+    var clientId = "7757892"
+    var scope = "262150"
     
     private init() {
         

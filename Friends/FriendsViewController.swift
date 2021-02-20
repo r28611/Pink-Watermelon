@@ -32,22 +32,21 @@ class FriendsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchTextField.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        
+        tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             self?.users = users
             self?.groupUsersForTable(users: users)
-            
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
-            
         }
-        
-        tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -138,20 +137,16 @@ extension FriendsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
-    
 }
 
 extension FriendsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return sections[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
-            
             cell.contentView.alpha = 0
             UIView.animate(withDuration: 1,
                            delay: 0,
@@ -163,14 +158,12 @@ extension FriendsViewController: UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
-            
             cell.avatar.image.load(url: URL(string: user.avatar)!)
             cell.nameLabel.text = user.surname + " " + user.name
             if let city = user.city {
                 cell.cityLabel.text = city.title
             }
             return cell
-            
         }
         return UITableViewCell()
     }
@@ -224,7 +217,6 @@ extension FriendsViewController: UITextFieldDelegate {
                         self.view.layoutIfNeeded()
                        })
     }
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = self.searchTextField.text {

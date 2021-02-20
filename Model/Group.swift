@@ -12,22 +12,13 @@ struct Group: Decodable {
     var name: String
     var isMember: Int
     var avatar: String
-    var subscribers: Int?
+    var members: Int?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
         case isMember = "is_member"
         case avatar = "photo_100"
-        case subscribers = "members_count"
-    }
-}
-
-
-struct VKGroupsResponse: Decodable {
-    var response: Response
-    
-    struct Response: Decodable {
-        var items: [Group]
+        case members = "members_count"
     }
 }

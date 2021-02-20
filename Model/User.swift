@@ -27,12 +27,3 @@ struct User: Decodable {
 struct City: Decodable {
     var title: String
 }
-
-struct VKFriendsResponse: Decodable {
-    var response: Response
-
-    struct Response: Decodable {
-        var items: [User]
-    }
-}
-

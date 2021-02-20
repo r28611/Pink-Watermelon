@@ -16,17 +16,17 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "\(friend.name)'s photos"
-        
-        NetworkManager.loadAllPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NetworkManager.loadPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
             self?.photos = photos
-            
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
-            
         }
     }
-
     
     // MARK: - Navigation
 
@@ -43,8 +43,6 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         self.chosenPhotoIndex = indexPath.item
         performSegue(withIdentifier: "to_photoScene", sender: self)
     }
-    
-    
 
     // MARK: UICollectionViewDataSource
 
@@ -55,12 +53,15 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? FriendsPhotosCollectionViewCell {
             let photo = photos[indexPath.item]
-            if let url = photo.sizes.last?.url {
+            if let url = photo.sizes.first?.url {
             cell.photoImage.load(url: URL(string: url)!)
+            }
+            if let likes = photo.likes {
+                cell.likeControl.counter = likes.count
+                cell.likeControl.isLiked = photo.isLiked
             }
             return cell
         }
-
     return UICollectionViewCell()
     }
 }
@@ -72,5 +73,4 @@ extension FriendsPhotosCollectionViewController: UICollectionViewDelegateFlowLay
         return CGSize(width: (view.frame.size.width / 3) - 1,
                       height: (view.frame.size.width / 3) - 1 )
     }
-    
 }
