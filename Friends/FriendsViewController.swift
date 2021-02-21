@@ -18,12 +18,11 @@ class FriendsViewController: UIViewController {
     var sections = [FriendSection]()
     var chosenUser: User!
     
+    @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
-    
     @IBOutlet weak var searchImage: UIImageView!
     @IBOutlet weak var searchImageCenterX: NSLayoutConstraint!
-    
     @IBOutlet weak var searchCancelButton: UIButton!
     @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
     
@@ -119,6 +118,19 @@ class FriendsViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func friendsFilterControlChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            groupUsersForTable(users: self.users)
+            self.charPicker.isHidden = false
+        } else {
+            let filteredUsers = users.filter({$0.isOnline == true})
+            groupUsersForTable(users: filteredUsers)
+            self.charPicker.isHidden = true
+        }
+        tableView.reloadData()
+    }
+    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -163,6 +175,7 @@ extension FriendsViewController: UITableViewDelegate {
             if let city = user.city {
                 cell.cityLabel.text = city.title
             }
+            cell.onlineStatus.isHidden = !(user.isOnline)
             return cell
         }
         return UITableViewCell()

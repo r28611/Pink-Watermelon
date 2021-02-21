@@ -74,7 +74,7 @@ class NetworkManager {
         let params: Parameters = [
             "access_token": token,
             "order": "mobile",
-            "fields": "city,photo_100",
+            "fields": "city,photo_100,online",
             "v": "5.130"
         ]
         

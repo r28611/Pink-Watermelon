@@ -12,5 +12,6 @@ class FriendsTableViewCell: UITableViewCell {
     @IBOutlet weak var avatar: RoundedImageWithShadow!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var onlineStatus: UIImageView!
     
 }

@@ -13,6 +13,10 @@ struct User: Decodable {
     var surname: String
     var city: City?
     var avatar: String
+    private var status: Int
+    var isOnline: Bool {
+        self.status == 1
+    }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -20,6 +24,7 @@ struct User: Decodable {
         case surname = "last_name"
         case city
         case avatar = "photo_100"
+        case status = "online"
     }
     
 }
