@@ -44,7 +44,6 @@ class LikeControl: UIControl {
     }
     
     func animate() {
-        print("Tap Like")
         if isLiked {
             UIView.animate(withDuration: 0.15, animations: {
                 self.button.transform = .init(scaleX: 1.1, y: 1.1)
@@ -99,7 +98,6 @@ class LikeControl: UIControl {
         stackView.spacing = 3
         stackView.axis = .horizontal
         stackView.alignment = .trailing
-//        stackView.distribution = .fillEqually
     }
 
     @objc func toogleIsLiked(_ sender: UIButton) {

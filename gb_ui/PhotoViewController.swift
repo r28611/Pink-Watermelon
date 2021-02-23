@@ -51,14 +51,35 @@ class PhotoViewController: UIViewController {
     private func changeImage(direction: Direction) {
         switch direction {
         case .next:
-            if currentIndex < photos.count - 1 {
-//                animateTransition(view: self.image, toImage: photos[currentIndex + 1], direction: direction)
-                currentIndex += 1
+            if self.currentIndex < self.photos.count - 1 {
+                image.getData(from: URL(string: photos[currentIndex + 1].sizes.last?.url
+                                ?? photos[currentIndex + 1].sizes[0].url)!) { [weak self] (data) in
+                    let imageFromData = UIImage(data: data)
+                    
+                    guard let self = self else { return }
+                    
+                    DispatchQueue.main.async {
+                        self.animateTransition(view: self.image, toImage: imageFromData!, direction: direction)
+                        self.currentIndex += 1
+                    }
+                }
+                
             }
+            
+            
         case .previous:
             if currentIndex > 0 {
-//               animateTransition(view: self.image, toImage: photos[currentIndex - 1], direction: direction)
-                currentIndex -= 1
+                image.getData(from: URL(string: photos[currentIndex - 1].sizes.last?.url
+                                            ?? photos[currentIndex - 1].sizes[0].url)!) { [weak self] (data) in
+                    let imageFromData = UIImage(data: data)
+                    
+                    guard let self = self else { return }
+                    
+                    DispatchQueue.main.async {
+                        self.animateTransition(view: self.image, toImage: imageFromData!, direction: direction)
+                        self.currentIndex -= 1
+                    }
+                }
             }
         }
     }

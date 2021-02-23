@@ -41,9 +41,19 @@ class FriendsViewController: UIViewController {
         super.viewWillAppear(true)
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             self?.users = users
-            self?.groupUsersForTable(users: users)
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
+            switch self?.friendsFilterControl.selectedSegmentIndex {
+            case 0:
+                self?.groupUsersForTable(users: users)
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            default:
+                let filteredUsers = users.filter({$0.isOnline == true})
+                self?.groupUsersForTable(users: filteredUsers)
+                self?.charPicker.isHidden = true
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             }
         }
     }
