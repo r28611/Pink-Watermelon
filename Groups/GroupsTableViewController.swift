@@ -45,8 +45,11 @@ class GroupsTableViewController: UITableViewController {
 
         return UITableViewCell()
     }
-   
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 66
+    }
+   
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             groups.remove(at: indexPath.row)

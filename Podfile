@@ -6,6 +6,7 @@ target 'gb_ui' do
   use_frameworks!
   
   pod 'Alamofire', '~> 5.2'
+  
 
   # Pods for gb_ui
 

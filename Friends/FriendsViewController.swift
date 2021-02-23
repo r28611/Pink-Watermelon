@@ -149,6 +149,10 @@ extension FriendsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 66
+    }
 }
 
 extension FriendsViewController: UITableViewDelegate {

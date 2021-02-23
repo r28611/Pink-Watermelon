@@ -40,7 +40,6 @@ class NetworkManager {
             
             if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
                 completion(groups)
-                print(groups)
             }
         }
         
@@ -62,7 +61,6 @@ class NetworkManager {
             
             if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
                 completion(groups)
-                print(groups)
             }
         }
     }
@@ -83,7 +81,6 @@ class NetworkManager {
             
             if let friends = try? JSONDecoder().decode(VKGetResponse<User>.self, from: data).response.items {
                 completion(friends)
-                print(friends)
             }
         }
     }
@@ -108,7 +105,6 @@ class NetworkManager {
                 if let data = response.value,
                     let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
                     completion(photos)
-                    print(photos)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
