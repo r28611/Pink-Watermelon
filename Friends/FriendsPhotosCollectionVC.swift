@@ -10,45 +10,58 @@ import UIKit
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var friend: User!
-    var index = Int()
+    var photos = [Photo]()
+    var chosenPhotoIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.title = "\(friend.username)'s photos"
+        self.title = "\(friend.name)'s photos"
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NetworkManager.loadPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
+            self?.photos = photos
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+    }
     
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "to_photoScene" {
             if let destination = segue.destination as? PhotoViewController {
-                destination.currentIndex = index
-                destination.photos = self.friend.photos
+                destination.currentIndex = chosenPhotoIndex
+                destination.photos = self.photos
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        index = indexPath.item
+        self.chosenPhotoIndex = indexPath.item
         performSegue(withIdentifier: "to_photoScene", sender: self)
     }
-    
-    
 
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return friend.photos.count
+        return photos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? FriendsPhotosCollectionViewCell {
-            cell.photoImage.image = friend.photos[indexPath.row]
+            let photo = photos[indexPath.item]
+            if let url = photo.sizes.first?.url {
+            cell.photoImage.load(url: URL(string: url)!)
+            }
+            if let likes = photo.likes {
+                cell.likeControl.counter = likes.count
+                cell.likeControl.isLiked = photo.isLiked
+            }
             return cell
         }
-
     return UICollectionViewCell()
     }
 }
@@ -60,5 +73,4 @@ extension FriendsPhotosCollectionViewController: UICollectionViewDelegateFlowLay
         return CGSize(width: (view.frame.size.width / 3) - 1,
                       height: (view.frame.size.width / 3) - 1 )
     }
-    
 }

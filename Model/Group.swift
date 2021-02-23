@@ -7,25 +7,18 @@
 
 import UIKit
 
-struct Group {
-    let id: Int
-    let name: String
-    var isSubscribed: Bool = false
+struct Group: Decodable {
+    var id: Int
+    var name: String
+    var isMember: Int
+    var avatar: String
+    var members: Int?
     
-    var avatar: UIImage
-    let city: String?
-    
-    var photos: [UIImage?] = []
-    var subscribers: [User?] = []
-    
-}
-
-final class GroupFactory {
-    static func makeGroup(count: Int) -> [Group] {
-        var array = [Group]()
-        for index in 1...count {
-            array.append(Group(id: index, name: "Some group # \(index)", isSubscribed: false, avatar: UIImage(named: "Day_off")!, city: nil, photos: [nil], subscribers: [nil]))
-        }
-        return array
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case isMember = "is_member"
+        case avatar = "photo_100"
+        case members = "members_count"
     }
 }

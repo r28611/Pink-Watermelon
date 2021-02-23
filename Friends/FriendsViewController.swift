@@ -13,18 +13,16 @@ struct FriendSection {
 }
 
 class FriendsViewController: UIViewController {
-
-    let users: [User] = UserFactory.makeUsers()
+    
+    var users = [User]()
     var sections = [FriendSection]()
     var chosenUser: User!
     
-    
+    @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
-    
     @IBOutlet weak var searchImage: UIImageView!
     @IBOutlet weak var searchImageCenterX: NSLayoutConstraint!
-    
     @IBOutlet weak var searchCancelButton: UIButton!
     @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
     
@@ -33,14 +31,21 @@ class FriendsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchTextField.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        
-        groupUsersForTable(users: self.users)
-       
         tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
+            self?.users = users
+            self?.groupUsersForTable(users: users)
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,7 +89,7 @@ class FriendsViewController: UIViewController {
     }
     
     func groupUsersForTable(users: [User]) {
-        let friendsDictionary = Dictionary.init(grouping: users) {$0.username.prefix(1)}
+        let friendsDictionary = Dictionary.init(grouping: users) {$0.surname.prefix(1)}
         sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
         sections.sort {$0.title < $1.title}
         charPicker.chars = sections.map {$0.title}
@@ -102,26 +107,38 @@ class FriendsViewController: UIViewController {
         }
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
-
+    
     @IBAction func didMakePan(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: charPicker).y
         let coef = Int(charPicker.frame.height) / sections.count
         let letterIndex = Int(location) / coef
-
+        
         if letterIndex >= 0 && letterIndex <= sections.count - 1 {
             charPicker.selectedChar = sections[letterIndex].title
-//            print(sections[letterIndex].title)
         }
+    }
+    
+    
+    @IBAction func friendsFilterControlChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            groupUsersForTable(users: self.users)
+            self.charPicker.isHidden = false
+        } else {
+            let filteredUsers = users.filter({$0.isOnline == true})
+            groupUsersForTable(users: filteredUsers)
+            self.charPicker.isHidden = true
+        }
+        tableView.reloadData()
     }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "to_collection" {
-                if let destination = segue.destination as? FriendsPhotosCollectionViewController {
-                    destination.friend = chosenUser
-                }
+        if segue.identifier == "to_collection" {
+            if let destination = segue.destination as? FriendsPhotosCollectionViewController {
+                destination.friend = chosenUser
             }
+        }
     }
     
 }
@@ -130,24 +147,19 @@ class FriendsViewController: UIViewController {
 
 extension FriendsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-           return sections.count
-       }
-       
+        return sections.count
+    }
 }
 
 extension FriendsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         return sections[section].items.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
-            
             cell.contentView.alpha = 0
-            
             UIView.animate(withDuration: 1,
                            delay: 0,
                            usingSpringWithDamping: 0.5,
@@ -156,13 +168,15 @@ extension FriendsViewController: UITableViewDelegate {
                            animations: {
                             cell.frame.origin.x -= 80
                            })
- 
-            cell.avatar.image.image = sections[indexPath.section].items[indexPath.row].avatar
-            cell.nameLabel.text = sections[indexPath.section].items[indexPath.row].username
-            cell.cityLabel.text = sections[indexPath.section].items[indexPath.row].city
             
+            let user = sections[indexPath.section].items[indexPath.row]
+            cell.avatar.image.load(url: URL(string: user.avatar)!)
+            cell.nameLabel.text = user.surname + " " + user.name
+            if let city = user.city {
+                cell.cityLabel.text = city.title
+            }
+            cell.onlineStatus.isHidden = !(user.isOnline)
             return cell
-              
         }
         return UITableViewCell()
     }
@@ -172,12 +186,12 @@ extension FriendsViewController: UITableViewDelegate {
         UIView.animate(withDuration: 1, animations: {
             cell.contentView.alpha = 1
         })
-            
+        
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         chosenUser = sections[indexPath.section].items[indexPath.row]
         
         performSegue(withIdentifier: "to_collection", sender: self)
@@ -217,19 +231,18 @@ extension FriendsViewController: UITextFieldDelegate {
                        })
     }
     
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = self.searchTextField.text {
             if text == "" {
                 groupUsersForTable(users: self.users)
             } else {
-                let filteredUsers = users.filter({$0.username.lowercased().contains(text.lowercased())})
+                let filteredUsers = users.filter({$0.surname.lowercased().contains(text.lowercased())})
                 groupUsersForTable(users: filteredUsers)
                 print(text)
             }
             tableView.reloadData()
         }
-    return true
+        return true
     }
     
 }

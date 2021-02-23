@@ -10,14 +10,6 @@ import Alamofire
 
 class NetworkManager {
     
-    private static let session: URLSession = {
-        let configuration = URLSessionConfiguration.default
-        configuration.allowsCellularAccess = false
-        let session = URLSession(configuration: configuration)
-
-        return session
-    }()
-    
     private static let sessionAF: Alamofire.Session = {
         let configuration = URLSessionConfiguration.default
         configuration.allowsCellularAccess = false
@@ -32,135 +24,126 @@ class NetworkManager {
         
     }
     
-    static func loadGroups(token: String) {
+    static func loadGroups(token: String, completion: @escaping ([Group]) -> Void )  {
         let baseURL = "https://api.vk.com"
         let path = "/method/groups.get"
         
         let params: Parameters = [
             "access_token": token,
             "extended": 1,
+            "fields": "members_count",
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            guard let data = response.value else { return }
             
+            if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
+                completion(groups)
+                print(groups)
+            }
         }
+        
     }
     
-    static func searchGroup(token: String, group name: String) {
+    static func searchGroup(token: String, group name: String, completion: @escaping ([Group]) -> Void ) {
         let baseURL = "https://api.vk.com"
         let path = "/method/groups.search"
         
         let params: Parameters = [
             "access_token": token,
             "q": name, //текст поискового запроса
-            "count": 5,
+            //            "count": 5,
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            guard let data = response.value else { return }
             
+            if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
+                completion(groups)
+                print(groups)
+            }
         }
     }
     
-    static func loadFriends(token: String) {
+    static func loadFriends(token: String, completion: @escaping ([User]) -> Void ) {
         let baseURL = "https://api.vk.com"
         let path = "/method/friends.get"
         
         let params: Parameters = [
             "access_token": token,
             "order": "mobile",
-//            "count": 10,
-//            "fields": "nickname,domain,sex,bdate,city,online",
+            "fields": "city,photo_100,online",
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            guard let data = response.value else { return }
             
+            if let friends = try? JSONDecoder().decode(VKGetResponse<User>.self, from: data).response.items {
+                completion(friends)
+                print(friends)
+            }
         }
     }
     
-    static func loadPhotos(token: String) {
+    static func loadPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void )  {
         let baseURL = "https://api.vk.com"
         let path = "/method/photos.get"
         
         let params: Parameters = [
             "access_token": token,
-            "album_id": "saved", //wall — фотографии со стены, profile — фотографии профиля, saved — сохраненные фотографии
+            "owner_id": ownerId,
+            "album_id": "profile", //wall — фотографии со стены, profile — фотографии профиля, saved — сохраненные фотографии
             "rev": 1, //антихронологический порядок
-            "count": 10,
+            "count": 100, //по умолчанию 50, максимальное значение 1000
             "extended": 1, //будут возвращены дополнительные поля likes, comments, tags, can_comment, reposts
             "v": "5.130"
         ]
         
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
             switch response.result {
             case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
+                if let data = response.value,
+                    let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
+                    completion(photos)
+                    print(photos)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
-            
         }
     }
     
-    static func loadAllPhotos(token: String) {
-        let baseURL = "https://api.vk.com"
-        let path = "/method/photos.getAll"
-        
-        let params: Parameters = [
-            "access_token": token,
-            "extended": 1,
-            "v": "5.130"
-        ]
-        
-        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                if let data = response.data {
-                    if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                        print(json)
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-            
-        }
-    }
+//    static func loadAllPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void ) {
+//        let baseURL = "https://api.vk.com"
+//        let path = "/method/photos.getAll"
+//
+//        let params: Parameters = [
+//            "access_token": token,
+//            "owner_id": ownerId,
+//            "count" : 100, // по умолчанию 20
+//            "extended": 1,
+//            "v": "5.130"
+//        ]
+//
+//        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+//
+//            switch response.result {
+//            case .success:
+//                if let data = response.value,
+//                    let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
+//                    completion(photos)
+//                    print(photos)
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//
+//
+//
+//        }
+//    }
     
 }
