@@ -6,14 +6,13 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Photo: Decodable {
-    var id: Int
-    var sizes: [Size]
-    var likes: Like?
-    var isLiked: Bool {
-        self.likes?.isLiked == 1
-    }
+class Photo: Object, Decodable {
+    @objc dynamic var id: Int = 0
+    var sizes = List<Size>()
+    @objc dynamic var likes: Like? = Like()
+    @objc dynamic var isLiked: Bool { return self.likes?.isLiked == 1 }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -22,15 +21,15 @@ struct Photo: Decodable {
     }
 }
 
-struct Size: Decodable {
-    var height: Int
-    var width: Int
-    var url: String
+class Size: Object, Decodable {
+    @objc dynamic var height: Int = 0
+    @objc dynamic var width: Int = 0
+    @objc dynamic var url: String = ""
 }
 
-struct Like: Decodable {
-    var isLiked: Int
-    var count: Int
+class Like: Object, Decodable {
+    @objc dynamic var isLiked: Int = 0
+    @objc dynamic var count: Int = 0
     
     enum CodingKeys: String, CodingKey {
         case isLiked = "user_likes"

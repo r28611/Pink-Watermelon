@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 struct FriendSection {
     var title: String
@@ -44,6 +45,7 @@ class FriendsViewController: UIViewController {
             switch self?.friendsFilterControl.selectedSegmentIndex {
             case 0:
                 self?.groupUsersForTable(users: users)
+                self?.saveFriendsData(users)
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
@@ -107,6 +109,18 @@ class FriendsViewController: UIViewController {
         charPicker.setupUi()
     }
     
+    func saveFriendsData(_ users: [User]) {
+        do {
+            let realm = try Realm()
+            realm.beginWrite()
+            realm.add(users)
+            try realm.commitWrite()
+        } catch {
+            print(error)
+        }
+    }
+
+    
     // MARK: - Character Picker
     
     @IBAction func characterPicked(_ sender: CharacterPicker) {
@@ -129,6 +143,7 @@ class FriendsViewController: UIViewController {
         }
     }
     
+    // MARK: FriendsFilterControl
     
     @IBAction func friendsFilterControlChanged(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
@@ -189,7 +204,7 @@ extension FriendsViewController: UITableViewDelegate {
             cell.avatar.image.load(url: URL(string: user.avatar)!)
             cell.nameLabel.text = user.surname + " " + user.name
             if let city = user.city {
-                cell.cityLabel.text = city.title
+            cell.cityLabel.text = city.title
             }
             cell.onlineStatus.isHidden = !(user.isOnline)
             return cell

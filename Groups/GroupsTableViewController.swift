@@ -35,11 +35,7 @@ class GroupsTableViewController: UITableViewController {
             let group = groups[indexPath.row]
             cell.avatar.image.load(url: URL(string: group.avatar)!)
             cell.nameLabel.text = group.name
-            if let members = group.members {
-            cell.membersCountLabel.text = "\(members) members"
-            } else {
-                cell.membersCountLabel.isHidden = true
-            }
+            cell.membersCountLabel.text = "\(group.members) members"
             return cell
         }
 
