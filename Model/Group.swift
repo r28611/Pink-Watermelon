@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
-struct Group: Decodable {
-    var id: Int
-    var name: String
-    var isMember: Int
-    var avatar: String
-    var members: Int?
+class Group: Object, Decodable {
+    @objc dynamic var id: Int = 0
+    @objc dynamic var name: String = ""
+    @objc dynamic var isMember: Int = 0
+    @objc dynamic var avatar: String = ""
+    @objc dynamic var members: Int = 0
     
     enum CodingKeys: String, CodingKey {
         case id = "id"

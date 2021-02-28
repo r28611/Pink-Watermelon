@@ -309,7 +309,7 @@
                                             <gestureRecognizers/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hi4-bl-lc9" customClass="LikeControl" customModule="gb_ui" customModuleProvider="target">
-                                            <rect key="frame" x="77" y="97" width="40" height="20"/>
+                                            <rect key="frame" x="69" y="97" width="48" height="20"/>
                                         </view>
                                     </subviews>
                                     <constraints>
@@ -317,7 +317,7 @@
                                         <constraint firstItem="7fr-SR-GZb" firstAttribute="top" secondItem="oRS-B4-Kfz" secondAttribute="top" id="1zG-eE-tCG"/>
                                         <constraint firstAttribute="bottom" secondItem="hi4-bl-lc9" secondAttribute="bottom" constant="3" id="3P6-AH-MWz"/>
                                         <constraint firstItem="7fr-SR-GZb" firstAttribute="centerX" secondItem="oRS-B4-Kfz" secondAttribute="centerX" id="6rF-xa-F3b"/>
-                                        <constraint firstItem="hi4-bl-lc9" firstAttribute="width" secondItem="oRS-B4-Kfz" secondAttribute="width" multiplier="0.333333" id="PSJ-6u-GQR"/>
+                                        <constraint firstItem="hi4-bl-lc9" firstAttribute="width" secondItem="oRS-B4-Kfz" secondAttribute="width" multiplier="0.4" id="PSJ-6u-GQR"/>
                                         <constraint firstItem="hi4-bl-lc9" firstAttribute="height" secondItem="oRS-B4-Kfz" secondAttribute="height" multiplier="0.166667" id="UgU-Ic-KS9"/>
                                         <constraint firstItem="7fr-SR-GZb" firstAttribute="leading" secondItem="oRS-B4-Kfz" secondAttribute="leading" id="sUT-tT-26c"/>
                                         <constraint firstAttribute="trailing" secondItem="hi4-bl-lc9" secondAttribute="trailing" constant="3" id="y76-gL-Jgc"/>

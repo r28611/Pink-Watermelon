@@ -35,18 +35,17 @@ class GroupsTableViewController: UITableViewController {
             let group = groups[indexPath.row]
             cell.avatar.image.load(url: URL(string: group.avatar)!)
             cell.nameLabel.text = group.name
-            if let members = group.members {
-            cell.membersCountLabel.text = "\(members) members"
-            } else {
-                cell.membersCountLabel.isHidden = true
-            }
+            cell.membersCountLabel.text = "\(group.members) members"
             return cell
         }
 
         return UITableViewCell()
     }
-   
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 66
+    }
+   
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             groups.remove(at: indexPath.row)

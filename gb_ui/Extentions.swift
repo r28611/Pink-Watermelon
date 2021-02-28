@@ -19,4 +19,12 @@ extension UIImageView {
             }
         }
     }
+    
+    func getData(from url: URL, completion: @escaping (Data) -> ()) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                completion(data)
+            }
+        }
+    }
 }
