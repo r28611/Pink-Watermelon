@@ -10,19 +10,26 @@ import UIKit
 class AllGroupsTableViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    var groups = [Group]()
+    var groups = [Group]() {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         NetworkManager.searchGroup(token: Session.shared.token, group: "VK") { [weak self] groups in
             self?.groups = groups
+            print(groups)
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
         }
-        
     }
     
     // MARK: - Table view data source
@@ -47,7 +54,6 @@ class AllGroupsTableViewController: UITableViewController {
         }
         return UITableViewCell()
     }
-    
 }
 
 // MARK: - Searcn extension
@@ -62,7 +68,6 @@ extension AllGroupsTableViewController: UISearchBarDelegate {
         } else {
             self.groups = [Group]()
         }
-        tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

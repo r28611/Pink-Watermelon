@@ -62,13 +62,14 @@ extension VKLoginViewController: WKNavigationDelegate {
         
         guard let token = params["access_token"],
               let userIdString = params["user_id"],
-              let _ = Int(userIdString) else {
+              let userId = Int(userIdString) else {
             decisionHandler(.allow)
             return
         }
         
         print(token)
         Session.shared.token = token
+        Session.shared.userId = userId
         
         decisionHandler(.cancel)
         performSegue(withIdentifier: "to_tabBarControllerVK", sender: self)

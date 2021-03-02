@@ -52,7 +52,7 @@ class NetworkManager {
         let params: Parameters = [
             "access_token": token,
             "q": name, //текст поискового запроса
-            //            "count": 5,
+            "count": 10, //по умолчанию 20, максимальное значение 1000
             "v": "5.130"
         ]
         
@@ -81,6 +81,31 @@ class NetworkManager {
             
             if let friends = try? JSONDecoder().decode(VKGetResponse<User>.self, from: data).response.items {
                 completion(friends)
+            }
+        }
+    }
+    
+    static func getUserInfo(token: String, completion: @escaping (User) -> Void ) {
+        let baseURL = "https://api.vk.com"
+        let path = "/method/users.get"
+        
+        let params: Parameters = [
+            "access_token": token,
+            "user_ids": Session.shared.userId,
+            "fields": "city,photo_100,counters,online",
+            "v": "5.130"
+        ]
+        
+        NetworkManager.sessionAF.request(baseURL + path, method: .get, parameters: params).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let data = response.value else { return }
+                
+                if let user = try? JSONDecoder().decode(VKResponse.self, from: data).response.first {
+                    completion(user)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

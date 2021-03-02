@@ -9,7 +9,11 @@ import UIKit
 
 class GroupsTableViewController: UITableViewController {
     
-    var groups = [Group]()
+    var groups = [Group]() {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +24,6 @@ class GroupsTableViewController: UITableViewController {
         
         NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
             self?.groups = groups
-            self?.tableView.reloadData()
         }
     }
 
@@ -35,7 +38,9 @@ class GroupsTableViewController: UITableViewController {
             let group = groups[indexPath.row]
             cell.avatar.image.load(url: URL(string: group.avatar)!)
             cell.nameLabel.text = group.name
-            cell.membersCountLabel.text = "\(group.members) members"
+            if let count = group.members {
+            cell.membersCountLabel.text = "\(count) members"
+            }
             return cell
         }
 
@@ -46,12 +51,13 @@ class GroupsTableViewController: UITableViewController {
         return 66
     }
    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            groups.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
+    //реализовать удаление
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            groups.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        }
+//    }
 
     
     // MARK: - Navigation
@@ -64,7 +70,6 @@ class GroupsTableViewController: UITableViewController {
                
             if !groups.contains(where: { group.id == $0.id }) {
                 groups.append(group)
-                tableView.reloadData()
             }
     }
     

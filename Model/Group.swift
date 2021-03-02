@@ -13,7 +13,7 @@ class Group: Object, Decodable {
     @objc dynamic var name: String = ""
     @objc dynamic var isMember: Int = 0
     @objc dynamic var avatar: String = ""
-    @objc dynamic var members: Int = 0
+    var members: Int?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"

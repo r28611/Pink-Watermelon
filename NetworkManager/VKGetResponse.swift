@@ -15,3 +15,8 @@ struct VKGetResponse<T: Decodable>: Decodable {
         let items: [T]
     }
 }
+
+struct VKResponse: Decodable {
+    let response: [User]
+    
+}

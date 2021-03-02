@@ -13,17 +13,20 @@ class User: Object, Decodable {
     @objc dynamic var name = ""
     @objc dynamic var surname = ""
     @objc dynamic var city: City? = City()
-    @objc dynamic var avatar = ""
+    @objc dynamic var avatarURL = ""
+
     @objc dynamic private var status = 0
     @objc dynamic var isOnline: Bool { return self.status == 1 }
+//    var counters: [String: Int]?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "first_name"
         case surname = "last_name"
         case city
-        case avatar = "photo_100"
+        case avatarURL = "photo_100"
         case status = "online"
+//        case counters = "counters"
     }
 }
 

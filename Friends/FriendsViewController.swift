@@ -71,7 +71,6 @@ class FriendsViewController: UIViewController {
             self.searchImage.tintColor = .gray
             
             groupUsersForTable(users: self.users)
-            tableView.reloadData()
         }
     }
     
@@ -111,7 +110,12 @@ class FriendsViewController: UIViewController {
     
     func saveFriendsData(_ users: [User]) {
         do {
-            let realm = try Realm()
+            //специальный режим realm, в котором он, если не может изменить базу, будет ее просто удалять и создавать заново
+            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+            let realm = try Realm(configuration: config)
+            #if DEBUG
+            print(realm.configuration.fileURL ?? "Realm error")
+            #endif
             realm.beginWrite()
             realm.add(users)
             try realm.commitWrite()
@@ -201,10 +205,10 @@ extension FriendsViewController: UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
-            cell.avatar.image.load(url: URL(string: user.avatar)!)
+            cell.avatar.image.load(url: URL(string: user.avatarURL)!)
             cell.nameLabel.text = user.surname + " " + user.name
             if let city = user.city {
-            cell.cityLabel.text = city.title
+                cell.cityLabel.text = city.title
             }
             cell.onlineStatus.isHidden = !(user.isOnline)
             return cell
@@ -222,9 +226,7 @@ extension FriendsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         chosenUser = sections[indexPath.section].items[indexPath.row]
-        
         performSegue(withIdentifier: "to_collection", sender: self)
     }
     
