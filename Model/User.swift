@@ -28,8 +28,27 @@ class User: Object, Decodable {
         case status = "online"
 //        case counters = "counters"
     }
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    //индексы замедляют запись объектов в базу, но ускоряют выборку
+    override static func indexedProperties() -> [String] {
+            return ["name", "surname"]
+        }
+    //у класса могут быть свойства, которые не надо сохранять в хранилище
+    override static func ignoredProperties() -> [String] {
+        return ["isOnline"]
+    }
+
 }
 
 class City: Object, Decodable {
     @objc dynamic var title = ""
+//    let citizens = LinkingObjects(fromType: User.self, property: "city")
+    
+    override static func primaryKey() -> String? {
+        return "title"
+    }
 }

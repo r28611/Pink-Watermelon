@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class GroupsTableViewController: UITableViewController {
     
@@ -21,9 +22,12 @@ class GroupsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
-            self?.groups = groups
+        loadData()
+        if groups.isEmpty {
+            NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
+                self?.saveGroupsData(groups)
+                print("Пришли группы с ВК")
+            }
         }
     }
 
@@ -58,7 +62,32 @@ class GroupsTableViewController: UITableViewController {
 //            tableView.deleteRows(at: [indexPath], with: .fade)
 //        }
 //    }
-
+    
+    func saveGroupsData(_ groups: [Group]) {
+        do {
+            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+            let realm = try Realm(configuration: config)
+//            let realm = try Realm()
+            #if DEBUG
+            print(realm.configuration.fileURL ?? "Realm error")
+            #endif
+            realm.beginWrite()
+            realm.add(groups, update: .all) //возможно нужно обновлять не .all
+            try realm.commitWrite()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func loadData() {
+        do {
+            let realm = try Realm()
+            let groups = realm.objects(Group.self)
+            self.groups = Array(groups)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
     
     // MARK: - Navigation
 
