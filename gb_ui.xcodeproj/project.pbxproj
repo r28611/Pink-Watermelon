@@ -28,6 +28,7 @@
 		AB6E484725B6371A00F7B66B /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB6E484625B6371A00F7B66B /* HeaderView.xib */; };
 		AB6E484A25B637B400F7B66B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E484925B637B400F7B66B /* HeaderView.swift */; };
 		AB7CEF9825B9D37E0092EF04 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7CEF9725B9D37E0092EF04 /* LoadingView.swift */; };
+		AB862E1F25FC123C00781D09 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB862E1E25FC123C00781D09 /* RealmManager.swift */; };
 		AB892B8B25E857BF00F97C89 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB892B8A25E857BF00F97C89 /* User.swift */; };
 		AB92810325DE865A00B694D9 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB92810225DE865A00B694D9 /* Extentions.swift */; };
 		AB98A30625CC7F0100E539F9 /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */; };
@@ -70,6 +71,7 @@
 		AB6E484625B6371A00F7B66B /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		AB6E484925B637B400F7B66B /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		AB7CEF9725B9D37E0092EF04 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		AB862E1E25FC123C00781D09 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		AB892B8A25E857BF00F97C89 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AB92810225DE865A00B694D9 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extentions.swift; path = gb_ui/Extentions.swift; sourceTree = SOURCE_ROOT; };
 		AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveTransition.swift; sourceTree = "<group>"; };
@@ -184,6 +186,14 @@
 			path = Groups;
 			sourceTree = "<group>";
 		};
+		AB862E1D25FC122500781D09 /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				AB862E1E25FC123C00781D09 /* RealmManager.swift */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
 		AB9DBEFA25A60DDE002B9B8A /* Controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +206,7 @@
 		ABE5A622258E142E00CEFEA1 = {
 			isa = PBXGroup;
 			children = (
+				AB862E1D25FC122500781D09 /* Realm */,
 				AB326B4825D44AB2002AFBF3 /* NetworkManager */,
 				AB1C94C925CD8E7A00E6A878 /* Transitions */,
 				AB1C94C825CD8E5600E6A878 /* CustomViews */,
@@ -378,6 +389,7 @@
 			files = (
 				ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */,
 				AB92810325DE865A00B694D9 /* Extentions.swift in Sources */,
+				AB862E1F25FC123C00781D09 /* RealmManager.swift in Sources */,
 				ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */,
 				AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */,
 				AB7CEF9825B9D37E0092EF04 /* LoadingView.swift in Sources */,

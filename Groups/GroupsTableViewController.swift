@@ -23,12 +23,11 @@ class GroupsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadData()
-        if groups.isEmpty {
-            NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
-                self?.saveGroupsData(groups)
-                print("Пришли группы с ВК")
-            }
+        NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
+            self?.saveGroupsData(groups)
+            print("Пришли группы с ВК")
         }
+        loadData()
     }
 
     // MARK: - Table view data source
@@ -42,8 +41,8 @@ class GroupsTableViewController: UITableViewController {
             let group = groups[indexPath.row]
             cell.avatar.image.load(url: URL(string: group.avatar)!)
             cell.nameLabel.text = group.name
-            if let count = group.members {
-            cell.membersCountLabel.text = "\(count) members"
+            if let count = group.membersCount.value { //value если RealmOptional
+                cell.membersCountLabel.text = "\(count) members"
             }
             return cell
         }
@@ -72,7 +71,7 @@ class GroupsTableViewController: UITableViewController {
             print(realm.configuration.fileURL ?? "Realm error")
             #endif
             realm.beginWrite()
-            realm.add(groups, update: .all) //возможно нужно обновлять не .all
+            realm.add(groups, update: .all)
             try realm.commitWrite()
         } catch {
             print(error)

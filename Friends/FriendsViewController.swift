@@ -19,6 +19,14 @@ class FriendsViewController: UIViewController {
     var sections = [FriendSection]()
     var chosenUser: User!
     
+    private let realmManager = RealmManager.shared
+    private var userResults: Results<User>?
+    
+//    private var userResults: Results<User>? {
+//        let users: Results<User>? = realmManager?.getObjects()
+//        return users
+//    }
+    
     @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
@@ -40,23 +48,14 @@ class FriendsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        loadData()
-        if users.isEmpty {
-            NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
-                self?.saveFriendsData(users)
-            }
-            loadData()
-        }
-        switch self.friendsFilterControl.selectedSegmentIndex {
-        case 0:
-            groupUsersForTable(users: self.users)
-        default:
-            let filteredUsers = users.filter({$0.isOnline == true})
-            groupUsersForTable(users: filteredUsers)
-            self.charPicker.isHidden = true
-        }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        userResults = realmManager?.getResults()
+        self.users = userResults?.toArray() as! [User]
+        render()
+        NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
+//            self?.saveFriendsData(users)
+            try? self?.realmManager?.save(objects: users)
+            self?.users = users
+            self?.render()
         }
     }
     
@@ -108,31 +107,61 @@ class FriendsViewController: UIViewController {
         charPicker.setupUi()
     }
     
-    func saveFriendsData(_ users: [User]) {
-        do {
-            //специальный режим realm, в котором он, если не может изменить базу, будет ее просто удалять и создавать заново
+//    func saveFriendsData(_ users: [User]) {
+//        do {
+//            //специальный режим realm, в котором он, если не может изменить базу, будет ее просто удалять и создавать заново
 //            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 //            let realm = try Realm(configuration: config)
-            let realm = try Realm()
-            #if DEBUG
-            print(realm.configuration.fileURL ?? "Realm error")
-            #endif
-            realm.beginWrite()
-            realm.add(users, update: .all) //возможно нужно обновлять не .all
-            try realm.commitWrite()
-        } catch {
-            print(error)
-        }
-    }
+////            let realm = try Realm()
+//            #if DEBUG
+//            print(realm.configuration.fileURL ?? "Realm error")
+//            #endif
+//            realm.beginWrite()
+//            realm.add(users, update: .all) //возможно нужно обновлять не .all
+//            try realm.commitWrite()
+//        } catch {
+//            print(error)
+//        }
+//    }
+//
+//    func savePhotosData(_ photos: [Photo]) {
+//        do {
+//            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+//            let realm = try Realm(configuration: config)
+////            let realm = try Realm()
+//            #if DEBUG
+//            print(realm.configuration.fileURL ?? "Realm error")
+//            #endif
+//            realm.beginWrite()
+//            realm.add(photos, update: .all)
+//            try realm.commitWrite()
+//        } catch {
+//            print(error)
+//        }
+//    }
+//
+//    func loadData() {
+//        do {
+//            //специальный режим realm, в котором он, если не может изменить базу, будет ее просто удалять и создавать заново
+//            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+//            let realm = try Realm(configuration: config)
+//            let friends = realm.objects(User.self)
+//            self.users = Array(friends)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//    }
     
-    func loadData() {
-        do {
-            let realm = try Realm()
-            let friends = realm.objects(User.self)
-            self.users = Array(friends)
-        } catch {
-            print(error.localizedDescription)
+    func render() {
+        switch self.friendsFilterControl.selectedSegmentIndex {
+        case 0:
+            groupUsersForTable(users: self.users)
+        default:
+            let filteredUsers = users.filter({$0.isOnline == true})
+            groupUsersForTable(users: filteredUsers)
+            self.charPicker.isHidden = true
         }
+        self.tableView.reloadData()
     }
     
     // MARK: - Character Picker

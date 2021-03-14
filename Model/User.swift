@@ -16,8 +16,7 @@ class User: Object, Decodable {
     @objc dynamic var avatarURL = ""
 
     @objc dynamic private var status = 0
-    @objc dynamic var isOnline: Bool { return self.status == 1 }
-//    var counters: [String: Int]?
+    var isOnline: Bool { return self.status == 1 }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -26,7 +25,6 @@ class User: Object, Decodable {
         case city
         case avatarURL = "photo_100"
         case status = "online"
-//        case counters = "counters"
     }
     
     override static func primaryKey() -> String? {
@@ -36,7 +34,7 @@ class User: Object, Decodable {
     //индексы замедляют запись объектов в базу, но ускоряют выборку
     override static func indexedProperties() -> [String] {
             return ["name", "surname"]
-        }
+    }
     //у класса могут быть свойства, которые не надо сохранять в хранилище
     override static func ignoredProperties() -> [String] {
         return ["isOnline"]
@@ -46,7 +44,7 @@ class User: Object, Decodable {
 
 class City: Object, Decodable {
     @objc dynamic var title = ""
-//    let citizens = LinkingObjects(fromType: User.self, property: "city")
+//    var citizens = List<Int>()
     
     override static func primaryKey() -> String? {
         return "title"
