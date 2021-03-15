@@ -10,10 +10,10 @@ import RealmSwift
 
 class GroupsTableViewController: UITableViewController {
     
-    var groups = [Group]() {
-        didSet {
-            self.tableView.reloadData()
-        }
+    private let realmManager = RealmManager.shared
+    private var groups: Results<Group>? {
+        let users: Results<Group>? = realmManager?.getObjects()
+        return users?.sorted(byKeyPath: "members", ascending: false) // по убыванию количества участников
     }
 
     override func viewDidLoad() {
@@ -22,28 +22,25 @@ class GroupsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        loadData()
+        
         NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
-            self?.saveGroupsData(groups)
+            try? self?.realmManager?.save(objects: groups)
             print("Пришли группы с ВК")
+            self?.tableView.reloadData()
         }
-        loadData()
+
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+        return groups?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GroupsTableViewCell {
-            let group = groups[indexPath.row]
-            cell.avatar.image.load(url: URL(string: group.avatar)!)
-            cell.nameLabel.text = group.name
-            if let count = group.membersCount.value { //value если RealmOptional
-                cell.membersCountLabel.text = "\(count) members"
-            }
+
+            cell.groupModel = groups?[indexPath.row]
             return cell
         }
 
@@ -54,51 +51,31 @@ class GroupsTableViewController: UITableViewController {
         return 66
     }
    
-    //реализовать удаление
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            groups.remove(at: indexPath.row)
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
-//    }
-    
-    func saveGroupsData(_ groups: [Group]) {
-        do {
-            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-            let realm = try Realm(configuration: config)
-//            let realm = try Realm()
-            #if DEBUG
-            print(realm.configuration.fileURL ?? "Realm error")
-            #endif
-            realm.beginWrite()
-            realm.add(groups, update: .all)
-            try realm.commitWrite()
-        } catch {
-            print(error)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard let group = groups?[indexPath.row] else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
         }
-    }
-    
-    func loadData() {
-        do {
-            let realm = try Realm()
-            let groups = realm.objects(Group.self)
-            self.groups = Array(groups)
-        } catch {
-            print(error.localizedDescription)
+        if editingStyle == .delete {
+            //реализовать удаление на api
+            if (try? realmManager?.delete(object: group)) != nil {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
         }
     }
     
     // MARK: - Navigation
 
-    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
-            guard let tableViewController = segue.source as? AllGroupsTableViewController,
-                     let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
-               
-            let group = tableViewController.groups[indexPath.row]
-               
-            if !groups.contains(where: { group.id == $0.id }) {
-                groups.append(group)
-            }
-    }
+//    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+//            guard let tableViewController = segue.source as? AllGroupsTableViewController,
+//                     let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
+//
+//            let group = tableViewController.groups[indexPath.row]
+//
+//            if !groups.contains(where: { group.id == $0.id }) {
+//                groups.append(group)
+//            }
+//    }
     
 }

@@ -52,7 +52,6 @@ class FriendsViewController: UIViewController {
         self.users = userResults?.toArray() as! [User]
         render()
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
-//            self?.saveFriendsData(users)
             try? self?.realmManager?.save(objects: users)
             self?.users = users
             self?.render()
@@ -106,51 +105,6 @@ class FriendsViewController: UIViewController {
         charPicker.chars = sections.map {$0.title}
         charPicker.setupUi()
     }
-    
-//    func saveFriendsData(_ users: [User]) {
-//        do {
-//            //специальный режим realm, в котором он, если не может изменить базу, будет ее просто удалять и создавать заново
-//            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-//            let realm = try Realm(configuration: config)
-////            let realm = try Realm()
-//            #if DEBUG
-//            print(realm.configuration.fileURL ?? "Realm error")
-//            #endif
-//            realm.beginWrite()
-//            realm.add(users, update: .all) //возможно нужно обновлять не .all
-//            try realm.commitWrite()
-//        } catch {
-//            print(error)
-//        }
-//    }
-//
-//    func savePhotosData(_ photos: [Photo]) {
-//        do {
-//            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-//            let realm = try Realm(configuration: config)
-////            let realm = try Realm()
-//            #if DEBUG
-//            print(realm.configuration.fileURL ?? "Realm error")
-//            #endif
-//            realm.beginWrite()
-//            realm.add(photos, update: .all)
-//            try realm.commitWrite()
-//        } catch {
-//            print(error)
-//        }
-//    }
-//
-//    func loadData() {
-//        do {
-//            //специальный режим realm, в котором он, если не может изменить базу, будет ее просто удалять и создавать заново
-//            let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-//            let realm = try Realm(configuration: config)
-//            let friends = realm.objects(User.self)
-//            self.users = Array(friends)
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
     
     func render() {
         switch self.friendsFilterControl.selectedSegmentIndex {
@@ -250,12 +204,7 @@ extension FriendsViewController: UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
-            cell.avatar.image.load(url: URL(string: user.avatarURL)!)
-            cell.nameLabel.text = user.surname + " " + user.name
-            if let city = user.city {
-                cell.cityLabel.text = city.title
-            }
-            cell.onlineStatus.isHidden = !(user.isOnline)
+            cell.userModel = user
             return cell
         }
         return UITableViewCell()
