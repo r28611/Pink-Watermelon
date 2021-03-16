@@ -13,8 +13,27 @@ class Group: Object, Decodable {
     @objc dynamic var name: String = ""
     @objc dynamic var isMember: Int = 0
     @objc dynamic var avatar: String = ""
-    var members = RealmOptional<Int>()
-
+    
+    var members: Int {
+        get { return membersCount.value ?? 0 }
+        set(newValue) { self.membersCount.value = newValue }
+    }
+    var membersCount = RealmOptional<Int>()
+    
+    override init() {}
+    
+    required init(from decoder: Decoder) throws {
+        super.init()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        isMember = try container.decode(Int.self, forKey: .isMember)
+        if let members = try? container.decode(Int.self, forKey: .members) {
+            self.members = members
+        }
+        avatar = try container.decode(String.self, forKey: .avatar)
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"

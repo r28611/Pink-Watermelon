@@ -26,10 +26,10 @@ class FriendsTableViewCell: UITableViewCell {
         let name = userModel.name
         let surname = userModel.surname
         let city = userModel.city?.title ?? ""
-        let avatarUrl = userModel.avatarURL
+        let avatarURL = userModel.avatarURL
         let isOnline = userModel.isOnline
         
-        avatar.image.load(url: URL(string: avatarUrl)!)
+        avatar.image.load(url: avatarURL)
         nameLabel.text = name + " " + surname
         cityLabel.text = city
         onlineStatus.isHidden = !isOnline

@@ -20,12 +20,10 @@ class FriendsViewController: UIViewController {
     var chosenUser: User!
     
     private let realmManager = RealmManager.shared
-    private var userResults: Results<User>?
-    
-//    private var userResults: Results<User>? {
-//        let users: Results<User>? = realmManager?.getObjects()
-//        return users
-//    }
+    private var userResults: Results<User>? {
+        let users: Results<User>? = realmManager?.getObjects()
+        return users
+    }
     
     @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
@@ -48,11 +46,13 @@ class FriendsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        userResults = realmManager?.getResults()
-        self.users = userResults?.toArray() as! [User]
-        render()
+        if let results = userResults {
+            groupUsersForTable(users: results.toArray() as! [User])
+            render()
+        }
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             try? self?.realmManager?.save(objects: users)
+            print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
             self?.users = users
             self?.render()
         }
@@ -67,35 +67,7 @@ class FriendsViewController: UIViewController {
             self.searchImageCenterX.constant = 0
             self.searchCancelButtonLeading.constant = 0
             self.searchImage.tintColor = .gray
-            
-            groupUsersForTable(users: self.users)
         }
-    }
-    
-    @IBAction func searchCancelPressed(_ sender: Any) {
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.searchImage.tintColor = .gray
-            
-            self.searchTextFieldLeading.constant = 0
-            self.view.layoutIfNeeded()
-        })
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.2,
-                       options: [],
-                       animations: {
-                        self.searchImageCenterX.constant = 0
-                        self.searchCancelButtonLeading.constant = 0
-                        self.view.layoutIfNeeded()
-                       })
-        
-        searchTextField.endEditing(true)
-        guard searchTextField.text != "" else { return }
-        searchTextField.text = ""
-        groupUsersForTable(users: self.users)
-        tableView.reloadData()
     }
     
     func groupUsersForTable(users: [User]) {
@@ -175,7 +147,7 @@ class FriendsViewController: UIViewController {
 
 // MARK: - Table view data source
 
-extension FriendsViewController: UITableViewDataSource {
+extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -183,9 +155,6 @@ extension FriendsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 66
     }
-}
-
-extension FriendsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].items.count
@@ -215,8 +184,6 @@ extension FriendsViewController: UITableViewDelegate {
         UIView.animate(withDuration: 1, animations: {
             cell.contentView.alpha = 1
         })
-        
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -310,6 +277,32 @@ extension FriendsViewController: UITextFieldDelegate {
             tableView.reloadData()
         }
         return true
+    }
+    
+    @IBAction func searchCancelPressed(_ sender: Any) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchImage.tintColor = .gray
+            
+            self.searchTextFieldLeading.constant = 0
+            self.view.layoutIfNeeded()
+        })
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.2,
+                       options: [],
+                       animations: {
+                        self.searchImageCenterX.constant = 0
+                        self.searchCancelButtonLeading.constant = 0
+                        self.view.layoutIfNeeded()
+                       })
+        
+        searchTextField.endEditing(true)
+        guard searchTextField.text != "" else { return }
+        searchTextField.text = ""
+        groupUsersForTable(users: self.users)
+        tableView.reloadData()
     }
     
 }

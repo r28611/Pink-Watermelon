@@ -11,8 +11,13 @@ import RealmSwift
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var friend: User!
-    var photos = [Photo]()
+
     var chosenPhotoIndex = 0
+    private let realmManager = RealmManager.shared
+    private var photos: Results<Photo>? {
+        let photos: Results<Photo>? = realmManager?.getObjects()
+        return photos?.filter("ownerId == %@", friend.id)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,9 +26,10 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
         NetworkManager.loadPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
-            self?.photos = photos
             DispatchQueue.main.async {
+                try? self?.realmManager?.save(objects: photos)
                 self?.collectionView.reloadData()
             }
         }
@@ -35,7 +41,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         if segue.identifier == "to_photoScene" {
             if let destination = segue.destination as? PhotoViewController {
                 destination.currentIndex = chosenPhotoIndex
-                destination.photos = self.photos
+                destination.userId = friend.id
             }
         }
     }
@@ -48,19 +54,13 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return photos?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? FriendsPhotosCollectionViewCell {
-            let photo = photos[indexPath.item]
-            if let url = photo.sizes.first?.url {
-            cell.photoImage.load(url: URL(string: url)!)
-            }
-            if let likes = photo.likes {
-                cell.likeControl.counter = likes.count
-                cell.likeControl.isLiked = photo.isLiked
-            }
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? PhotosCollectionViewCell {
+            let photo = photos?[indexPath.item]
+            cell.photoModel = photo
             return cell
         }
     return UICollectionViewCell()
@@ -68,7 +68,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
-//при повороте экрана что-то работает не так, не правильно считает
+
 extension FriendsPhotosCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (view.frame.size.width / 3) - 1,

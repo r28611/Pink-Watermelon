@@ -26,12 +26,13 @@ class GroupsTableViewCell: UITableViewCell {
         let name = groupModel.name
         let isMember = groupModel.isMember
         let avatarUrl = groupModel.avatar
-        let members = groupModel.members.value ?? 0
+        let members = groupModel.members
         
         avatar.image.load(url: URL(string: avatarUrl)!)
         nameLabel.text = name
-        subscribeLabel?.text = isMember == 0 ? "your group" : "Subscribe"
-        subscribeLabel?.tintColor = isMember == 0 ? .black : .systemPink
-        membersCountLabel?.text = "\(members) members"
+        subscribeLabel?.text = isMember == 1 ? "✅" : "Subscribe"
+        subscribeLabel?.tintColor = isMember == 1 ? .black : .systemPink
+        membersCountLabel?.text = "\(members) members" 
+
     }
 }

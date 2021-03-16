@@ -6,19 +6,24 @@
 //
 
 import UIKit
-
+import RealmSwift
+//мне не нравится что происходит на этом экране
 class PhotoViewController: UIViewController {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var likeControl: LikeControl!
     
     var currentIndex: Int = 0
-    var photos = [Photo]()
+    var userId = Int()
+    private let realmManager = RealmManager.shared
+    private var photos: Results<Photo>? {
+        let photos: Results<Photo>? = realmManager?.getObjects()
+        return photos?.filter("ownerId == %@", userId)
+    }
     var animator: UIViewPropertyAnimator!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .black
         likeControl.set(colorDisliked: .gray,
                         iconDisliked: UIImage(systemName: "heart")!,
@@ -29,11 +34,12 @@ class PhotoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        let currentPhoto = photos[currentIndex]
-        if let url = currentPhoto.sizes.last?.url {
+        let currentPhoto = photos?[currentIndex]
+        if let url = currentPhoto?.sizes.last?.url {
             image.load(url: URL(string: url)!)
         }
-        
+        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
+        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapOnImage))
         tap.numberOfTapsRequired = 2
         image.addGestureRecognizer(tap)
@@ -51,9 +57,9 @@ class PhotoViewController: UIViewController {
     private func changeImage(direction: Direction) {
         switch direction {
         case .next:
-            if self.currentIndex < self.photos.count - 1 {
-                image.getData(from: URL(string: photos[currentIndex + 1].sizes.last?.url
-                                ?? photos[currentIndex + 1].sizes[0].url)!) { [weak self] (data) in
+            if self.currentIndex < self.photos?.count ?? 0 - 1 {
+                image.getData(from: URL(string: photos?[currentIndex + 1].sizes.last?.url
+                                            ?? photos?[currentIndex + 1].sizes[0].url as! String)!) { [weak self] (data) in
                     let imageFromData = UIImage(data: data)
                     
                     guard let self = self else { return }
@@ -69,8 +75,8 @@ class PhotoViewController: UIViewController {
             
         case .previous:
             if currentIndex > 0 {
-                image.getData(from: URL(string: photos[currentIndex - 1].sizes.last?.url
-                                            ?? photos[currentIndex - 1].sizes[0].url)!) { [weak self] (data) in
+                image.getData(from: URL(string: photos?[currentIndex - 1].sizes.last?.url
+                                            ?? photos?[currentIndex - 1].sizes[0].url as! String)!) { [weak self] (data) in
                     let imageFromData = UIImage(data: data)
                     
                     guard let self = self else { return }
@@ -82,6 +88,9 @@ class PhotoViewController: UIViewController {
                 }
             }
         }
+        
+        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
+        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
     }
     
     private enum Direction {
@@ -154,7 +163,7 @@ class PhotoViewController: UIViewController {
             animator = UIViewPropertyAnimator(duration: 1, curve: .easeIn, animations: {
                 if translation.x > 0 && self.currentIndex > 0 {
                     self.image.transform = CGAffineTransform(translationX: self.image.frame.width, y: 0)
-                } else if translation.x < 0  && self.currentIndex < self.photos.count - 1 {
+                } else if translation.x < 0  && self.currentIndex < self.photos?.count ?? 0 - 1 {
                     self.image.transform = CGAffineTransform(translationX: -self.image.frame.width, y: 0)
                 }
             })

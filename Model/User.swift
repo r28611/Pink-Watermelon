@@ -13,8 +13,11 @@ class User: Object, Decodable {
     @objc dynamic var name = ""
     @objc dynamic var surname = ""
     @objc dynamic var city: City? = City()
-    @objc dynamic var avatarURL = ""
-
+    @objc dynamic private var avatar = "https://vk.com/images/camera_100.png"
+    @objc dynamic var avatarData: Data = Data()
+    var avatarURL: URL { return URL(string: self.avatar)!}
+    
+    // статус переделать чтобы не сохранять в бд
     @objc dynamic private var status = 0
     var isOnline: Bool { return self.status == 1 }
     
@@ -23,7 +26,7 @@ class User: Object, Decodable {
         case name = "first_name"
         case surname = "last_name"
         case city
-        case avatarURL = "photo_100"
+        case avatar = "photo_100"
         case status = "online"
     }
     

@@ -45,7 +45,7 @@
 		ABF888E02596017200A29574 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF888DF2596017200A29574 /* SignupViewController.swift */; };
 		ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */; };
 		ABF88937259F846900A29574 /* FriendsPhotosCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF88936259F846900A29574 /* FriendsPhotosCollectionVC.swift */; };
-		ABF8893A25A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF8893925A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift */; };
+		ABF8893A25A2437B00A29574 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF8893925A2437B00A29574 /* PhotosCollectionViewCell.swift */; };
 		ABFEC52E25DFB07300F5BF9A /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFEC52D25DFB07300F5BF9A /* Photo.swift */; };
 /* End PBXBuildFile section */
 
@@ -90,7 +90,7 @@
 		ABF888DF2596017200A29574 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		ABF88936259F846900A29574 /* FriendsPhotosCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsPhotosCollectionVC.swift; sourceTree = "<group>"; };
-		ABF8893925A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsPhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		ABF8893925A2437B00A29574 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
 		ABFEC52D25DFB07300F5BF9A /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		ADC33C8F8567B052C3A3B06C /* Pods-gb_ui.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gb_ui.release.xcconfig"; path = "Target Support Files/Pods-gb_ui/Pods-gb_ui.release.xcconfig"; sourceTree = "<group>"; };
 		BAC0057145A9759FD0C04E9D /* Pods_gb_ui.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_gb_ui.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -254,7 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */,
-				ABF8893925A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift */,
+				ABF8893925A2437B00A29574 /* PhotosCollectionViewCell.swift */,
 				AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */,
 				AB5814E225B7220000C39ACB /* NewsCell.xib */,
 				AB5814E525B732D900C39ACB /* NewsCell.swift */,
@@ -399,7 +399,7 @@
 				ABF88937259F846900A29574 /* FriendsPhotosCollectionVC.swift in Sources */,
 				AB6E484A25B637B400F7B66B /* HeaderView.swift in Sources */,
 				ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */,
-				ABF8893A25A2437B00A29574 /* FriendsPhotosCollectionViewCell.swift in Sources */,
+				ABF8893A25A2437B00A29574 /* PhotosCollectionViewCell.swift in Sources */,
 				AB6E424F25B1C75600E7FB2D /* PhotoViewController.swift in Sources */,
 				AB98A30625CC7F0100E539F9 /* InteractiveTransition.swift in Sources */,
 				AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */,

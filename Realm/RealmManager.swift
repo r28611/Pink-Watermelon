@@ -34,6 +34,12 @@ class RealmManager {
         }
     }
     
+    func deleteAll() throws {
+        try realm.write {
+            realm.deleteAll()
+        }
+    }
+    
     func getObjects<T: Object>() -> Results<T> {
         return realm.objects(T.self)
     }
