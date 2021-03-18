@@ -6,23 +6,28 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AllGroupsTableViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    var groups = [Group]()
+    private let realmManager = RealmManager.shared
+    private var groups = [Group]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         NetworkManager.searchGroup(token: Session.shared.token, group: "VK") { [weak self] groups in
-            self?.groups = groups
             DispatchQueue.main.async {
+                self?.groups = groups
+                print("Пришли группы по поиску 'VK'")
                 self?.tableView.reloadData()
             }
         }
-        
     }
     
     // MARK: - Table view data source
@@ -38,16 +43,11 @@ class AllGroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell_allgroup", for: indexPath) as? GroupsTableViewCell {
-            let group = groups[indexPath.row]
-            cell.avatar.image.load(url: URL(string: group.avatar)!)
-            cell.nameLabel.text = group.name
-            cell.subscribeLabel.text = "Subscribe"
-            cell.subscribeLabel.tintColor = .black
+            cell.groupModel = groups[indexPath.row]
             return cell
         }
         return UITableViewCell()
     }
-    
 }
 
 // MARK: - Searcn extension
@@ -58,11 +58,10 @@ extension AllGroupsTableViewController: UISearchBarDelegate {
         if !searchText.isEmpty {
             NetworkManager.searchGroup(token: Session.shared.token, group: searchText.lowercased()) { [weak self] groups in
                 self?.groups = groups
+                print("Пришли группы по поиску '\(searchText)'")
+                self?.tableView.reloadData()
             }
-        } else {
-            self.groups = [Group]()
         }
-        tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

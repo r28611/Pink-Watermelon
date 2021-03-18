@@ -10,15 +10,25 @@ import RealmSwift
 
 class Photo: Object, Decodable {
     @objc dynamic var id: Int = 0
+    @objc dynamic var ownerId: Int = 0
     var sizes = List<Size>()
     @objc dynamic var likes: Like? = Like()
     @objc dynamic var isLiked: Bool { return self.likes?.isLiked == 1 }
     
     enum CodingKeys: String, CodingKey {
-        case id = "id"
+        case id
+        case ownerId = "owner_id"
         case sizes
         case likes
     }
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+//    override static func ignoredProperties() -> [String] {
+//        return ["likes", "isLiked"]
+//    }
 }
 
 class Size: Object, Decodable {

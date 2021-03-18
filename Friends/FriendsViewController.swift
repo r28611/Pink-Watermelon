@@ -19,6 +19,12 @@ class FriendsViewController: UIViewController {
     var sections = [FriendSection]()
     var chosenUser: User!
     
+    private let realmManager = RealmManager.shared
+    private var userResults: Results<User>? {
+        let users: Results<User>? = realmManager?.getObjects()
+        return users
+    }
+    
     @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
@@ -40,23 +46,16 @@ class FriendsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        if let results = userResults {
+        self.users = results.toArray() as! [User]
+        groupUsersForTable(users: self.users)
+        }
+        render()
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
+            try? self?.realmManager?.save(objects: users)
+            print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
             self?.users = users
-            switch self?.friendsFilterControl.selectedSegmentIndex {
-            case 0:
-                self?.groupUsersForTable(users: users)
-                self?.saveFriendsData(users)
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            default:
-                let filteredUsers = users.filter({$0.isOnline == true})
-                self?.groupUsersForTable(users: filteredUsers)
-                self?.charPicker.isHidden = true
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            }
+            self?.render()
         }
     }
     
@@ -69,36 +68,7 @@ class FriendsViewController: UIViewController {
             self.searchImageCenterX.constant = 0
             self.searchCancelButtonLeading.constant = 0
             self.searchImage.tintColor = .gray
-            
-            groupUsersForTable(users: self.users)
-            tableView.reloadData()
         }
-    }
-    
-    @IBAction func searchCancelPressed(_ sender: Any) {
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.searchImage.tintColor = .gray
-            
-            self.searchTextFieldLeading.constant = 0
-            self.view.layoutIfNeeded()
-        })
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.2,
-                       options: [],
-                       animations: {
-                        self.searchImageCenterX.constant = 0
-                        self.searchCancelButtonLeading.constant = 0
-                        self.view.layoutIfNeeded()
-                       })
-        
-        searchTextField.endEditing(true)
-        guard searchTextField.text != "" else { return }
-        searchTextField.text = ""
-        groupUsersForTable(users: self.users)
-        tableView.reloadData()
     }
     
     func groupUsersForTable(users: [User]) {
@@ -109,17 +79,17 @@ class FriendsViewController: UIViewController {
         charPicker.setupUi()
     }
     
-    func saveFriendsData(_ users: [User]) {
-        do {
-            let realm = try Realm()
-            realm.beginWrite()
-            realm.add(users)
-            try realm.commitWrite()
-        } catch {
-            print(error)
+    func render() {
+        switch self.friendsFilterControl.selectedSegmentIndex {
+        case 0:
+            groupUsersForTable(users: self.users)
+        default:
+            let filteredUsers = users.filter({$0.isOnline == true})
+            groupUsersForTable(users: filteredUsers)
+            self.charPicker.isHidden = true
         }
+        self.tableView.reloadData()
     }
-
     
     // MARK: - Character Picker
     
@@ -150,9 +120,15 @@ class FriendsViewController: UIViewController {
             groupUsersForTable(users: self.users)
             self.charPicker.isHidden = false
         } else {
-            let filteredUsers = users.filter({$0.isOnline == true})
-            groupUsersForTable(users: filteredUsers)
-            self.charPicker.isHidden = true
+            //            let filteredUsers = users.filter({$0.isOnline == true})
+            do {
+                let realm = try Realm()
+                let onlineUsers = realm.objects(User.self).filter("status = 1")
+                groupUsersForTable(users: Array(onlineUsers))
+                self.charPicker.isHidden = true
+            } catch {
+                print(error.localizedDescription)
+            }
         }
         tableView.reloadData()
         self.searchTextField.text = ""
@@ -172,7 +148,7 @@ class FriendsViewController: UIViewController {
 
 // MARK: - Table view data source
 
-extension FriendsViewController: UITableViewDataSource {
+extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -180,9 +156,6 @@ extension FriendsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 66
     }
-}
-
-extension FriendsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].items.count
@@ -201,12 +174,7 @@ extension FriendsViewController: UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
-            cell.avatar.image.load(url: URL(string: user.avatar)!)
-            cell.nameLabel.text = user.surname + " " + user.name
-            if let city = user.city {
-            cell.cityLabel.text = city.title
-            }
-            cell.onlineStatus.isHidden = !(user.isOnline)
+            cell.userModel = user
             return cell
         }
         return UITableViewCell()
@@ -217,14 +185,10 @@ extension FriendsViewController: UITableViewDelegate {
         UIView.animate(withDuration: 1, animations: {
             cell.contentView.alpha = 1
         })
-        
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         chosenUser = sections[indexPath.section].items[indexPath.row]
-        
         performSegue(withIdentifier: "to_collection", sender: self)
     }
     
@@ -314,6 +278,32 @@ extension FriendsViewController: UITextFieldDelegate {
             tableView.reloadData()
         }
         return true
+    }
+    
+    @IBAction func searchCancelPressed(_ sender: Any) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchImage.tintColor = .gray
+            
+            self.searchTextFieldLeading.constant = 0
+            self.view.layoutIfNeeded()
+        })
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.2,
+                       options: [],
+                       animations: {
+                        self.searchImageCenterX.constant = 0
+                        self.searchCancelButtonLeading.constant = 0
+                        self.view.layoutIfNeeded()
+                       })
+        
+        searchTextField.endEditing(true)
+        guard searchTextField.text != "" else { return }
+        searchTextField.text = ""
+        groupUsersForTable(users: self.users)
+        tableView.reloadData()
     }
     
 }

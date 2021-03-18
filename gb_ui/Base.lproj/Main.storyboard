@@ -143,6 +143,7 @@
                             <constraint firstItem="1QG-wB-VXq" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" multiplier="0.5" id="whl-lM-89s"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="LND-d4-x1F"/>
                     <connections>
                         <outlet property="authVKButton" destination="f7T-yu-hd5" id="yLD-1R-gSg"/>
                         <outlet property="loginButton" destination="GGq-KF-NJk" id="4c5-si-Haf"/>
@@ -297,7 +298,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="Cell" id="Bf8-W2-W72" customClass="FriendsPhotosCollectionViewCell" customModule="gb_ui" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="Cell" id="Bf8-W2-W72" customClass="PhotosCollectionViewCell" customModule="gb_ui" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="oRS-B4-Kfz">
@@ -426,7 +427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xE8-rd-3dk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="92" y="-850"/>
+            <point key="canvasLocation" x="233" y="-947"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9Xo-OQ-FXW">
@@ -446,7 +447,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fHK-bm-0S6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="655" y="-198"/>
+            <point key="canvasLocation" x="1136" y="-222"/>
         </scene>
         <!--Groups-->
         <scene sceneID="szf-h7-hip">
@@ -830,6 +831,7 @@
                         <outlet property="logOutButton" destination="6Yj-SZ-KRB" id="yWK-Sw-0NZ"/>
                         <outlet property="newsTableView" destination="KL9-hQ-IfS" id="cAn-Vx-Tcl"/>
                         <outlet property="usernameLabel" destination="ECU-Ri-qJu" id="1rS-mG-j6U"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="to_login" modalPresentationStyle="fullScreen" id="LdB-R7-zoK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LL8-pu-bfh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
