@@ -47,9 +47,10 @@ class FriendsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if let results = userResults {
-            groupUsersForTable(users: results.toArray() as! [User])
-            render()
+        self.users = results.toArray() as! [User]
+        groupUsersForTable(users: self.users)
         }
+        render()
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             try? self?.realmManager?.save(objects: users)
             print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class GroupsTableViewCell: UITableViewCell {
 
@@ -25,10 +26,27 @@ class GroupsTableViewCell: UITableViewCell {
 
         let name = groupModel.name
         let isMember = groupModel.isMember
-        let avatarUrl = groupModel.avatar
+        let avatarURL = groupModel.avatarURL
+        let avatarData = groupModel.avatarData
         let members = groupModel.members
         
-        avatar.image.load(url: URL(string: avatarUrl)!)
+        if let data = avatarData {
+            avatar.image.image = UIImage(data: data)
+        } else {
+            avatar.image.getData(from: avatarURL) { (data) in
+                DispatchQueue.main.async {
+                    self.avatar.image.image = UIImage(data: data)
+                    do { let realm = try? Realm()
+                        realm?.beginWrite()
+                        groupModel.avatarData = data
+                        try realm?.commitWrite()
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        
         nameLabel.text = name
         subscribeLabel?.text = isMember == 1 ? "✅" : "Subscribe"
         subscribeLabel?.tintColor = isMember == 1 ? .black : .systemPink

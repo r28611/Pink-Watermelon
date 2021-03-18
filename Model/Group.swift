@@ -12,7 +12,10 @@ class Group: Object, Decodable {
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""
     @objc dynamic var isMember: Int = 0
-    @objc dynamic var avatar: String = ""
+    @objc dynamic var avatar: String = "https://vk.com/images/community_100.png"
+    @objc dynamic var avatarData: Data? = nil
+    var avatarURL: URL { return URL(string: self.avatar)!}
+    
     
     var members: Int {
         get { return membersCount.value ?? 0 }

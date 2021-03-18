@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import RealmSwift
 
 class FriendsTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var avatar: RoundedImageWithShadow!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
@@ -22,14 +23,31 @@ class FriendsTableViewCell: UITableViewCell {
     
     private func setup() {
         guard let userModel = userModel else { return }
-
+        
         let name = userModel.name
         let surname = userModel.surname
         let city = userModel.city?.title ?? ""
         let avatarURL = userModel.avatarURL
+        let avatarData = userModel.avatarData
         let isOnline = userModel.isOnline
         
-        avatar.image.load(url: avatarURL)
+        if let data = avatarData {
+            avatar.image.image = UIImage(data: data)
+        } else {
+            avatar.image.getData(from: avatarURL) { (data) in
+                DispatchQueue.main.async {
+                    self.avatar.image.image = UIImage(data: data)
+                    do { let realm = try? Realm()
+                        realm?.beginWrite()
+                        userModel.avatarData = data
+                        try realm?.commitWrite()
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        
         nameLabel.text = name + " " + surname
         cityLabel.text = city
         onlineStatus.isHidden = !isOnline

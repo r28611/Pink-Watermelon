@@ -14,7 +14,7 @@ class User: Object, Decodable {
     @objc dynamic var surname = ""
     @objc dynamic var city: City? = City()
     @objc dynamic private var avatar = "https://vk.com/images/camera_100.png"
-    @objc dynamic var avatarData: Data = Data()
+    @objc dynamic var avatarData: Data? = nil
     var avatarURL: URL { return URL(string: self.avatar)!}
     
     // статус переделать чтобы не сохранять в бд
