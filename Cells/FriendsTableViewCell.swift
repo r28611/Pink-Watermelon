@@ -37,13 +37,10 @@ class FriendsTableViewCell: UITableViewCell {
             avatar.image.getData(from: avatarURL) { (data) in
                 DispatchQueue.main.async {
                     self.avatar.image.image = UIImage(data: data)
-                    do { let realm = try? Realm()
-                        realm?.beginWrite()
-                        userModel.avatarData = data
-                        try realm?.commitWrite()
-                    } catch {
-                        print(error.localizedDescription)
-                    }
+                    let realm = RealmManager.shared
+                    try? realm?.update(object: userModel, complition: { (user) in
+                        user.avatarData = data
+                    })
                 }
             }
         }

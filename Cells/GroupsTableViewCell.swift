@@ -36,13 +36,17 @@ class GroupsTableViewCell: UITableViewCell {
             avatar.image.getData(from: avatarURL) { (data) in
                 DispatchQueue.main.async {
                     self.avatar.image.image = UIImage(data: data)
-                    do { let realm = try? Realm()
-                        realm?.beginWrite()
-                        groupModel.avatarData = data
-                        try realm?.commitWrite()
-                    } catch {
-                        print(error.localizedDescription)
-                    }
+                    let realm = RealmManager.shared
+                    try? realm?.update(object: groupModel, complition: { (group) in
+                        group.avatarData = data
+                    })
+//                    do { let realm = try? Realm()
+//                        realm?.beginWrite()
+//                        groupModel.avatarData = data
+//                        try realm?.commitWrite()
+//                    } catch {
+//                        print(error.localizedDescription)
+//                    }
                 }
             }
         }

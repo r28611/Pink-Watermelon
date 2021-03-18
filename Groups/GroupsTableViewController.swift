@@ -25,7 +25,6 @@ class GroupsTableViewController: UITableViewController {
         
         NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
             DispatchQueue.main.async {
-                try? self?.realmManager?.deleteAll()
                 try? self?.realmManager?.save(objects: groups)
                 print("Пришли группы с ВК")
                 self?.tableView.reloadData()

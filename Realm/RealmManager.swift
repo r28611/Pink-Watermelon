@@ -34,6 +34,12 @@ class RealmManager {
         }
     }
     
+    func update<T: Object>(object: T, complition: (T) -> Void ) throws {
+        try realm.write {
+            complition(object)
+        }
+    }
+    
     func deleteAll() throws {
         try realm.write {
             realm.deleteAll()
