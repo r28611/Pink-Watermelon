@@ -10,6 +10,7 @@ import UIKit
 class LikeControl: UIControl {
 
     private var stackView: UIStackView!
+    private var counterLabel = UILabel()
     private let button = UIButton(type: .system)
     private var imageForLiked: UIImage! = UIImage(systemName: "heart.fill")
     private var colorForLiked: UIColor! = .systemPink
@@ -20,18 +21,10 @@ class LikeControl: UIControl {
             setupView()
         }
     }
-    var counterLabel = UILabel()
     
     var isLiked: Bool = false {
         didSet {
-            self.sendActions(for: .valueChanged)
-            if !oldValue {
-                counter += 1
-            } else {
-                counter -= 1
-            }
-            self.setupView()
-            animate()
+            setupView()
         }
     }
     
@@ -43,7 +36,7 @@ class LikeControl: UIControl {
         self.setupView()
     }
     
-    func animate() {
+    private func animate() {
         if isLiked {
             UIView.animate(withDuration: 0.15, animations: {
                 self.button.transform = .init(scaleX: 1.1, y: 1.1)
@@ -83,7 +76,7 @@ class LikeControl: UIControl {
         self.setupView()
     }
     
-    private func setupView() {
+    func setupView() {
         
         button.setImage(isLiked ? imageForLiked : imageForDisliked, for: .normal)
         button.tintColor = isLiked ? colorForLiked : colorForDisliked

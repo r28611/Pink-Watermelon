@@ -34,9 +34,9 @@ class RealmManager {
         }
     }
     
-    func update<T: Object>(object: T, complition: (T) -> Void ) throws {
+    func update(complition: () -> Void ) throws {
         try realm.write {
-            complition(object)
+            complition()
         }
     }
     

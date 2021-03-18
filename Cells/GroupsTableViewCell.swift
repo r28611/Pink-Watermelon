@@ -37,9 +37,9 @@ class GroupsTableViewCell: UITableViewCell {
                 DispatchQueue.main.async {
                     self.avatar.image.image = UIImage(data: data)
                     let realm = RealmManager.shared
-                    try? realm?.update(object: groupModel, complition: { (group) in
-                        group.avatarData = data
-                    })
+                    try? realm?.update {
+                        groupModel.avatarData = data
+                    }
 //                    do { let realm = try? Realm()
 //                        realm?.beginWrite()
 //                        groupModel.avatarData = data

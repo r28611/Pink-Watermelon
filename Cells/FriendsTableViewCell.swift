@@ -38,9 +38,9 @@ class FriendsTableViewCell: UITableViewCell {
                 DispatchQueue.main.async {
                     self.avatar.image.image = UIImage(data: data)
                     let realm = RealmManager.shared
-                    try? realm?.update(object: userModel, complition: { (user) in
-                        user.avatarData = data
-                    })
+                    try? realm?.update {
+                        userModel.avatarData = data
+                    }
                 }
             }
         }

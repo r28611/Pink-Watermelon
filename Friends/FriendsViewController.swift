@@ -25,6 +25,14 @@ class FriendsViewController: UIViewController {
         return users
     }
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = #colorLiteral(red: 0.1354144812, green: 0.8831900954, blue: 0.6704884171, alpha: 1)
+        refreshControl.attributedTitle = NSAttributedString(string: "Reload Data", attributes: [.font: UIFont.systemFont(ofSize: 12)])
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
+    
     @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
@@ -41,6 +49,7 @@ class FriendsViewController: UIViewController {
         searchTextField.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControl
         tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
     }
     
@@ -51,12 +60,7 @@ class FriendsViewController: UIViewController {
         groupUsersForTable(users: self.users)
         }
         render()
-        NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
-            try? self?.realmManager?.save(objects: users)
-            print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
-            self?.users = users
-            self?.render()
-        }
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -68,6 +72,16 @@ class FriendsViewController: UIViewController {
             self.searchImageCenterX.constant = 0
             self.searchCancelButtonLeading.constant = 0
             self.searchImage.tintColor = .gray
+        }
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
+            try? self?.realmManager?.save(objects: users)
+            print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
+            self?.users = users
+            self?.render()
+            self?.refreshControl.endRefreshing()
         }
     }
     
@@ -280,7 +294,7 @@ extension FriendsViewController: UITextFieldDelegate {
         return true
     }
     
-    @IBAction func searchCancelPressed(_ sender: Any) {
+    @IBAction func searchCancelPressed(_ sender: UIButton) {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, animations: {
             self.searchImage.tintColor = .gray

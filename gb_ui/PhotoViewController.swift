@@ -89,8 +89,6 @@ class PhotoViewController: UIViewController {
             }
         }
         
-        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
-        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
     }
     
     private enum Direction {
@@ -182,6 +180,9 @@ class PhotoViewController: UIViewController {
         default:
             break
         }
+        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
+        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
+        likeControl.setupView()
     }
     
 }
