@@ -24,6 +24,12 @@ class FriendsViewController: UIViewController {
         let users: Results<User>? = realmManager?.getObjects()
         return users
     }
+    private var filteredUserResults: Results<User>? {
+        let users: Results<User>? = realmManager?.getObjects()
+        return users?.filter("status == 1")
+    }
+    
+    private var filteredUsersNotificationToken: NotificationToken?
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -51,16 +57,43 @@ class FriendsViewController: UIViewController {
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
+        
+        filteredUsersNotificationToken = filteredUserResults?.observe { [weak self] change in
+            switch change {
+            case .initial(let users):
+                print("Initialize \(users.count)")
+                break
+            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                print("""
+                    New count \(users.count)
+                    Deletions \(deletions)
+                    Insertions \(insertions)
+                    Modifications \(modifications)
+                    """
+                    )
+                self?.tableView.beginUpdates()
+                let deletionIndexPaths = deletions.map { IndexPath(item: $0, section: 0) }
+                self?.tableView.deleteRows(at: deletionIndexPaths, with: .automatic)
+                self?.tableView.insertRows(at: insertions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                self?.tableView.reloadRows(at: modifications.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                self?.tableView.endUpdates()
+                
+                break
+            case .error(let error):
+                self?.showAlert(title: "Error", message: error.localizedDescription)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if let results = userResults {
-        self.users = results.toArray() as! [User]
-        groupUsersForTable(users: self.users)
+            self.users = results.toArray() as! [User]
+            groupUsersForTable(users: self.users)
+            render()
+        } else {
+            refresh(refreshControl)
         }
-        render()
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,6 +108,10 @@ class FriendsViewController: UIViewController {
         }
     }
     
+    deinit {
+        filteredUsersNotificationToken?.invalidate()
+    }
+    
     @objc private func refresh(_ sender: UIRefreshControl) {
         NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             try? self?.realmManager?.save(objects: users)
@@ -83,6 +120,16 @@ class FriendsViewController: UIViewController {
             self?.render()
             self?.refreshControl.endRefreshing()
         }
+    }
+    
+    private func showAlert(title: String? = nil,
+                           message: String? = nil,
+                           handler: ((UIAlertAction) -> Void)? = nil,
+                           completion: (() -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: .default, handler: handler)
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: completion)
     }
     
     func groupUsersForTable(users: [User]) {
@@ -98,9 +145,10 @@ class FriendsViewController: UIViewController {
         case 0:
             groupUsersForTable(users: self.users)
         default:
-            let filteredUsers = users.filter({$0.isOnline == true})
-            groupUsersForTable(users: filteredUsers)
+            if let filteredUsers = self.filteredUserResults {
+                groupUsersForTable(users: filteredUsers.toArray() as! [User] )
             self.charPicker.isHidden = true
+        }
         }
         self.tableView.reloadData()
     }
@@ -130,21 +178,7 @@ class FriendsViewController: UIViewController {
     // MARK: FriendsFilterControl
     
     @IBAction func friendsFilterControlChanged(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            groupUsersForTable(users: self.users)
-            self.charPicker.isHidden = false
-        } else {
-            //            let filteredUsers = users.filter({$0.isOnline == true})
-            do {
-                let realm = try Realm()
-                let onlineUsers = realm.objects(User.self).filter("status = 1")
-                groupUsersForTable(users: Array(onlineUsers))
-                self.charPicker.isHidden = true
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        tableView.reloadData()
+        render()
         self.searchTextField.text = ""
     }
     
@@ -157,7 +191,6 @@ class FriendsViewController: UIViewController {
             }
         }
     }
-    
 }
 
 // MARK: - Table view data source
