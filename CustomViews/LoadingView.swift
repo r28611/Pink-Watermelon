@@ -7,13 +7,14 @@
 
 import UIKit
 
-class LoadingView: UIView {
+final class LoadingView: UIView {
     
+    private let dotImage = UIImage(systemName: "circle.fill")
     private var stackView: UIStackView!
-    var firstDot = UIImageView()
-    var secondDot = UIImageView()
-    var thirdDot = UIImageView()
-    var dots = [UIImageView]()
+    private var firstDot = UIImageView()
+    private var secondDot = UIImageView()
+    private var thirdDot = UIImageView()
+    private var dots = [UIImageView]()
     
     override init(frame: CGRect) {
          super.init(frame: frame)
@@ -30,7 +31,7 @@ class LoadingView: UIView {
     func setupView() {
         dots = [firstDot, secondDot, thirdDot]
         for dot in dots {
-            dot.image = UIImage(systemName: "circle.fill")
+            dot.image = dotImage
             dot.contentMode = .scaleAspectFit
             dot.tintColor = .systemPink
         }

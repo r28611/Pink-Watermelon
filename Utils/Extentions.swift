@@ -21,10 +21,23 @@ extension UIImageView {
     }
     
     func getData(from url: URL, completion: @escaping (Data) -> ()) {
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url) {
                 completion(data)
             }
         }
     }
+}
+
+extension UILabel {
+
+    func calculateMaxLines() -> Int {
+        let maxSize = CGSize(width: frame.size.width, height: CGFloat(Float.infinity))
+        let charSize = font.lineHeight
+        let text = (self.text ?? "") as NSString
+        let textSize = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [.font: font as Any], context: nil)
+        let linesRoundedUp = Int(ceil(textSize.height/charSize))
+        return linesRoundedUp
+    }
+
 }

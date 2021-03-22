@@ -11,6 +11,7 @@ import RealmSwift
 class GroupsTableViewController: UITableViewController {
     
     private let realmManager = RealmManager.shared
+    private let networkManager = NetworkManager.shared
     private var groupsNotificationToken: NotificationToken?
     private var groups: Results<Group>? {
         let users: Results<Group>? = realmManager?.getObjects()
@@ -19,15 +20,31 @@ class GroupsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.refreshControl = {
-            let refreshControl = UIRefreshControl()
-            refreshControl.tintColor = #colorLiteral(red: 0.1354144812, green: 0.8831900954, blue: 0.6704884171, alpha: 1)
-            refreshControl.attributedTitle = NSAttributedString(string: "Reload Data", attributes: [.font: UIFont.systemFont(ofSize: 12)])
-            refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-            return refreshControl
-        }()
-        
-        
+        setRefresher()
+        setGroupRealmNotofocation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        if groups == nil {
+            getGroupsData()
+        }
+    }
+    
+    private func getGroupsData() {
+        networkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
+            DispatchQueue.main.async {
+                try? self?.realmManager?.save(objects: groups)
+                self?.refreshControl?.endRefreshing()
+            }
+        }
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        getGroupsData()
+    }
+    
+    private func setGroupRealmNotofocation() {
         groupsNotificationToken = groups?.observe { [weak self] change in
             switch change {
             case .initial(let groups):
@@ -41,38 +58,21 @@ class GroupsTableViewController: UITableViewController {
                 self?.tableView.endUpdates()
                 break
             case .error(let error):
-                self?.showAlert(title: "Error", message: error.localizedDescription)
+                let alert = Alert()
+                alert.showAlert(title: "Error", message: error.localizedDescription)
             }
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        if groups == nil {
-            refresh(refreshControl!)
-        }
+    private func setRefresher() {
+        tableView.refreshControl = {
+            let refreshControl = UIRefreshControl()
+            refreshControl.tintColor = Constants.greenColor
+            refreshControl.attributedTitle = NSAttributedString(string: Constants.refreshTitle, attributes: [.font: UIFont.systemFont(ofSize: 12)])
+            refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+            return refreshControl
+        }()
     }
-    
-    @objc private func refresh(_ sender: UIRefreshControl) {
-        NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
-            DispatchQueue.main.async {
-                try? self?.realmManager?.save(objects: groups)
-                print("Пришли группы с ВК")
-                self?.refreshControl?.endRefreshing()
-            }
-        }
-    }
-    
-    private func showAlert(title: String? = nil,
-                           message: String? = nil,
-                           handler: ((UIAlertAction) -> Void)? = nil,
-                           completion: (() -> Void)? = nil) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "OK", style: .default, handler: handler)
-        alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: completion)
-    }
-    
     
     // MARK: - Table view data source
     
@@ -81,7 +81,7 @@ class GroupsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GroupsTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? GroupsTableViewCell {
             
             cell.groupModel = groups?[indexPath.row]
             return cell

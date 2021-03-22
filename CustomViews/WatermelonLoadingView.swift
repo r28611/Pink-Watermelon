@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WatermelonLoadingView: UIView {
+final class WatermelonLoadingView: UIView {
     
     let staticWatermelon = CAShapeLayer()
     let layerAnimation = CAShapeLayer()

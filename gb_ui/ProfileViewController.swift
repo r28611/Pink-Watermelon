@@ -9,6 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
+    private let networkManager = NetworkManager.shared
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var logOutButton: UIButton!
@@ -33,7 +34,7 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        NetworkManager.getUserInfo(token: Session.shared.token) { [weak self] user in
+        networkManager.getUserInfo(token: Session.shared.token) { [weak self] user in
             self?.user = user
             print(user)
             DispatchQueue.main.async {

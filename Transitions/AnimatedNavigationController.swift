@@ -7,18 +7,14 @@
 
 import UIKit
 
-class AnimatedNavigationController: UINavigationController, UINavigationControllerDelegate {
+final class AnimatedNavigationController: UINavigationController, UINavigationControllerDelegate {
 
-    
     let interactiveTransition = InteractiveTransition()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         delegate = self
-        
-        view.backgroundColor = .systemPink
-
+        view.backgroundColor = Constants.pinkColor
     }
     
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {

@@ -10,6 +10,8 @@ import UIKit
 final class RoundedImageWithShadow: UIView {
     
     public var image: UIImageView!
+    private let shedowColor = UIColor.black.cgColor
+    private let imageBackgroundColor = UIColor.clear.cgColor
     
     var cornerRadius: CGFloat = 2 {
         didSet {
@@ -25,7 +27,6 @@ final class RoundedImageWithShadow: UIView {
     }()
     
     @objc func onTap() {
-        print("TAP")
         let animation = CASpringAnimation(keyPath: "transform.scale")
         animation.fromValue = 0.85
         animation.toValue = 1
@@ -34,8 +35,6 @@ final class RoundedImageWithShadow: UIView {
         animation.duration = 0.2
         animation.beginTime = CACurrentMediaTime()
         animation.fillMode = CAMediaTimingFillMode.backwards
-        //разобраться зачем это
-//        animation.isRemovedOnCompletion = true
         layer.add(animation, forKey: nil)
     }
     
@@ -61,17 +60,15 @@ final class RoundedImageWithShadow: UIView {
 
         image.frame = bounds
         image.contentMode = .scaleAspectFill
-        layer.backgroundColor = UIColor.clear.cgColor
+        layer.backgroundColor = imageBackgroundColor
         
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = shedowColor
         layer.shadowOpacity = 0.5
         layer.shadowRadius = 5
         layer.shadowOffset = CGSize(width: 0, height: 1)
         
         image.layer.cornerRadius = frame.width / cornerRadius
         image.layer.masksToBounds = true
-
-//        self.isUserInteractionEnabled = true
 
     }
 }

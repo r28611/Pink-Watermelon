@@ -23,8 +23,8 @@ class NetworkManager {
         
     }
     
-    static func loadGroups(token: String, completion: @escaping ([Group]) -> Void )  {
-        NetworkManager.sessionAF.request("https://api.vk.com/method/groups.get", method: .get, parameters: [
+    func loadGroups(token: String, completion: @escaping ([Group]) -> Void )  {
+        NetworkManager.sessionAF.request(Constants.vkGroupsURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "extended": 1,
             "fields": "members_count",
@@ -38,8 +38,8 @@ class NetworkManager {
         
     }
     
-    static func searchGroup(token: String, group name: String, completion: @escaping ([Group]) -> Void ) {
-        NetworkManager.sessionAF.request("https://api.vk.com/method/groups.search", method: .get, parameters: [
+    func searchGroup(token: String, group name: String, completion: @escaping ([Group]) -> Void ) {
+        NetworkManager.sessionAF.request(Constants.vkGroupsURL + Constants.vkMethodSearch, method: .get, parameters: [
             "access_token": token,
             "q": name, //текст поискового запроса
             "count": 10, //по умолчанию 20, максимальное значение 1000
@@ -52,8 +52,8 @@ class NetworkManager {
         }
     }
     
-    static func loadFriends(token: String, completion: @escaping ([User]) -> Void ) {
-        NetworkManager.sessionAF.request("https://api.vk.com/method/friends.get", method: .get, parameters: [
+    func loadFriends(token: String, completion: @escaping ([User]) -> Void ) {
+        NetworkManager.sessionAF.request(Constants.vkFriendsURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "order": "mobile",
             "fields": "city,photo_100,online",
@@ -67,8 +67,8 @@ class NetworkManager {
         }
     }
     
-    static func getUserInfo(token: String, completion: @escaping (User) -> Void ) {
-        NetworkManager.sessionAF.request("https://api.vk.com/method/users.get", method: .get, parameters: [
+    func getUserInfo(token: String, completion: @escaping (User) -> Void ) {
+        NetworkManager.sessionAF.request(Constants.vkUsersURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "user_ids": Session.shared.userId,
             "fields": "city,photo_100,counters,online",
@@ -86,8 +86,8 @@ class NetworkManager {
         }
     }
     
-    static func loadPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void )  {
-        NetworkManager.sessionAF.request("https://api.vk.com/method/photos.get", method: .get, parameters: [
+    func loadPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void )  {
+        NetworkManager.sessionAF.request(Constants.vkPhotosURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "owner_id": ownerId,
             "album_id": "profile", //wall — фотографии со стены, profile — фотографии профиля, saved — сохраненные фотографии

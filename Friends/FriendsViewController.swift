@@ -18,7 +18,7 @@ class FriendsViewController: UIViewController {
     var users = [User]()
     var sections = [FriendSection]()
     var chosenUser: User!
-    
+    private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
     private var userResults: Results<User>? {
         let users: Results<User>? = realmManager?.getObjects()
@@ -27,6 +27,24 @@ class FriendsViewController: UIViewController {
     private var filteredUserResults: Results<User>? {
         let users: Results<User>? = realmManager?.getObjects()
         return users?.filter("status == 1")
+    }
+    
+    private var sortedUsers: [[User]] {
+        guard let filteredUsers = filteredUserResults else { return [] }
+        let users: [User] = Array(filteredUsers)
+        var sortedUsers = [User]()
+        
+        let groupedElements = Dictionary(grouping: users) { (user) -> String in
+            return String(user.name.prefix(1))
+        }
+        
+        let sortedKeys = groupedElements.keys.sorted()
+        sortedKeys.forEach { (key) in
+            let values = groupedElements[key]
+            sortedUsers.append(contentsOf: values ?? [])
+        }
+        
+        return [sortedUsers]
     }
     
     private var filteredUsersNotificationToken: NotificationToken?
@@ -63,24 +81,13 @@ class FriendsViewController: UIViewController {
             case .initial(let users):
                 print("Initialize \(users.count)")
                 break
-            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                print("""
-                    New count \(users.count)
-                    Deletions \(deletions)
-                    Insertions \(insertions)
-                    Modifications \(modifications)
-                    """
-                    )
-                self?.tableView.beginUpdates()
-                let deletionIndexPaths = deletions.map { IndexPath(item: $0, section: 0) }
-                self?.tableView.deleteRows(at: deletionIndexPaths, with: .automatic)
-                self?.tableView.insertRows(at: insertions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
-                self?.tableView.reloadRows(at: modifications.map { IndexPath(item: $0, section: 0) }, with: .automatic)
-                self?.tableView.endUpdates()
+            case .update:
+                self?.tableView.reloadData()
                 
                 break
             case .error(let error):
-                self?.showAlert(title: "Error", message: error.localizedDescription)
+                let alert = Alert()
+                alert.showAlert(title: "Error", message: error.localizedDescription)
             }
         }
     }
@@ -113,23 +120,13 @@ class FriendsViewController: UIViewController {
     }
     
     @objc private func refresh(_ sender: UIRefreshControl) {
-        NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
+        networkManager.loadFriends(token: Session.shared.token) { [weak self] users in
             try? self?.realmManager?.save(objects: users)
             print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
             self?.users = users
             self?.render()
             self?.refreshControl.endRefreshing()
         }
-    }
-    
-    private func showAlert(title: String? = nil,
-                           message: String? = nil,
-                           handler: ((UIAlertAction) -> Void)? = nil,
-                           completion: (() -> Void)? = nil) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "OK", style: .default, handler: handler)
-        alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: completion)
     }
     
     func groupUsersForTable(users: [User]) {
@@ -147,8 +144,8 @@ class FriendsViewController: UIViewController {
         default:
             if let filteredUsers = self.filteredUserResults {
                 groupUsersForTable(users: filteredUsers.toArray() as! [User] )
-            self.charPicker.isHidden = true
-        }
+                self.charPicker.isHidden = true
+            }
         }
         self.tableView.reloadData()
     }
@@ -205,11 +202,12 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+//        return users?[section].items.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.friendCellIdentifier, for: indexPath) as? FriendsTableViewCell {
             cell.contentView.alpha = 0
             UIView.animate(withDuration: 1,
                            delay: 0,
@@ -237,6 +235,17 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         chosenUser = sections[indexPath.section].items[indexPath.row]
         performSegue(withIdentifier: "to_collection", sender: self)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let user = userResults?[indexPath.row] else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+        if editingStyle == .delete {
+            //реализовать удаление на api
+            try? realmManager?.delete(object: user)
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
