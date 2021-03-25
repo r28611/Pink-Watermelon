@@ -17,15 +17,15 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wf-O6-5M7" customClass="RoundedImageWithShadow" customModule="gb_ui" customModuleProvider="target">
-                        <rect key="frame" x="8" y="8" width="60" height="60"/>
+                        <rect key="frame" x="8" y="8" width="50" height="50"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="60" id="Irx-Zb-o9u"/>
+                            <constraint firstAttribute="height" constant="50" id="Irx-Zb-o9u"/>
                             <constraint firstAttribute="width" secondItem="2wf-O6-5M7" secondAttribute="height" multiplier="1:1" id="PP9-vx-GOc"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="juD-L6-QWp" userLabel="News Info">
-                        <rect key="frame" x="84" y="8" width="322" height="42"/>
+                        <rect key="frame" x="74" y="8" width="332" height="42"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CgM-4B-CRW">
                                 <rect key="frame" x="0.0" y="0.0" width="41.5" height="20.5"/>
@@ -42,7 +42,7 @@
                         </subviews>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1g-TA-fS3">
-                        <rect key="frame" x="8" y="76" width="398" height="218"/>
+                        <rect key="frame" x="8" y="66" width="398" height="228"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

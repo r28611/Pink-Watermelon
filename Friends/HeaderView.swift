@@ -19,9 +19,8 @@ class HeaderView: UITableViewHeaderFooterView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+        self.tintColor = UIColor.systemPink.withAlphaComponent(0.3)
         layer.cornerRadius = frame.height / 2
-        // какие углы скруглять
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         layer.masksToBounds = true
     }

@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class RealmManager {
+final class RealmManager {
     static let shared = RealmManager()
     
     private init?() {
@@ -31,6 +31,12 @@ class RealmManager {
     func delete<T: Object>(object: T) throws {
         try realm.write {
             realm.delete(object)
+        }
+    }
+    
+    func update(complition: () -> Void ) throws {
+        try realm.write {
+            complition()
         }
     }
     

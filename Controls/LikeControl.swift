@@ -7,31 +7,24 @@
 
 import UIKit
 
-class LikeControl: UIControl {
+final class LikeControl: UIControl {
 
     private var stackView: UIStackView!
+    private var counterLabel = UILabel()
     private let button = UIButton(type: .system)
-    private var imageForLiked: UIImage! = UIImage(systemName: "heart.fill")
+    private var imageForLiked: UIImage! = Constants.likedImage
     private var colorForLiked: UIColor! = .systemPink
-    private var imageForDisliked: UIImage! = UIImage(systemName: "heart")
+    private var imageForDisliked: UIImage! = Constants.unlikedImage
     private var colorForDisliked: UIColor! = .darkGray
     var counter: Int = 0 {
         didSet {
             setupView()
         }
     }
-    var counterLabel = UILabel()
     
     var isLiked: Bool = false {
         didSet {
-            self.sendActions(for: .valueChanged)
-            if !oldValue {
-                counter += 1
-            } else {
-                counter -= 1
-            }
-            self.setupView()
-            animate()
+            setupView()
         }
     }
     
@@ -43,7 +36,7 @@ class LikeControl: UIControl {
         self.setupView()
     }
     
-    func animate() {
+    private func animate() {
         if isLiked {
             UIView.animate(withDuration: 0.15, animations: {
                 self.button.transform = .init(scaleX: 1.1, y: 1.1)
@@ -61,25 +54,15 @@ class LikeControl: UIControl {
         UIView.animate(withDuration: 0.1, animations: {
                 self.counterLabel.frame.origin.x -= 5
         })
-        //разобраться почему не работет transition
-//        UIView.transition(with: counterLabel,
-//                          duration: 0.5,
-//                          options: .transitionFlipFromRight,
-//                          animations: {
-//            self.counterLabel.text = String(self.counter)
-//        })
-
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.setupView()
      }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         self.setupView()
     }
     
@@ -102,6 +85,7 @@ class LikeControl: UIControl {
 
     @objc func toogleIsLiked(_ sender: UIButton) {
         isLiked.toggle()
+        //реализовать на api
     }
     
 }

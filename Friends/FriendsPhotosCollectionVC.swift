@@ -11,8 +11,8 @@ import RealmSwift
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var friend: User!
-
     var chosenPhotoIndex = 0
+    private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
     private var photos: Results<Photo>? {
         let photos: Results<Photo>? = realmManager?.getObjects()
@@ -21,13 +21,18 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "\(friend.name)'s photos"
+        self.title = Constants.photosCollectionTitle(name: friend.name)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        NetworkManager.loadPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
+        if photos == nil {
+            getPhotosData()
+        }
+    }
+    
+    private func getPhotosData() {
+        networkManager.loadPhotos(token: Session.shared.token, userId: self.friend.id) { [weak self] photos in
             DispatchQueue.main.async {
                 try? self?.realmManager?.save(objects: photos)
                 self?.collectionView.reloadData()
@@ -38,7 +43,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "to_photoScene" {
+        if segue.identifier == Constants.photoVCIdentifier {
             if let destination = segue.destination as? PhotoViewController {
                 destination.currentIndex = chosenPhotoIndex
                 destination.userId = friend.id
@@ -48,7 +53,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.chosenPhotoIndex = indexPath.item
-        performSegue(withIdentifier: "to_photoScene", sender: self)
+        performSegue(withIdentifier: Constants.photoVCIdentifier, sender: self)
     }
 
     // MARK: UICollectionViewDataSource
@@ -58,7 +63,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? PhotosCollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.photoCellIdentifier, for: indexPath) as? PhotosCollectionViewCell {
             let photo = photos?[indexPath.item]
             cell.photoModel = photo
             return cell

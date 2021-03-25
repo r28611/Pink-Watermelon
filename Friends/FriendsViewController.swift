@@ -13,18 +13,7 @@ struct FriendSection {
     var items: [User]
 }
 
-class FriendsViewController: UIViewController {
-    
-    var users = [User]()
-    var sections = [FriendSection]()
-    var chosenUser: User!
-    
-    private let realmManager = RealmManager.shared
-    private var userResults: Results<User>? {
-        let users: Results<User>? = realmManager?.getObjects()
-        return users
-    }
-    
+final class FriendsViewController: UIViewController {
     @IBOutlet weak var friendsFilterControl: UISegmentedControl!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
@@ -32,30 +21,49 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var searchImageCenterX: NSLayoutConstraint!
     @IBOutlet weak var searchCancelButton: UIButton!
     @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
-    
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
+    
+    private var users = [User]()
+    private var sections = [FriendSection]()
+    private var chosenUser: User!
+    
+    private let networkManager = NetworkManager.shared
+    private let realmManager = RealmManager.shared
+    private var userResults: Results<User>? {
+        let users: Results<User>? = realmManager?.getObjects()
+        return users
+    }
+    private var filteredUserResults: Results<User>? {
+        let users: Results<User>? = realmManager?.getObjects()
+        return users?.filter("status == 1")
+    }
+    private var filteredUsersNotificationToken: NotificationToken?
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = Constants.greenColor
+        refreshControl.attributedTitle = NSAttributedString(string: Constants.refreshTitle, attributes: [.font: UIFont.systemFont(ofSize: 12)])
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: "HeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "HeaderView")
+        setupTableView()
+        
+        setFilteredUsersRealmNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if let results = userResults {
-        self.users = results.toArray() as! [User]
-        groupUsersForTable(users: self.users)
-        }
-        render()
-        NetworkManager.loadFriends(token: Session.shared.token) { [weak self] users in
-            try? self?.realmManager?.save(objects: users)
-            print(Realm.Configuration.defaultConfiguration.fileURL ?? "Realm error")
-            self?.users = users
-            self?.render()
+            self.users = results.toArray() as! [User]
+            groupUsersForTable(users: self.users)
+            render()
+        } else {
+            refresh(refreshControl)
         }
     }
     
@@ -71,6 +79,33 @@ class FriendsViewController: UIViewController {
         }
     }
     
+    deinit {
+        filteredUsersNotificationToken?.invalidate()
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        networkManager.loadFriends(token: Session.shared.token) { [weak self] users in
+            try? self?.realmManager?.save(objects: users)
+            #if DEBUG
+            if let fileURL = Realm.Configuration.defaultConfiguration.fileURL {
+                print(fileURL)
+            }
+            #endif
+            self?.users = users
+            DispatchQueue.main.async {
+                self?.render()
+                self?.refreshControl.endRefreshing()
+            }
+        }
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.refreshControl = refreshControl
+        tableView.register(UINib(nibName: Constants.friendsSectionHeader, bundle: nil), forHeaderFooterViewReuseIdentifier: Constants.friendsSectionHeader)
+    }
+    
     func groupUsersForTable(users: [User]) {
         let friendsDictionary = Dictionary.init(grouping: users) {$0.surname.prefix(1)}
         sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
@@ -84,11 +119,35 @@ class FriendsViewController: UIViewController {
         case 0:
             groupUsersForTable(users: self.users)
         default:
-            let filteredUsers = users.filter({$0.isOnline == true})
-            groupUsersForTable(users: filteredUsers)
-            self.charPicker.isHidden = true
+            if let filteredUsers = self.filteredUserResults {
+                groupUsersForTable(users: filteredUsers.toArray() as! [User] )
+                self.charPicker.isHidden = true
+            }
         }
         self.tableView.reloadData()
+    }
+    
+    private func setFilteredUsersRealmNotification() {
+        filteredUsersNotificationToken = filteredUserResults?.observe { change in
+            switch change {
+            case .initial(let users):
+                print("Initialize \(users.count)")
+                break
+            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                print("""
+                    New count \(users.count)
+                    Deletions \(deletions)
+                    Insertions \(insertions)
+                    Modifications \(modifications)
+                    """
+                )
+                break
+            case .error(let error):
+                let alert = Alert()
+                alert.showAlert(title: "Error", message: error.localizedDescription)
+
+            }
+        }
     }
     
     // MARK: - Character Picker
@@ -116,34 +175,45 @@ class FriendsViewController: UIViewController {
     // MARK: FriendsFilterControl
     
     @IBAction func friendsFilterControlChanged(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            groupUsersForTable(users: self.users)
-            self.charPicker.isHidden = false
-        } else {
-            //            let filteredUsers = users.filter({$0.isOnline == true})
-            do {
-                let realm = try Realm()
-                let onlineUsers = realm.objects(User.self).filter("status = 1")
-                groupUsersForTable(users: Array(onlineUsers))
-                self.charPicker.isHidden = true
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        tableView.reloadData()
+        render()
         self.searchTextField.text = ""
+    }
+    
+    @IBAction func searchCancelPressed(_ sender: UIButton) {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.searchImage.tintColor = .gray
+            
+            self.searchTextFieldLeading.constant = 0
+            self.view.layoutIfNeeded()
+        })
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.2,
+                       options: [],
+                       animations: {
+                        self.searchImageCenterX.constant = 0
+                        self.searchCancelButtonLeading.constant = 0
+                        self.view.layoutIfNeeded()
+                       })
+        
+        searchTextField.endEditing(true)
+        guard searchTextField.text != "" else { return }
+        searchTextField.text = ""
+        groupUsersForTable(users: self.users)
+        tableView.reloadData()
     }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "to_collection" {
+        if segue.identifier == Constants.photoCollectionVCIdentifier {
             if let destination = segue.destination as? FriendsPhotosCollectionViewController {
                 destination.friend = chosenUser
             }
         }
     }
-    
 }
 
 // MARK: - Table view data source
@@ -162,7 +232,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? FriendsTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.friendCellIdentifier, for: indexPath) as? FriendsTableViewCell {
             cell.contentView.alpha = 0
             UIView.animate(withDuration: 1,
                            delay: 0,
@@ -175,6 +245,9 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             
             let user = sections[indexPath.section].items[indexPath.row]
             cell.userModel = user
+            
+//            let finalUser = filteredUserResults?.first { $0 == user }
+//            cell.userModel = finalUser
             return cell
         }
         return UITableViewCell()
@@ -189,13 +262,28 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         chosenUser = sections[indexPath.section].items[indexPath.row]
-        performSegue(withIdentifier: "to_collection", sender: self)
+        performSegue(withIdentifier: Constants.photoCollectionVCIdentifier, sender: self)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            let user = sections[indexPath.section].items[indexPath.row]
+            try? realmManager?.delete(object: user)
+            //реализовать удаление на api
+            sections[indexPath.section].items.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            if sections[indexPath.section].items.count == 0 {
+                let indexSet = IndexSet(integer: indexPath.section)
+                sections.remove(at: indexPath.section)
+                tableView.deleteSections(indexSet, with: .automatic)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView") as? HeaderView {
+        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.friendsSectionHeader) as? HeaderView {
             header.headerLabel.text = sections[section].title
-            header.tintColor = UIColor.systemPink.withAlphaComponent(0.3)
             return header
         }
         return nil
@@ -248,7 +336,6 @@ extension FriendsViewController: UITextFieldDelegate {
                     let filteredUsers = users
                         .filter({$0.isOnline == true})
                         .filter({($0.name + $0.surname).lowercased().contains(text.lowercased())})
-                    self.groupUsersForTable(users: filteredUsers)
                     groupUsersForTable(users: filteredUsers)
                 }
             }
@@ -279,31 +366,4 @@ extension FriendsViewController: UITextFieldDelegate {
         }
         return true
     }
-    
-    @IBAction func searchCancelPressed(_ sender: Any) {
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.searchImage.tintColor = .gray
-            
-            self.searchTextFieldLeading.constant = 0
-            self.view.layoutIfNeeded()
-        })
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.2,
-                       options: [],
-                       animations: {
-                        self.searchImageCenterX.constant = 0
-                        self.searchCancelButtonLeading.constant = 0
-                        self.view.layoutIfNeeded()
-                       })
-        
-        searchTextField.endEditing(true)
-        guard searchTextField.text != "" else { return }
-        searchTextField.text = ""
-        groupUsersForTable(users: self.users)
-        tableView.reloadData()
-    }
-    
 }

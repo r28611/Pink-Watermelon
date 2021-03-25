@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 //мне не нравится что происходит на этом экране
-class PhotoViewController: UIViewController {
+final class PhotoViewController: UIViewController {
     
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var likeControl: LikeControl!
@@ -24,11 +24,10 @@ class PhotoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
-        likeControl.set(colorDisliked: .gray,
-                        iconDisliked: UIImage(systemName: "heart")!,
-                        colorLiked: .systemPink,
-                        iconLiked: UIImage(systemName: "heart.fill")!)
+        likeControl.set(colorDisliked: Constants.greyColor,
+                        iconDisliked: Constants.unlikedImage!,
+                        colorLiked: Constants.pinkColor,
+                        iconLiked: Constants.likedImage!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,8 +37,7 @@ class PhotoViewController: UIViewController {
         if let url = currentPhoto?.sizes.last?.url {
             image.load(url: URL(string: url)!)
         }
-        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
-        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
+        updateLikesState()
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapOnImage))
         tap.numberOfTapsRequired = 2
         image.addGestureRecognizer(tap)
@@ -54,6 +52,11 @@ class PhotoViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    private func updateLikesState() {
+        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
+        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
+    }
+    
     private func changeImage(direction: Direction) {
         switch direction {
         case .next:
@@ -66,12 +69,12 @@ class PhotoViewController: UIViewController {
                     
                     DispatchQueue.main.async {
                         self.animateTransition(view: self.image, toImage: imageFromData!, direction: direction)
-                        self.currentIndex += 1
+                        
                     }
                 }
                 
             }
-            
+            self.currentIndex += 1
             
         case .previous:
             if currentIndex > 0 {
@@ -83,14 +86,13 @@ class PhotoViewController: UIViewController {
                     
                     DispatchQueue.main.async {
                         self.animateTransition(view: self.image, toImage: imageFromData!, direction: direction)
-                        self.currentIndex -= 1
                     }
                 }
+                self.currentIndex -= 1
             }
         }
         
-        likeControl.counter = (self.photos?[currentIndex].likes!.count)!
-        likeControl.isLiked = (self.photos?[currentIndex].isLiked)!
+        updateLikesState()
     }
     
     private enum Direction {
@@ -168,7 +170,7 @@ class PhotoViewController: UIViewController {
                 }
             })
             
-                    animator?.startAnimation()
+            animator?.startAnimation()
         case .changed:
             animator.fractionComplete = abs(translation.x / 100)
         case .ended:

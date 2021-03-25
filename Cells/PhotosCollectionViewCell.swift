@@ -10,7 +10,6 @@ import UIKit
 class PhotosCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var photoImage: UIImageView!
-    @IBOutlet weak var likeControl: LikeControl!
     
     var photoModel: Photo? {
         didSet {
@@ -21,12 +20,10 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     private func setup() {
         guard let photoModel = photoModel else { return }
 
-        let photoURL = photoModel.sizes.first?.url ?? ""
-        let isLiked = photoModel.isLiked
-        let likeCounter = photoModel.likes?.count ?? 0
+        let photoURL = photoModel.sizes.first?.url ?? Constants.vkNonexistentPhotoURL
         
         photoImage.load(url: URL(string: photoURL)!)
-        likeControl.isLiked = isLiked
-        likeControl.counter = likeCounter
+        photoImage.contentMode = .scaleAspectFill
+        photoImage.layer.masksToBounds = true
     }
 }

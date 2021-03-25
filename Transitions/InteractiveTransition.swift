@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InteractiveTransition: UIPercentDrivenInteractiveTransition {
+final class InteractiveTransition: UIPercentDrivenInteractiveTransition {
     
     var viewController: UIViewController? {
         didSet {

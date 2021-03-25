@@ -11,6 +11,8 @@ import RealmSwift
 class GroupsTableViewController: UITableViewController {
     
     private let realmManager = RealmManager.shared
+    private let networkManager = NetworkManager.shared
+    private var groupsNotificationToken: NotificationToken?
     private var groups: Results<Group>? {
         let users: Results<Group>? = realmManager?.getObjects()
         return users?.sorted(byKeyPath: "membersCount", ascending: false) // по убыванию количества участников
@@ -18,19 +20,58 @@ class GroupsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setRefresher()
+        setGroupRealmNotofocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        NetworkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
+        if groups == nil {
+            getGroupsData()
+        }
+    }
+    
+    private func getGroupsData() {
+        networkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
             DispatchQueue.main.async {
-                try? self?.realmManager?.deleteAll()
                 try? self?.realmManager?.save(objects: groups)
-                print("Пришли группы с ВК")
-                self?.tableView.reloadData()
+                self?.refreshControl?.endRefreshing()
             }
         }
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        getGroupsData()
+    }
+    
+    private func setGroupRealmNotofocation() {
+        groupsNotificationToken = groups?.observe { [weak self] change in
+            switch change {
+            case .initial(let groups):
+                print("Initialize \(groups.count)")
+                break
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                self?.tableView.beginUpdates()
+                self?.tableView.deleteRows(at: deletions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                self?.tableView.insertRows(at: insertions.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                self?.tableView.reloadRows(at: modifications.map { IndexPath(item: $0, section: 0) }, with: .automatic)
+                self?.tableView.endUpdates()
+                break
+            case .error(let error):
+                let alert = Alert()
+                alert.showAlert(title: "Error", message: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func setRefresher() {
+        tableView.refreshControl = {
+            let refreshControl = UIRefreshControl()
+            refreshControl.tintColor = Constants.greenColor
+            refreshControl.attributedTitle = NSAttributedString(string: Constants.refreshTitle, attributes: [.font: UIFont.systemFont(ofSize: 12)])
+            refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+            return refreshControl
+        }()
     }
     
     // MARK: - Table view data source
@@ -40,7 +81,7 @@ class GroupsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? GroupsTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? GroupsTableViewCell {
             
             cell.groupModel = groups?[indexPath.row]
             return cell
@@ -61,23 +102,7 @@ class GroupsTableViewController: UITableViewController {
         }
         if editingStyle == .delete {
             //реализовать удаление на api
-            if (try? realmManager?.delete(object: group)) != nil {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
+            try? realmManager?.delete(object: group) 
         }
     }
-    
-    // MARK: - Navigation
-    
-    //    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
-    //            guard let tableViewController = segue.source as? AllGroupsTableViewController,
-    //                     let indexPath = tableViewController.tableView.indexPathForSelectedRow else { return }
-    //
-    //            let group = tableViewController.groups[indexPath.row]
-    //
-    //            if !groups.contains(where: { group.id == $0.id }) {
-    //                groups.append(group)
-    //            }
-    //    }
-    
 }

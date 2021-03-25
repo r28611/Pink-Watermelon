@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewsCell: UITableViewCell {
+final class NewsCell: UITableViewCell {
     
     private var newsPhotos = [UIImage]()
     
@@ -76,7 +76,8 @@ extension NewsCell: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         let image = UIImageView(image: newsPhotos[indexPath.row])
         cell.addSubview(image)
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
+        image.layer.masksToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
         image.widthAnchor.constraint(equalTo: cell.widthAnchor, multiplier: 1).isActive = true
         image.heightAnchor.constraint(equalTo: cell.heightAnchor, multiplier: 1).isActive = true
@@ -88,7 +89,28 @@ extension NewsCell: UICollectionViewDataSource {
 
 extension NewsCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = (collectionView.bounds.width - 10) / 2
-        return CGSize(width: cellWidth, height: cellWidth)
+        //сделать нормальный алгоритм
+        switch newsPhotos.count {
+        case 1:
+            return collectionView.frame.size
+        case 2:
+            return CGSize(width: (collectionView.bounds.width / 2) - 5,
+                          height: collectionView.bounds.height)
+        case 3, 4:
+            return CGSize(width: (collectionView.bounds.width / 2) - 5,
+                          height: (collectionView.bounds.height / 2) - 5)
+        case 5, 6:
+            return CGSize(width: (collectionView.bounds.width / 3) - 5,
+                          height: (collectionView.bounds.height  / 2) - 5)
+        case 7, 8:
+            return CGSize(width: (collectionView.bounds.width / 4) - 5,
+                      height: (collectionView.bounds.height  / 2) - 5)
+        case 9:
+            return CGSize(width: (collectionView.bounds.width / 3) - 5,
+                      height: (collectionView.bounds.height  / 3) - 8)
+        default:
+            return CGSize(width: (collectionView.bounds.width / 5) - 5,
+                      height: (collectionView.bounds.height  / 2) - 5)
+        }
     }
 }
