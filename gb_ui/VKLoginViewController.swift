@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class VKLoginViewController: UIViewController {
+final class VKLoginViewController: UIViewController {
     
     @IBOutlet weak var webView: WKWebView! {
         didSet {
@@ -18,22 +18,8 @@ class VKLoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "oauth.vk.com"
-        components.path = "/authorize"
-        components.queryItems = [
-            URLQueryItem(name: "client_id", value: Session.shared.clientId),
-            URLQueryItem(name: "scope", value: Session.shared.scope),
-            URLQueryItem(name: "display", value: "mobile"),
-            URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
-            URLQueryItem(name: "response_type", value: "token"),
-            URLQueryItem(name: "v", value: "5.92")
-        ]
-        
-        let request = URLRequest(url: components.url!)
-        webView.load(request)
+
+        webView.load(URLRequest(url: Constants.vkAuthViewRequest.url!))
     }
 }
 
@@ -72,6 +58,6 @@ extension VKLoginViewController: WKNavigationDelegate {
         Session.shared.userId = userId
         
         decisionHandler(.cancel)
-        performSegue(withIdentifier: "to_tabBarControllerVK", sender: self)
+        performSegue(withIdentifier: Constants.VKtabBarVC, sender: self)
     }
 }

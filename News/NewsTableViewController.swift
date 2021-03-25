@@ -8,8 +8,6 @@
 import UIKit
 
 final class NewsTableViewController: UITableViewController, UICollectionViewDelegate {
-    
-    let users = [User]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +29,11 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
             cell.newsText.numberOfLines = 3
             
             cell.configureNewsPhotoCollection(photos: [
+                UIImage(named: "\(Int.random(in: 1...23))")!,
+                UIImage(named: "\(Int.random(in: 1...23))")!,
+                UIImage(named: "\(Int.random(in: 1...23))")!,
+                UIImage(named: "\(Int.random(in: 1...23))")!,
+                UIImage(named: "\(Int.random(in: 1...23))")!,
                 UIImage(named: "\(Int.random(in: 1...23))")!,
                 UIImage(named: "\(Int.random(in: 1...23))")!,
                 UIImage(named: "\(Int.random(in: 1...23))")!,

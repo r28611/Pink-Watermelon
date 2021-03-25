@@ -25,10 +25,6 @@ class Photo: Object, Decodable {
     override static func primaryKey() -> String? {
         return "id"
     }
-    
-//    override static func ignoredProperties() -> [String] {
-//        return ["likes", "isLiked"]
-//    }
 }
 
 class Size: Object, Decodable {

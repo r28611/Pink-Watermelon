@@ -7,8 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
-
+final class LoginViewController: UIViewController {
 
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var authVKButton: UIButton!
@@ -21,65 +20,27 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let buttons = [self.loginButton, self.authVKButton, self.signupButton]
-        for button in buttons {
-            button?.layer.cornerRadius = (button?.frame.height)! / 4
-        }
+        setupButtons()
         
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "to_signup_view":
-            if let destination = segue.destination as? SignupViewController {
-                destination.textForLabel = userNameTextField.text!
-            }
-        case "to_tabBarController":
-//             какой таб будет отображаться при загрузке tabbarcontroller - но тогда не передает TextField.text
+        if segue.identifier == Constants.tabBarVC {
             let tabBarController = segue.destination as? UITabBarController
             tabBarController?.selectedIndex = 3
-        default:
-            break
         }
     }
     
-    // MARK: - проверка на админа
-    /*
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        let checkResult = checkUserData()
-        if identifier == "to_tabBarController" {
-            if !checkResult {
-                showLoginError()
-            }
+    private func setupButtons() {
+        let buttons = [self.loginButton, self.authVKButton, self.signupButton]
+        for button in buttons {
+            button?.layer.cornerRadius = (button?.frame.height)! / 4
         }
-        return checkResult
-    }
-        
-    func checkUserData() -> Bool {
-        guard let login = userNameTextField.text, let password = userPasswordTextField.text else { return false }
-        if login == "admin" && password == "123456" {
-            return true
-        } else {
-            return false
-        }
-    }
-        
-    func showLoginError() {
-        let alter = UIAlertController(title: "Sorry", message: "Wrong username or password", preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alter.addAction(action)
-        present(alter, animated: true, completion: nil)
-    }
-*/
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     @objc func keybordWillShow (notification: Notification) {
@@ -98,11 +59,11 @@ class LoginViewController: UIViewController {
         }
     
     @IBAction func loginButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "to_tabBarController", sender: self)
+        performSegue(withIdentifier: Constants.tabBarVC, sender: self)
     }
     
     @IBAction func VKloginButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "VKlogin", sender: self)
+        performSegue(withIdentifier: Constants.vkLoginWebView, sender: self)
     }
 
 }

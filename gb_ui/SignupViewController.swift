@@ -7,29 +7,21 @@
 
 import UIKit
 
-class SignupViewController: UIViewController {
+final class SignupViewController: UIViewController {
 
-    @IBOutlet weak var loadingView: LoadingView!
+    @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var cloudView: WatermelonLoadingView!
-    public var textForLabel: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
-        for _ in 1...10 {
-            
-            loadingView.animate()
-        }
-        
         cloudView.setup()
-       
-            
-        
+        welcomeLabel.text = "Here will be authorization form soon! Stay tuned for more fun!"
+        welcomeLabel.numberOfLines = welcomeLabel.calculateMaxLines()
+        welcomeLabel.textColor = Constants.greenColor
     }
     
 

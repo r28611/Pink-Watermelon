@@ -7,18 +7,16 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
 
-    private let networkManager = NetworkManager.shared
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var logOutButton: UIButton!
-    
     @IBOutlet weak var avatar: RoundedImageWithShadow!
     @IBOutlet weak var newsTableView: UITableView!
-    
-    let userId = Session.shared.userId
-    var user = User()
+    private let networkManager = NetworkManager.shared
+    private let userId = Session.shared.userId
+    private var user = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +26,6 @@ class ProfileViewController: UIViewController {
         newsTableView.dataSource = self
         logOutButton.layer.cornerRadius = logOutButton.frame.height / 5
         avatar.isUserInteractionEnabled = false
-        avatar.cornerRadius = 4
     }
     
     override func viewWillAppear(_ animated: Bool) {

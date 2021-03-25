@@ -20,7 +20,7 @@ final class WatermelonLoadingView: UIView {
         watermelon.addQuadCurve(to: CGPoint(x: 20, y: 10), controlPoint: CGPoint(x: 55, y: 70))
         watermelon.close()
         staticWatermelon.path = watermelon.cgPath
-        staticWatermelon.fillColor = UIColor.red.cgColor
+        staticWatermelon.fillColor = Constants.pinkColor.cgColor
         self.layer.addSublayer(staticWatermelon)
         
         let shape = UIBezierPath()
@@ -31,7 +31,7 @@ final class WatermelonLoadingView: UIView {
         shape.close()
         
         layerAnimation.path = shape.cgPath
-        layerAnimation.strokeColor = UIColor.systemGreen.cgColor
+        layerAnimation.strokeColor = Constants.greenColor.cgColor
         layerAnimation.fillColor = UIColor.clear.cgColor
         layerAnimation.lineWidth = 3
         layerAnimation.lineCap = .round

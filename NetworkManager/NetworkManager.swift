@@ -77,7 +77,7 @@ class NetworkManager {
             switch response.result {
             case .success:
                 guard let data = response.value else { return }
-                if let user = try? JSONDecoder().decode(VKResponse.self, from: data).response.first {
+                if let user = try? JSONDecoder().decode(VKUserResponse.self, from: data).response.first {
                     completion(user)
                 }
             case .failure(let error):
