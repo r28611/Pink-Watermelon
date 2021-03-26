@@ -107,4 +107,20 @@ class NetworkManager {
             }
         }
     }
+    
+    func loadNewsPost(token: String, completion: @escaping ([NewsPost]) -> Void ) {
+        NetworkManager.sessionAF.request(Constants.vkNewsURL + Constants.vkMethodGet, method: .get, parameters: [
+            "access_token": token,
+            "filters": "post",
+            "return_banned": 0,
+            "count": 10, //указывает, какое максимальное число новостей следует возвращать, но не более 100. По умолчанию 50
+            "v": "5.130"
+        ]).responseData { (response) in
+            guard let data = response.value else { return }
+            
+            if let news = try? JSONDecoder().decode(VKNewsResponse.self, from: data).response.items {
+                completion(news)
+            }
+        }
+    }
 }

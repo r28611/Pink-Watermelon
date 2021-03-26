@@ -30,8 +30,8 @@ class Constants {
     static let mailRUConstant = "mail.ru"
     
     //SessionConst
-    static let clientId = "7757892"
-    static let scope = "262150"
+    static let clientId = "7803701"
+    static let scope = "270342"
 
     //URLS method
     static let vkMethodGet = ".get"
@@ -60,6 +60,7 @@ class Constants {
     static let vkFriendsURL = "https://api.vk.com/method/friends"
     static let vkUsersURL = "https://api.vk.com/method/users"
     static let vkPhotosURL = "https://api.vk.com/method/photos"
+    static let vkNewsURL = "https://api.vk.com/method/newsfeed"
     static let vkNonexistentPhotoURL = "https://vk.com/images/camera_100.png"
     static let vkNonexistentGroupPhotoURL = "https://vk.com/images/community_100.png"
     

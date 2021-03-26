@@ -9,7 +9,7 @@ import UIKit
 
 final class NewsCell: UITableViewCell {
     
-    private var newsPhotos = [UIImage]()
+    private var newsPhotos = [UIImageView]()
     
     @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
     @IBOutlet weak var authorName: UILabel!
@@ -59,8 +59,14 @@ final class NewsCell: UITableViewCell {
         self.likeControl.counter = 0
     }
     
-    func configureNewsPhotoCollection(photos: [UIImage]) {
-        newsPhotos = photos
+    func configureNewsPhotoCollection(photos: [Photo]) {
+        var images = [UIImageView]()
+        for photo in photos {
+            let image = UIImageView()
+            image.load(url: URL(string: (photo.sizes.first!.url))!)
+            images.append(image)
+        }
+        self.newsPhotos = images
     }
     
 }
@@ -74,7 +80,8 @@ extension NewsCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        let image = UIImageView(image: newsPhotos[indexPath.row])
+        
+        let image = newsPhotos[indexPath.row]
         cell.addSubview(image)
         image.contentMode = .scaleAspectFill
         image.layer.masksToBounds = true

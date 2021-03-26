@@ -31,12 +31,10 @@ final class FriendsViewController: UIViewController {
     private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
     private var userResults: Results<User>? {
-        let users: Results<User>? = realmManager?.getObjects()
+        let users: Results<User>? = realmManager?
+            .getObjects()
+            .filter("name != %@", "DELETED")
         return users
-    }
-    private var filteredUserResults: Results<User>? {
-        let users: Results<User>? = realmManager?.getObjects()
-        return users?.filter("status == 1")
     }
     private var filteredUsersNotificationToken: NotificationToken?
     
@@ -53,7 +51,7 @@ final class FriendsViewController: UIViewController {
         searchTextField.delegate = self
         setupTableView()
         
-        setFilteredUsersRealmNotification()
+        setUsersRealmNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -119,28 +117,27 @@ final class FriendsViewController: UIViewController {
         case 0:
             groupUsersForTable(users: self.users)
         default:
-            if let filteredUsers = self.filteredUserResults {
-                groupUsersForTable(users: filteredUsers.toArray() as! [User] )
-                self.charPicker.isHidden = true
-            }
+            groupUsersForTable(users: self.users.filter({ $0.isOnline == true}))
+            self.charPicker.isHidden = true
         }
         self.tableView.reloadData()
     }
     
-    private func setFilteredUsersRealmNotification() {
-        filteredUsersNotificationToken = filteredUserResults?.observe { change in
+    private func setUsersRealmNotification() {
+        filteredUsersNotificationToken = userResults?.observe { change in
             switch change {
             case .initial(let users):
                 print("Initialize \(users.count)")
                 break
-            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                print("""
-                    New count \(users.count)
-                    Deletions \(deletions)
-                    Insertions \(insertions)
-                    Modifications \(modifications)
-                    """
-                )
+            case .update(let users, _, _, _):
+                self.users = users.toArray() as! [User]
+                self.groupUsersForTable(users: self.users)
+                self.render()
+//                self.tableView.beginUpdates()
+//                self.tableView.deleteRows(at: deletions.indexPaths, with: .automatic)
+//                self.tableView.insertRows(at: insertions.indexPaths, with: .automatic)
+//                self.tableView.reloadRows(at: modifications.indexPaths, with: .automatic)
+//                self.tableView.endUpdates()
                 break
             case .error(let error):
                 let alert = Alert()
@@ -245,9 +242,6 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             
             let user = sections[indexPath.section].items[indexPath.row]
             cell.userModel = user
-            
-//            let finalUser = filteredUserResults?.first { $0 == user }
-//            cell.userModel = finalUser
             return cell
         }
         return UITableViewCell()
@@ -270,7 +264,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         if editingStyle == .delete {
             let user = sections[indexPath.section].items[indexPath.row]
             try? realmManager?.delete(object: user)
-            //реализовать удаление на api
+            //реализовать удаление на api а то падает!
             sections[indexPath.section].items.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             if sections[indexPath.section].items.count == 0 {

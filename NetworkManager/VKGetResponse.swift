@@ -9,18 +9,11 @@ import Foundation
 
 struct VKGetResponse<T: Decodable>: Decodable {
     let response: Response
-//    let newsRespose: NewsResponse
 
     struct Response: Decodable {
         let count: Int?
         let items: [T]
     }
-    
-//    struct NewsResponse: Decodable {
-//        let items: [NewsPost]
-//        let profiles: [User]
-//        let groups: [Group]
-//    }
 }
 
 struct VKUserResponse: Decodable {
@@ -28,8 +21,8 @@ struct VKUserResponse: Decodable {
     
 }
 
-struct NewsResponse: Decodable {
-    let newsRespose: Response
+struct VKNewsResponse: Decodable {
+    let response: Response
     
     struct Response: Decodable {
         let items: [NewsPost]
