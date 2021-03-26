@@ -10,13 +10,10 @@ import UIKit
 final class NewsCell: UITableViewCell {
     
     private var newsPhotos = [UIImageView]()
-    
     @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
     @IBOutlet weak var authorName: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
-    
     @IBOutlet weak var photoCollection: UICollectionView!
-    
     @IBOutlet weak var newsText: UILabel!
     @IBOutlet weak var likeControl: LikeControl!
     @IBOutlet weak var commentControl: LikeControl!
@@ -63,7 +60,7 @@ final class NewsCell: UITableViewCell {
         var images = [UIImageView]()
         for photo in photos {
             let image = UIImageView()
-            image.load(url: URL(string: (photo.sizes.first!.url))!)
+            image.load(url: URL(string: photo.sizes.last!.url)!)
             images.append(image)
         }
         self.newsPhotos = images

@@ -108,7 +108,7 @@ class NetworkManager {
         }
     }
     
-    func loadNewsPost(token: String, completion: @escaping ([NewsPost]) -> Void ) {
+    func loadNewsPost(token: String, completion: @escaping ([NewsPost], [Int:User], [Int:Group]) -> Void ) {
         NetworkManager.sessionAF.request(Constants.vkNewsURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "filters": "post",
@@ -118,8 +118,17 @@ class NetworkManager {
         ]).responseData { (response) in
             guard let data = response.value else { return }
             
-            if let news = try? JSONDecoder().decode(VKNewsResponse.self, from: data).response.items {
-                completion(news)
+            if let json = try? JSONDecoder().decode(VKNewsResponse.self, from: data) {
+                let news = json.response.items.filter({$0.attachments?.first?.type == "photo"})
+                var users:[Int:User] = [:]
+                for user in json.response.profiles {
+                    users[user.id] = user
+                }
+                var groups: [Int: Group] = [:]
+                for group in json.response.groups {
+                    groups[group.id] = group
+                }
+                completion(news, users, groups)
             }
         }
     }

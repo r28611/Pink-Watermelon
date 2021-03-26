@@ -11,12 +11,16 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     
     let networkManager = NetworkManager.shared
     private var newsPosts = [NewsPost]()
+    private var users = [Int:User]()
+    private var groups = [Int:Group]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkManager.loadNewsPost(token: Session.shared.token) { [weak self] news in
+        networkManager.loadNewsPost(token: Session.shared.token) { [weak self] news, users, groups in
             DispatchQueue.main.async {
                 self?.newsPosts = news
+                self?.users = users
+                self?.groups = groups
                 self?.tableView.reloadData()
             }
             
@@ -33,20 +37,36 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newsCellIdentifier, for: indexPath) as? NewsCell {
             let news = newsPosts[indexPath.row]
-            cell.timeLabel.text = "\(news.date)"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+            let date = Date(timeIntervalSince1970: TimeInterval(news.date))
+
+            if news.sourceID > 0 {
+                cell.authorName.text = self.users[news.sourceID]?.name
+                cell.authorAvatar.image.load(url: self.users[news.sourceID]!.avatarURL)
+            } else {
+                cell.authorName.text = self.groups[-news.sourceID]?.name
+                cell.authorAvatar.image.load(url: self.groups[-news.sourceID]!.avatarURL)
+            }
+            if cell.authorName.calculateMaxLines() > 1 {
+                cell.authorName.numberOfLines = cell.authorName.calculateMaxLines()
+            }
+            cell.timeLabel.text = "\(dateFormatter.string(from: date))"
             cell.newsText.text = news.text
             cell.newsText.numberOfLines = 3
-//            var photos = [Photo]()
-//            for attachment in news.attachments {
-//                if attachment.type == "photo" {
-//                    photos.append(attachment.photo)
-//                    print("фотка есть")
-//                }
-//
-//            }
-//            if !newsPosts.isEmpty {
-//            cell.configureNewsPhotoCollection(photos: photos)
-//            }
+            
+            var photos = [Photo]()
+            if let attachments = news.attachments {
+                for attachment in attachments {
+                    if let photo = attachment.photo {
+                        photos.append(photo)
+                    }
+                }
+            }
+            
+            if photos.count > 0 {
+                cell.configureNewsPhotoCollection(photos: photos)
+            }
             return cell
         }
         return UITableViewCell()
