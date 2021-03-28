@@ -23,7 +23,6 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
                 self?.groups = groups
                 self?.tableView.reloadData()
             }
-            
         }
         tableView.register(UINib(nibName: Constants.newsCellIdentifier, bundle: nil), forCellReuseIdentifier: Constants.newsCellIdentifier)
     }
@@ -37,36 +36,18 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newsCellIdentifier, for: indexPath) as? NewsCell {
             let news = newsPosts[indexPath.row]
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.MM.yyyy"
-            let date = Date(timeIntervalSince1970: TimeInterval(news.date))
 
+            var authorName = ""
+            var authorAvatar: URL
             if news.sourceID > 0 {
-                cell.authorName.text = self.users[news.sourceID]?.name
-                cell.authorAvatar.image.load(url: self.users[news.sourceID]!.avatarURL)
+                authorName = self.users[news.sourceID]!.name
+                authorAvatar = self.users[news.sourceID]!.avatarURL
             } else {
-                cell.authorName.text = self.groups[-news.sourceID]?.name
-                cell.authorAvatar.image.load(url: self.groups[-news.sourceID]!.avatarURL)
+                authorName = self.groups[-news.sourceID]!.name
+                authorAvatar = self.groups[-news.sourceID]!.avatarURL
             }
-            if cell.authorName.calculateMaxLines() > 1 {
-                cell.authorName.numberOfLines = cell.authorName.calculateMaxLines()
-            }
-            cell.timeLabel.text = "\(dateFormatter.string(from: date))"
-            cell.newsText.text = news.text
-            cell.newsText.numberOfLines = 3
-            
-            var photos = [Photo]()
-            if let attachments = news.attachments {
-                for attachment in attachments {
-                    if let photo = attachment.photo {
-                        photos.append(photo)
-                    }
-                }
-            }
-            
-            if photos.count > 0 {
-                cell.configureNewsPhotoCollection(photos: photos)
-            }
+
+            cell.setup(news: news, authorName: authorName, authorAvatar: authorAvatar)
             return cell
         }
         return UITableViewCell()
@@ -77,8 +58,7 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
         tableView.beginUpdates()
         
         if let cell = tableView.cellForRow(at: indexPath) as? NewsCell {
-            let maxLines = cell.newsText.calculateMaxLines()
-            cell.newsText.numberOfLines = maxLines
+            cell.newsText.numberOfLines = cell.newsText.calculateMaxLines()
         }
         tableView.endUpdates()
     }

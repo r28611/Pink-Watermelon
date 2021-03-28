@@ -70,7 +70,7 @@ final class LikeControl: UIControl {
         
         button.setImage(isLiked ? imageForLiked : imageForDisliked, for: .normal)
         button.tintColor = isLiked ? colorForLiked : colorForDisliked
-        counterLabel.text = String(counter)
+        counterLabel.text = counterText(counter: self.counter)
         counterLabel.textColor = isLiked ? colorForLiked : colorForDisliked
         button.addTarget(self, action: #selector(toogleIsLiked(_ :)), for: .touchUpInside)
         
@@ -81,6 +81,14 @@ final class LikeControl: UIControl {
         stackView.spacing = 3
         stackView.axis = .horizontal
         stackView.alignment = .trailing
+    }
+    
+    private func counterText(counter: Int) -> String {
+        var text = String(counter)
+        if counter > 1000 {
+            text = "\(Int((Double(counter) / 1000.0).rounded()))K"
+        }
+        return text
     }
 
     @objc func toogleIsLiked(_ sender: UIButton) {

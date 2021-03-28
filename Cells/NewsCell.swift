@@ -8,8 +8,7 @@
 import UIKit
 
 final class NewsCell: UITableViewCell {
-    
-    private var newsPhotos = [UIImageView]()
+
     @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
     @IBOutlet weak var authorName: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -19,23 +18,50 @@ final class NewsCell: UITableViewCell {
     @IBOutlet weak var commentControl: LikeControl!
     @IBOutlet weak var shareControl: LikeControl!
     @IBOutlet weak var viewedControl: LikeControl!
+    private var newsPhotos = [UIImageView]()
+    
+    func setup(news: NewsPost, authorName: String, authorAvatar: URL) {
+        self.authorName.text = authorName
+        self.authorAvatar.image.load(url: authorAvatar)
+        self.authorName.numberOfLines = self.authorName.calculateMaxLines()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        let date = Date(timeIntervalSince1970: TimeInterval(news.date))
+        self.timeLabel.text = "\(dateFormatter.string(from: date))"
+        
+        self.newsText.text = news.text
+        self.newsText.numberOfLines = 3
+        
+        self.likeControl.counter = news.likes.count
+        self.likeControl.isLiked = news.likes.isLiked == 1
+        self.commentControl.counter = news.comments.count
+        self.shareControl.counter = news.reposts.count
+        self.viewedControl.counter = news.views.count
+        var photos = [Photo]()
+            
+        if let attachments = news.attachments {
+            for attachment in attachments {
+                if let photo = attachment.photo {
+                    photos.append(photo)
+                }
+            }
+        }
+        if photos.count > 0 {
+            self.configureNewsPhotoCollection(photos: photos)
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        likeControl.counter = Int.random(in: 1...100)
-        
-        commentControl.counter = Int.random(in: 1...100)
         commentControl.set(colorDisliked: .darkGray,
                            iconDisliked: UIImage(systemName: "doc.append")!,
                            colorLiked: .black,
                            iconLiked: UIImage(systemName: "doc.append.fill")!)
-        shareControl.counter = Int.random(in: 1...100)
         shareControl.set(colorDisliked: .darkGray,
                          iconDisliked: UIImage(systemName: "arrowshape.turn.up.right")!,
                          colorLiked: .systemBlue,
                          iconLiked: UIImage(systemName: "arrowshape.turn.up.right.fill")!)
-        viewedControl.counter = Int.random(in: 1...100)
         viewedControl.set(colorDisliked: .darkGray,
                           iconDisliked: UIImage(systemName: "eye")!,
                           colorLiked: .black,
@@ -53,10 +79,10 @@ final class NewsCell: UITableViewCell {
         self.timeLabel.text = nil
         self.authorName.text = nil
         self.newsText.text = nil
-        self.likeControl.counter = 0
+        self.photoCollection.reloadData()
     }
     
-    func configureNewsPhotoCollection(photos: [Photo]) {
+    private func configureNewsPhotoCollection(photos: [Photo]) {
         var images = [UIImageView]()
         for photo in photos {
             let image = UIImageView()

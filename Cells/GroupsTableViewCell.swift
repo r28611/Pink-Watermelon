@@ -45,6 +45,7 @@ class GroupsTableViewCell: UITableViewCell {
         }
         
         nameLabel.text = name
+        nameLabel.numberOfLines = nameLabel.calculateMaxLines()
         
         subscribeLabel?.text = isMember == 1 ? "✅" : "Subscribe"
         subscribeLabel?.tintColor = isMember == 1 ? .black : .systemPink

@@ -30,7 +30,7 @@ class Constants {
     static let mailRUConstant = "mail.ru"
     
     //SessionConst
-    static let clientId = "7803701"
+    static let clientId = "7757892"
     static let scope = "270342"
 
     //URLS method
