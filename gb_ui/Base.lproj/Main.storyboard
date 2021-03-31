@@ -234,14 +234,14 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skS-X7-7BR">
-                                            <rect key="frame" x="66" y="8" width="320" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="66" y="8" width="320" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o2J-Ep-bMu">
-                                            <rect key="frame" x="66" y="32" width="320" height="17"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <rect key="frame" x="66" y="30.5" width="320" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -508,13 +508,16 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzo-D6-uoe">
-                                            <rect key="frame" x="66" y="27.5" width="41.5" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="66" y="28.5" width="257" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Vz-qh-9U4">
-                                            <rect key="frame" x="358" y="32" width="28" height="12"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subscribe" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Vz-qh-9U4">
+                                            <rect key="frame" x="331" y="32" width="55" height="12"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="55" id="jBd-P7-tJk"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
                                             <color key="textColor" systemColor="systemPinkColor"/>
                                             <nil key="highlightedColor"/>
@@ -523,7 +526,7 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="mNB-m0-xPo" secondAttribute="bottom" constant="8" id="3lo-tT-12V"/>
                                         <constraint firstItem="gzo-D6-uoe" firstAttribute="centerY" secondItem="Mpe-XM-7ii" secondAttribute="centerY" id="5dR-59-jTy"/>
-                                        <constraint firstItem="5Vz-qh-9U4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gzo-D6-uoe" secondAttribute="trailing" constant="8" id="8xT-5w-A1K"/>
+                                        <constraint firstItem="5Vz-qh-9U4" firstAttribute="leading" secondItem="gzo-D6-uoe" secondAttribute="trailing" constant="8" id="8xT-5w-A1K"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="5Vz-qh-9U4" secondAttribute="trailing" constant="8" id="ZT7-C4-frW"/>
                                         <constraint firstItem="mNB-m0-xPo" firstAttribute="leading" secondItem="Mpe-XM-7ii" secondAttribute="leading" constant="8" id="jy2-h6-q8u"/>
                                         <constraint firstItem="gzo-D6-uoe" firstAttribute="leading" secondItem="mNB-m0-xPo" secondAttribute="trailing" constant="8" id="nC8-Kk-sxb"/>

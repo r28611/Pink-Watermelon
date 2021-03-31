@@ -44,7 +44,6 @@ extension VKLoginViewController: WKNavigationDelegate {
                 dict[key] = value
                 return dict
             }
-        print(params)
         
         guard let token = params["access_token"],
               let userIdString = params["user_id"],
@@ -53,7 +52,6 @@ extension VKLoginViewController: WKNavigationDelegate {
             return
         }
         
-        print(token)
         Session.shared.token = token
         Session.shared.userId = userId
         

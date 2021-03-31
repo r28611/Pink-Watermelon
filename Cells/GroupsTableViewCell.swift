@@ -40,18 +40,13 @@ class GroupsTableViewCell: UITableViewCell {
                     try? realm?.update {
                         groupModel.avatarData = data
                     }
-//                    do { let realm = try? Realm()
-//                        realm?.beginWrite()
-//                        groupModel.avatarData = data
-//                        try realm?.commitWrite()
-//                    } catch {
-//                        print(error.localizedDescription)
-//                    }
                 }
             }
         }
         
         nameLabel.text = name
+        nameLabel.numberOfLines = nameLabel.calculateMaxLines()
+        
         subscribeLabel?.text = isMember == 1 ? "✅" : "Subscribe"
         subscribeLabel?.tintColor = isMember == 1 ? .black : .systemPink
         membersCountLabel?.text = "\(members) members" 

@@ -8,37 +8,61 @@
 import UIKit
 
 final class NewsCell: UITableViewCell {
-    
-    private var newsPhotos = [UIImage]()
-    
+
     @IBOutlet weak var authorAvatar: RoundedImageWithShadow!
     @IBOutlet weak var authorName: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
-    
     @IBOutlet weak var photoCollection: UICollectionView!
-    
     @IBOutlet weak var newsText: UILabel!
     @IBOutlet weak var likeControl: LikeControl!
     @IBOutlet weak var commentControl: LikeControl!
     @IBOutlet weak var shareControl: LikeControl!
     @IBOutlet weak var viewedControl: LikeControl!
+    private var newsPhotos = [UIImageView]()
+    
+    func setup(newsPostViewModel: NewsPostViewModel) {
+        self.authorName.text = newsPostViewModel.authorName
+        self.authorAvatar.image.load(url: newsPostViewModel.avatarURL)
+        self.authorName.numberOfLines = self.authorName.calculateMaxLines()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        let date = Date(timeIntervalSince1970: TimeInterval(newsPostViewModel.newsPost.date))
+        self.timeLabel.text = "\(dateFormatter.string(from: date))"
+        
+        self.newsText.text = newsPostViewModel.newsPost.text
+        self.newsText.numberOfLines = 3
+        
+        self.likeControl.counter = newsPostViewModel.newsPost.likes.count
+        self.likeControl.isLiked = newsPostViewModel.newsPost.likes.isLiked == 1
+        self.commentControl.counter = newsPostViewModel.newsPost.comments.count
+        self.shareControl.counter = newsPostViewModel.newsPost.reposts.count
+        self.viewedControl.counter = newsPostViewModel.newsPost.views.count
+        var photos = [Photo]()
+            
+        if let attachments = newsPostViewModel.newsPost.attachments {
+            for attachment in attachments {
+                if let photo = attachment.photo {
+                    photos.append(photo)
+                }
+            }
+        }
+        if photos.count > 0 {
+            self.configureNewsPhotoCollection(photos: photos)
+            photoCollection.reloadData()
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        likeControl.counter = Int.random(in: 1...100)
-        
-        commentControl.counter = Int.random(in: 1...100)
         commentControl.set(colorDisliked: .darkGray,
                            iconDisliked: UIImage(systemName: "doc.append")!,
                            colorLiked: .black,
                            iconLiked: UIImage(systemName: "doc.append.fill")!)
-        shareControl.counter = Int.random(in: 1...100)
         shareControl.set(colorDisliked: .darkGray,
                          iconDisliked: UIImage(systemName: "arrowshape.turn.up.right")!,
                          colorLiked: .systemBlue,
                          iconLiked: UIImage(systemName: "arrowshape.turn.up.right.fill")!)
-        viewedControl.counter = Int.random(in: 1...100)
         viewedControl.set(colorDisliked: .darkGray,
                           iconDisliked: UIImage(systemName: "eye")!,
                           colorLiked: .black,
@@ -56,11 +80,15 @@ final class NewsCell: UITableViewCell {
         self.timeLabel.text = nil
         self.authorName.text = nil
         self.newsText.text = nil
-        self.likeControl.counter = 0
+        self.photoCollection.reloadData()
     }
     
-    func configureNewsPhotoCollection(photos: [UIImage]) {
-        newsPhotos = photos
+    private func configureNewsPhotoCollection(photos: [Photo]) {
+        self.newsPhotos = photos.map { (photo) -> UIImageView in
+            let image = UIImageView()
+            image.load(url: URL(string: photo.sizes.last!.url)!)
+            return image
+        }
     }
     
 }
@@ -74,7 +102,8 @@ extension NewsCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        let image = UIImageView(image: newsPhotos[indexPath.row])
+        
+        let image = newsPhotos[indexPath.row]
         cell.addSubview(image)
         image.contentMode = .scaleAspectFill
         image.layer.masksToBounds = true

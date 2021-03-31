@@ -26,7 +26,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        if photos == nil {
+        if photos == nil || photos?.count == 0 {
             getPhotosData()
         }
     }

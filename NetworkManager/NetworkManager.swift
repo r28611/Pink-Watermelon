@@ -99,11 +99,36 @@ class NetworkManager {
             switch response.result {
             case .success:
                 if let data = response.value,
-                    let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
+                   let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
                     completion(photos)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func loadNewsPost(token: String, completion: @escaping ([NewsPost], [Int:User], [Int:Group]) -> Void ) {
+        NetworkManager.sessionAF.request(Constants.vkNewsURL + Constants.vkMethodGet, method: .get, parameters: [
+            "access_token": token,
+            "filters": "post",
+            "return_banned": 0,
+            "count": 10, //указывает, какое максимальное число новостей следует возвращать, но не более 100. По умолчанию 50
+            "v": "5.130"
+        ]).responseData { (response) in
+            guard let data = response.value else { return }
+            
+            if let json = try? JSONDecoder().decode(VKNewsResponse.self, from: data) {
+                let news = json.response.items.filter({$0.attachments?.first?.type == "photo"})
+                var users:[Int:User] = [:]
+                for user in json.response.profiles {
+                    users[user.id] = user
+                }
+                var groups: [Int: Group] = [:]
+                for group in json.response.groups {
+                    groups[group.id] = group
+                }
+                completion(news, users, groups)
             }
         }
     }

@@ -14,8 +14,10 @@ class GroupsTableViewController: UITableViewController {
     private let networkManager = NetworkManager.shared
     private var groupsNotificationToken: NotificationToken?
     private var groups: Results<Group>? {
-        let users: Results<Group>? = realmManager?.getObjects()
-        return users?.sorted(byKeyPath: "membersCount", ascending: false) // по убыванию количества участников
+        let groups: Results<Group>? = realmManager?
+            .getObjects()
+            .sorted(byKeyPath: "membersCount", ascending: false) // по убыванию количества участников
+        return groups
     }
     
     override func viewDidLoad() {

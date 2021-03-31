@@ -8,37 +8,63 @@
 import UIKit
 
 final class NewsTableViewController: UITableViewController, UICollectionViewDelegate {
-
+    
+    let networkManager = NetworkManager.shared
+    private var newsPosts = [NewsPost]()
+    private var users = [Int:User]()
+    private var groups = [Int:Group]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setRefresher()
         tableView.register(UINib(nibName: Constants.newsCellIdentifier, bundle: nil), forCellReuseIdentifier: Constants.newsCellIdentifier)
     }
 
-    // MARK: - Table view data source
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getNewsData()
     }
-
+    
+    private func getNewsData() {
+        networkManager.loadNewsPost(token: Session.shared.token) { [weak self] news, users, groups in
+            DispatchQueue.main.async {
+                self?.newsPosts = news
+                self?.users = users
+                self?.groups = groups
+                self?.tableView.reloadData()
+                self?.refreshControl?.endRefreshing()
+            }
+        }
+    }
+    
+    private func setRefresher() {
+        tableView.refreshControl = {
+            let refreshControl = UIRefreshControl()
+            refreshControl.tintColor = Constants.greenColor
+            refreshControl.attributedTitle = NSAttributedString(string: Constants.refreshTitle, attributes: [.font: UIFont.systemFont(ofSize: 12)])
+            refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+            return refreshControl
+        }()
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        getNewsData()
+    }
+    
+    // MARK: - Table view data source
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return newsPosts.count
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newsCellIdentifier, for: indexPath) as? NewsCell {
-            
-            cell.timeLabel.text = "\(Int.random(in: 1...30))/01/2021"
-            cell.newsText.text = "Создание ячеек коллекции практически не отличается от добавления ячеек таблицы. Основной особенностью ячеек коллекции является то, что у них нет контейнеров. Ячейка коллекции — это обычный view, который можно наполнить чем угодно. Так сделано для того, чтобы можно было создать абсолютно любую ячейку, потому что коллекции могут выглядеть совершенно по-разному."
-            cell.newsText.numberOfLines = 3
-            
-            cell.configureNewsPhotoCollection(photos: [
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!,
-                UIImage(named: "\(Int.random(in: 1...23))")!
-            ])
+            let news = newsPosts[indexPath.row]
+            parseTableData(news: news) { (newsPostViewModel) in
+                DispatchQueue.main.async {
+                    cell.setup(newsPostViewModel: newsPostViewModel)
+                }
+            }
             return cell
         }
         return UITableViewCell()
@@ -49,10 +75,26 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
         tableView.beginUpdates()
         
         if let cell = tableView.cellForRow(at: indexPath) as? NewsCell {
-            let maxLines = cell.newsText.calculateMaxLines()
-            cell.newsText.numberOfLines = maxLines
+            cell.newsText.numberOfLines = cell.newsText.calculateMaxLines()
         }
         tableView.endUpdates()
     }
+}
 
+extension NewsTableViewController {
+    func parseTableData(news: NewsPost, complition: @escaping (NewsPostViewModel) -> ()) {
+        DispatchQueue.global().async {
+            var authorName = ""
+            var authorAvatar: URL
+            if news.sourceID > 0 {
+                authorName = self.users[news.sourceID]!.name
+                authorAvatar = self.users[news.sourceID]!.avatarURL
+            } else {
+                authorName = self.groups[-news.sourceID]!.name
+                authorAvatar = self.groups[-news.sourceID]!.avatarURL
+            }
+            let postViewModel = NewsPostViewModel(newsPost: news, authorName: authorName, avatarURL: authorAvatar)
+            complition(postViewModel)
+        }
+    }
 }

@@ -10,7 +10,7 @@ import Foundation
 final class NewsPost: Decodable {
     let sourceID, date: Int
     let text: String
-    let attachments: [Attachment]
+    let attachments: [Attachment]?
     let comments: Comment
     let likes: Like
     let reposts: Repost
@@ -45,8 +45,23 @@ struct Repost: Decodable {
 
 struct Views: Decodable {
     let count: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case count
+    }
 }
 
 struct Attachment: Decodable {
-    let photo: Photo
+    let type: String
+    let photo: Photo?
+
+    enum CodingKeys: String, CodingKey {
+        case type, photo
+    }
+}
+
+struct NewsPostViewModel {
+    var newsPost: NewsPost
+    var authorName: String
+    var avatarURL: URL
 }
