@@ -27,8 +27,6 @@ final class NewsPost: Decodable {
     }
 }
 
-
-
 struct Comment: Decodable {
     let count: Int
 
@@ -60,4 +58,10 @@ struct Attachment: Decodable {
     enum CodingKeys: String, CodingKey {
         case type, photo
     }
+}
+
+struct NewsPostViewModel {
+    var newsPost: NewsPost
+    var authorName: String
+    var avatarURL: URL
 }

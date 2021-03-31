@@ -20,26 +20,26 @@ final class NewsCell: UITableViewCell {
     @IBOutlet weak var viewedControl: LikeControl!
     private var newsPhotos = [UIImageView]()
     
-    func setup(news: NewsPost, authorName: String, authorAvatar: URL) {
-        self.authorName.text = authorName
-        self.authorAvatar.image.load(url: authorAvatar)
+    func setup(newsPostViewModel: NewsPostViewModel) {
+        self.authorName.text = newsPostViewModel.authorName
+        self.authorAvatar.image.load(url: newsPostViewModel.avatarURL)
         self.authorName.numberOfLines = self.authorName.calculateMaxLines()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
-        let date = Date(timeIntervalSince1970: TimeInterval(news.date))
+        let date = Date(timeIntervalSince1970: TimeInterval(newsPostViewModel.newsPost.date))
         self.timeLabel.text = "\(dateFormatter.string(from: date))"
         
-        self.newsText.text = news.text
+        self.newsText.text = newsPostViewModel.newsPost.text
         self.newsText.numberOfLines = 3
         
-        self.likeControl.counter = news.likes.count
-        self.likeControl.isLiked = news.likes.isLiked == 1
-        self.commentControl.counter = news.comments.count
-        self.shareControl.counter = news.reposts.count
-        self.viewedControl.counter = news.views.count
+        self.likeControl.counter = newsPostViewModel.newsPost.likes.count
+        self.likeControl.isLiked = newsPostViewModel.newsPost.likes.isLiked == 1
+        self.commentControl.counter = newsPostViewModel.newsPost.comments.count
+        self.shareControl.counter = newsPostViewModel.newsPost.reposts.count
+        self.viewedControl.counter = newsPostViewModel.newsPost.views.count
         var photos = [Photo]()
             
-        if let attachments = news.attachments {
+        if let attachments = newsPostViewModel.newsPost.attachments {
             for attachment in attachments {
                 if let photo = attachment.photo {
                     photos.append(photo)
@@ -48,6 +48,7 @@ final class NewsCell: UITableViewCell {
         }
         if photos.count > 0 {
             self.configureNewsPhotoCollection(photos: photos)
+            photoCollection.reloadData()
         }
     }
     
@@ -83,13 +84,11 @@ final class NewsCell: UITableViewCell {
     }
     
     private func configureNewsPhotoCollection(photos: [Photo]) {
-        var images = [UIImageView]()
-        for photo in photos {
+        self.newsPhotos = photos.map { (photo) -> UIImageView in
             let image = UIImageView()
             image.load(url: URL(string: photo.sizes.last!.url)!)
-            images.append(image)
+            return image
         }
-        self.newsPhotos = images
     }
     
 }

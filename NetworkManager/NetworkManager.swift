@@ -99,7 +99,7 @@ class NetworkManager {
             switch response.result {
             case .success:
                 if let data = response.value,
-                    let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
+                   let photos = try? JSONDecoder().decode(VKGetResponse<Photo>.self, from: data).response.items {
                     completion(photos)
                 }
             case .failure(let error):
