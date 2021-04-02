@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>41584949761-72j0g777paafasjrj0kbjcs4d87q69ql.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.41584949761-72j0g777paafasjrj0kbjcs4d87q69ql</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC8sbaXpBEg0Xu6YR5iTTFfIioCltl9otM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>41584949761</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>rs.newhome.gb-ui</string>
+	<key>PROJECT_ID</key>
+	<string>vk-watermelon</string>
+	<key>STORAGE_BUCKET</key>
+	<string>vk-watermelon.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:41584949761:ios:8db2488d5b9e338e4d5e00</string>
+</dict>
+</plist>

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class LoginViewController: UIViewController {
 
@@ -59,7 +60,19 @@ final class LoginViewController: UIViewController {
         }
     
     @IBAction func loginButton(_ sender: UIButton) {
-        performSegue(withIdentifier: Constants.tabBarVC, sender: self)
+        
+        guard let email = userNameTextField.text,
+              let password = userPasswordTextField.text else { return }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (result, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = Alert()
+                alert.showAlert(title: "Error", message: error.localizedDescription)
+            } else {
+                self?.performSegue(withIdentifier: Constants.tabBarVC, sender: self)
+            }
+        }
     }
     
     @IBAction func VKloginButton(_ sender: UIButton) {

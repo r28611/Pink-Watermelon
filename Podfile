@@ -7,6 +7,10 @@ target 'gb_ui' do
   
   pod 'Alamofire', '~> 5.2'
   pod 'RealmSwift', '=10.1.4'
+  pod 'Firebase/Core'
+  pod 'Firebase/Database'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
 
   # Pods for gb_ui
 

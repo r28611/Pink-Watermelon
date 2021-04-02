@@ -6,23 +6,24 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class SignupViewController: UIViewController {
 
-    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var cloudView: WatermelonLoadingView!
     @IBOutlet weak var form: UIStackView!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        goButton.layer.cornerRadius = goButton.frame.height / 4
+        registerButton.layer.cornerRadius = registerButton.frame.height / 4
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         cloudView.isHidden = true
-
-        
     }
     
     @IBAction func closeButton(_ sender: UIButton) {
@@ -30,12 +31,24 @@ final class SignupViewController: UIViewController {
     }
     
     @IBAction func goButton(_ sender: UIButton) {
-        cloudView.isHidden = false
-        animateFormDisappearing()
-        cloudView.setup()
-        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
-            self.performSegue(withIdentifier: "to_tabBar", sender: sender)
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self](result, error) in
+            if let error = error {
+                let alert = Alert()
+                alert.showAlert(title: "Error", message: error.localizedDescription)
+            } else {
+                self?.cloudView.isHidden = false
+                self?.animateFormDisappearing()
+                self?.cloudView.setup()
+                Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { timer in
+//                    self?.performSegue(withIdentifier: "to_tabBar", sender: sender)
+                    self?.dismiss(animated: true, completion: nil)
+                }
+            }
         }
+        
     }
     
     func animateFormDisappearing() {
