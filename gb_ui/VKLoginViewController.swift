@@ -10,6 +10,8 @@ import WebKit
 
 final class VKLoginViewController: UIViewController {
     
+    static let segueIdentifier = "to_VKAuth"
+    
     @IBOutlet weak var webView: WKWebView! {
         didSet {
             webView.navigationDelegate = self

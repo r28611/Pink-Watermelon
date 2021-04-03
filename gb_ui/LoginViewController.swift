@@ -11,23 +11,33 @@ import FirebaseAuth
 final class LoginViewController: UIViewController {
 
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var authVKButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var userPasswordTextField: UITextField!
+    private var listener: AuthStateDidChangeListenerHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupButtons()
-        
         let hideKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         scrollView?.addGestureRecognizer(hideKeyboardGesture)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        listener = Auth.auth().addStateDidChangeListener({ [weak self] (auth, user) in
+            guard user != nil else { return }
+            
+            self?.userNameTextField.text = ""
+            self?.userPasswordTextField.text = ""
+            
+            self?.performSegue(withIdentifier: VKLoginViewController.segueIdentifier, sender: nil)
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -38,7 +48,7 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupButtons() {
-        let buttons = [self.loginButton, self.authVKButton, self.signupButton]
+        let buttons = [self.loginButton, self.signupButton]
         for button in buttons {
             button?.layer.cornerRadius = (button?.frame.height)! / 4
         }
@@ -70,13 +80,9 @@ final class LoginViewController: UIViewController {
                 let alert = Alert()
                 alert.showAlert(title: "Error", message: error.localizedDescription)
             } else {
-                self?.performSegue(withIdentifier: Constants.tabBarVC, sender: self)
+                self?.performSegue(withIdentifier: VKLoginViewController.segueIdentifier, sender: self)
             }
         }
-    }
-    
-    @IBAction func VKloginButton(_ sender: UIButton) {
-        performSegue(withIdentifier: Constants.vkLoginWebView, sender: self)
     }
 
 }

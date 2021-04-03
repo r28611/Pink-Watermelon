@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbt-zX-dZc" userLabel="Container View">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="592"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="522"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to VK Watermelon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8T-FH-ksw">
                                                 <rect key="frame" x="16" y="151.5" width="382" height="20.5"/>
@@ -51,23 +51,8 @@
                                                     <action selector="loginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fgR-ED-gQt"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f7T-yu-hd5">
-                                                <rect key="frame" x="16" y="452" width="382" height="50"/>
-                                                <color key="backgroundColor" red="1" green="0.404298665" blue="0.67281829540000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="0bV-PD-aEb"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <state key="normal" title="Authorization via VK">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="VKloginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4cs-ju-YeK"/>
-                                                    <segue destination="b8m-o6-9rw" kind="presentation" identifier="VKlogin" modalPresentationStyle="fullScreen" id="niT-Dh-hcc"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9X4-dI-DDd">
-                                                <rect key="frame" x="16" y="534" width="382" height="50"/>
+                                                <rect key="frame" x="16" y="464" width="382" height="50"/>
                                                 <color key="backgroundColor" red="0.13541448119999999" green="0.88319009540000004" blue="0.67048841709999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="ORE-2k-auT"/>
@@ -108,11 +93,8 @@
                                             <constraint firstItem="Ckd-fx-Nba" firstAttribute="centerX" secondItem="vbt-zX-dZc" secondAttribute="centerX" id="O5E-BK-5n8"/>
                                             <constraint firstItem="9X4-dI-DDd" firstAttribute="leading" secondItem="vbt-zX-dZc" secondAttribute="leading" constant="16" id="XTB-bW-ysO"/>
                                             <constraint firstAttribute="trailing" secondItem="GGq-KF-NJk" secondAttribute="trailing" constant="16" id="a51-Tx-OgL"/>
-                                            <constraint firstItem="f7T-yu-hd5" firstAttribute="top" secondItem="GGq-KF-NJk" secondAttribute="bottom" constant="8" id="cG0-b0-aj2"/>
                                             <constraint firstAttribute="trailing" secondItem="q8T-FH-ksw" secondAttribute="trailing" constant="16" id="ddQ-Uy-xkm"/>
-                                            <constraint firstItem="f7T-yu-hd5" firstAttribute="leading" secondItem="vbt-zX-dZc" secondAttribute="leading" constant="16" id="dk2-f6-pHk"/>
-                                            <constraint firstAttribute="trailing" secondItem="f7T-yu-hd5" secondAttribute="trailing" constant="16" id="e7d-Ve-WlW"/>
-                                            <constraint firstItem="9X4-dI-DDd" firstAttribute="top" secondItem="f7T-yu-hd5" secondAttribute="bottom" constant="32" id="err-7b-VCm"/>
+                                            <constraint firstItem="9X4-dI-DDd" firstAttribute="top" secondItem="GGq-KF-NJk" secondAttribute="bottom" constant="20" id="eUn-9G-LmM"/>
                                             <constraint firstItem="1QG-wB-VXq" firstAttribute="centerX" secondItem="vbt-zX-dZc" secondAttribute="centerX" id="eyB-nC-Izc"/>
                                             <constraint firstItem="q8T-FH-ksw" firstAttribute="leading" secondItem="vbt-zX-dZc" secondAttribute="leading" constant="16" id="sjc-pg-EfT"/>
                                             <constraint firstItem="q8T-FH-ksw" firstAttribute="top" secondItem="jjA-3Z-7ak" secondAttribute="bottom" constant="16" id="wE3-CP-0BJ"/>
@@ -144,19 +126,18 @@
                     </view>
                     <navigationItem key="navigationItem" id="LND-d4-x1F"/>
                     <connections>
-                        <outlet property="authVKButton" destination="f7T-yu-hd5" id="yLD-1R-gSg"/>
                         <outlet property="loginButton" destination="GGq-KF-NJk" id="4c5-si-Haf"/>
                         <outlet property="scrollView" destination="2Dt-Ff-K51" id="YoX-Vy-Zhq"/>
                         <outlet property="signupButton" destination="9X4-dI-DDd" id="gv9-1P-v9O"/>
                         <outlet property="textLabel" destination="q8T-FH-ksw" id="eVJ-ET-ops"/>
                         <outlet property="userNameTextField" destination="1QG-wB-VXq" id="0cJ-Eo-ijl"/>
                         <outlet property="userPasswordTextField" destination="Ckd-fx-Nba" id="4W9-bq-4Ib"/>
-                        <segue destination="voa-qs-uuo" kind="presentation" identifier="to_tabBarController" modalPresentationStyle="fullScreen" id="l8B-1Z-hJz"/>
+                        <segue destination="b8m-o6-9rw" kind="presentation" identifier="to_VKAuth" modalPresentationStyle="fullScreen" id="SLr-D5-LX8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-497" y="-346"/>
+            <point key="canvasLocation" x="-519" y="-222"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="V3Q-LA-nyn">
@@ -250,12 +231,11 @@
                         <outlet property="form" destination="MEH-Rp-sv2" id="tD5-8a-yPe"/>
                         <outlet property="passwordTextField" destination="zbM-3K-crw" id="0sC-jk-7sf"/>
                         <outlet property="registerButton" destination="vNt-cH-b5Z" id="tmW-bo-Olc"/>
-                        <segue destination="voa-qs-uuo" kind="presentation" identifier="to_tabBar" modalPresentationStyle="fullScreen" id="uPt-du-6Y4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1aI-89-r6L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="332" y="61"/>
+            <point key="canvasLocation" x="332" y="-946"/>
         </scene>
         <!--Groups-->
         <scene sceneID="6DH-R2-ea6">
@@ -466,7 +446,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xE8-rd-3dk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="332" y="-731"/>
+            <point key="canvasLocation" x="351" y="-222"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9Xo-OQ-FXW">
@@ -888,7 +868,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LL8-pu-bfh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer numberOfTapsRequired="2" id="bVb-Dx-DRj"/>
             </objects>
-            <point key="canvasLocation" x="332" y="876"/>
+            <point key="canvasLocation" x="730" y="876"/>
         </scene>
         <!--Friends-->
         <scene sceneID="WIN-iY-nOg">
@@ -929,9 +909,6 @@
             <point key="canvasLocation" x="1491" y="876"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="l8B-1Z-hJz"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="list.bullet.rectangle" catalog="system" width="128" height="93"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
