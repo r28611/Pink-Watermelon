@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 final class ProfileViewController: UIViewController {
 
@@ -17,6 +18,8 @@ final class ProfileViewController: UIViewController {
     private let networkManager = NetworkManager.shared
     private let userId = Session.shared.userId
     private var user = User()
+    private var firebaseUser: FirebaseUser?
+    private var userCollection = Firestore.firestore().collection("Users")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +36,9 @@ final class ProfileViewController: UIViewController {
         
         networkManager.getUserInfo(token: Session.shared.token) { [weak self] user in
             self?.user = user
-            print(user)
+            self?.firebaseUser = FirebaseUser(from: user)
+            self?.saveUserToFirestore(user: FirebaseUser(from: user))
+
             DispatchQueue.main.async {
                 self?.setupUi()
                 self?.newsTableView.reloadData()
@@ -47,10 +52,19 @@ final class ProfileViewController: UIViewController {
         avatar.image.load(url: user.avatarURL)
     }
     
+    private func saveUserToFirestore(user: FirebaseUser) {
+        userCollection.document("\(user.id)").setData(user.toAnyObject()) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     @IBAction func didTapLogOut(_ sender: UIButton) {
         performSegue(withIdentifier: "to_login", sender: sender)
         Session.shared.removeCookie()
     }
+
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {

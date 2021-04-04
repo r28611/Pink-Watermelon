@@ -9,7 +9,6 @@ target 'gb_ui' do
   pod 'RealmSwift', '=10.1.4'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
-  pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
 
   # Pods for gb_ui

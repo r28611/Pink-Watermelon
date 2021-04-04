@@ -133,11 +133,6 @@ final class FriendsViewController: UIViewController {
                 self.users = users.toArray() as! [User]
                 self.groupUsersForTable(users: self.users)
                 self.render()
-//                self.tableView.beginUpdates()
-//                self.tableView.deleteRows(at: deletions.indexPaths, with: .automatic)
-//                self.tableView.insertRows(at: insertions.indexPaths, with: .automatic)
-//                self.tableView.reloadRows(at: modifications.indexPaths, with: .automatic)
-//                self.tableView.endUpdates()
                 break
             case .error(let error):
                 let alert = Alert()

@@ -22,7 +22,6 @@ class Constants {
     static let photoVCIdentifier = "to_photoScene"
     static let photoCollectionVCIdentifier = "to_collection"
     static let VKtabBarVC = "to_tabBarControllerVK"
-    static let tabBarVC = "to_tabBarController"
     static let vkLoginWebView = "VKlogin"
     
     //Companies
@@ -30,7 +29,7 @@ class Constants {
     static let mailRUConstant = "mail.ru"
     
     //SessionConst
-    static let clientId = "7757892"
+    static let clientId = "7803701"
     static let scope = "270342"
 
     //URLS method
