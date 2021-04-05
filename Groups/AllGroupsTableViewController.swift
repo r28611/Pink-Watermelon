@@ -6,14 +6,12 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class AllGroupsTableViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    private let realmManager = RealmManager.shared
     private let networkManager = NetworkManager.shared
-    private var groups = [Group]()
+    var groups = [Group]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +45,7 @@ final class AllGroupsTableViewController: UITableViewController {
         }
         return UITableViewCell()
     }
+    
 }
 
 // MARK: - Searcn extension

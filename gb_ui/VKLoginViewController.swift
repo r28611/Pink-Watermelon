@@ -60,4 +60,11 @@ extension VKLoginViewController: WKNavigationDelegate {
         decisionHandler(.cancel)
         performSegue(withIdentifier: Constants.VKtabBarVC, sender: self)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.VKtabBarVC {
+            let tabBarController = segue.destination as? UITabBarController
+            tabBarController?.selectedIndex = 3
+        }
+    }
 }

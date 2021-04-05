@@ -21,13 +21,6 @@ final class InitialViewController: UIViewController {
 
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == VKLoginViewController.segueIdentifier {
-            let tabBarController = segue.destination as? UITabBarController
-            tabBarController?.selectedIndex = 3
-        }
-    }
-    
     @IBAction func loginButton(_ sender: UIButton) {
         self.loadingView.isHidden = false
         self.loadingView.setup()

@@ -437,7 +437,7 @@
                                     <outlet property="avatar" destination="mNB-m0-xPo" id="dj2-xZ-nUN"/>
                                     <outlet property="nameLabel" destination="gzo-D6-uoe" id="lle-SJ-JiS"/>
                                     <outlet property="subscribeLabel" destination="5Vz-qh-9U4" id="UfF-dv-7Wt"/>
-                                    <segue destination="l81-WJ-FIe" kind="unwind" identifier="addGroup" unwindAction="unwindSegue:" id="YRx-i2-T7H"/>
+                                    <segue destination="l81-WJ-FIe" kind="unwind" unwindAction="addGroupUnwindWithUnwindSegue:" id="GWT-qO-ng7"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

@@ -34,6 +34,7 @@
 		AB892B8B25E857BF00F97C89 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB892B8A25E857BF00F97C89 /* User.swift */; };
 		AB8FE9A4261A44D40082DA82 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8FE9A3261A44D40082DA82 /* Config.swift */; };
 		AB8FE9A8261A56C10082DA82 /* FirebaseUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8FE9A7261A56C10082DA82 /* FirebaseUser.swift */; };
+		AB8FE9C4261AFFAA0082DA82 /* FirebaseGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8FE9C3261AFFAA0082DA82 /* FirebaseGroup.swift */; };
 		AB92810325DE865A00B694D9 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB92810225DE865A00B694D9 /* Extentions.swift */; };
 		AB98A30625CC7F0100E539F9 /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */; };
 		AB9DBEE525A3D7F8002B9B8A /* RoundedImageWithShedow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */; };
@@ -82,6 +83,7 @@
 		AB892B8A25E857BF00F97C89 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		AB8FE9A3261A44D40082DA82 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		AB8FE9A7261A56C10082DA82 /* FirebaseUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUser.swift; sourceTree = "<group>"; };
+		AB8FE9C3261AFFAA0082DA82 /* FirebaseGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseGroup.swift; sourceTree = "<group>"; };
 		AB92810225DE865A00B694D9 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extentions.swift; path = Utils/Extentions.swift; sourceTree = SOURCE_ROOT; };
 		AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveTransition.swift; sourceTree = "<group>"; };
 		AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageWithShedow.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				AB8FE9A7261A56C10082DA82 /* FirebaseUser.swift */,
 				ABAEE790260AA715003355E9 /* NewsPost.swift */,
 				AB340A8B25A39BDE000F6C34 /* Group.swift */,
+				AB8FE9C3261AFFAA0082DA82 /* FirebaseGroup.swift */,
 				ABFEC52D25DFB07300F5BF9A /* Photo.swift */,
 			);
 			path = Model;
@@ -415,6 +418,7 @@
 				AB177AC52607E8C200C8CD25 /* Constants.swift in Sources */,
 				AB92810325DE865A00B694D9 /* Extentions.swift in Sources */,
 				AB862E1F25FC123C00781D09 /* RealmManager.swift in Sources */,
+				AB8FE9C4261AFFAA0082DA82 /* FirebaseGroup.swift in Sources */,
 				ABF8885E258EAC1F00A29574 /* InitialViewController.swift in Sources */,
 				AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */,
 				AB7CEF9825B9D37E0092EF04 /* LoadingView.swift in Sources */,
