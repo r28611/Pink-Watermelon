@@ -34,6 +34,9 @@ class GroupsTableViewController: UITableViewController {
         }
     }
 
+    deinit {
+        listener?.remove()
+    }
     
     @IBAction func addGroupUnwind(unwindSegue: UIStoryboardSegue) {
         guard let tableViewController = unwindSegue.source as? AllGroupsTableViewController,
