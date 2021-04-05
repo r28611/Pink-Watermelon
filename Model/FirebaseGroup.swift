@@ -33,6 +33,16 @@ class FirebaseGroup {
         )
     }
     
+    init?(dict: [String: Any]) {
+        guard let id = dict["id"] as? Int,
+              let name = dict["name"] as? String,
+              let imageURL = dict["imageURL"] as? String else { return nil }
+        
+        self.id = id
+        self.name = name
+        self.imageURL = imageURL
+    }
+    
     func toAnyObject() -> [String: Any] {
         [
             "id": id,

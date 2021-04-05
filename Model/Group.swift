@@ -48,4 +48,5 @@ class Group: Object, Decodable {
     override static func primaryKey() -> String? {
         return "id"
     }
+    
 }

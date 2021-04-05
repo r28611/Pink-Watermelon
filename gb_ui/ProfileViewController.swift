@@ -16,9 +16,7 @@ final class ProfileViewController: UIViewController {
     @IBOutlet weak var avatar: RoundedImageWithShadow!
     @IBOutlet weak var newsTableView: UITableView!
     private let networkManager = NetworkManager.shared
-    private let userId = Session.shared.userId
     private var user = User()
-    private var firebaseUser: FirebaseUser?
     private var userCollection = Firestore.firestore().collection("Users")
     
     override func viewDidLoad() {
@@ -36,7 +34,6 @@ final class ProfileViewController: UIViewController {
         
         networkManager.getUserInfo(token: Session.shared.token) { [weak self] user in
             self?.user = user
-            self?.firebaseUser = FirebaseUser(from: user)
             self?.saveUserToFirestore(user: FirebaseUser(from: user))
 
             DispatchQueue.main.async {

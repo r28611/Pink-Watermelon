@@ -11,51 +11,37 @@ import FirebaseFirestore
 class GroupsTableViewController: UITableViewController {
     
     private let networkManager = NetworkManager.shared
-    private var groups = [Group]()
-//    var group: FirebaseGroup?
     var groupsCollection = Firestore.firestore().collection("Groups")
+    var groups = [FirebaseGroup]()
+    var listener: ListenerRegistration?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setRefresher()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-
-    }
-    
-    private func getGroupsData() {
-        networkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
-            DispatchQueue.main.async {
-                self?.groups = groups
-                self?.refreshControl?.endRefreshing()
-                self?.tableView.reloadData()
+        listener = groupsCollection.addSnapshotListener{ [weak self] (snapshot, error) in
+            self?.groups.removeAll()
+            
+            guard let snapshot = snapshot, !snapshot.documents.isEmpty else {
+                return
             }
+            
+            for document in snapshot.documents {
+                if let group = FirebaseGroup(dict: document.data()) {
+                    self?.groups.append(group)
+                }
+            }
+            
+            self?.tableView.reloadData()
         }
     }
-    
-    @objc private func refresh(_ sender: UIRefreshControl) {
-        getGroupsData()
-    }
-    
-    private func setRefresher() {
-        tableView.refreshControl = {
-            let refreshControl = UIRefreshControl()
-            refreshControl.tintColor = Constants.greenColor
-            refreshControl.attributedTitle = NSAttributedString(string: Constants.refreshTitle, attributes: [.font: UIFont.systemFont(ofSize: 12)])
-            refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-            return refreshControl
-        }()
-    }
+
     
     @IBAction func addGroupUnwind(unwindSegue: UIStoryboardSegue) {
         guard let tableViewController = unwindSegue.source as? AllGroupsTableViewController,
               let indexPath = tableViewController.tableView.indexPathForSelectedRow else {return}
         
         let group = tableViewController.groups[indexPath.row]
-        groups.append(group)
         let firebaseGroup = FirebaseGroup(from: group)
+        groups.append(firebaseGroup)
         saveGroupToFirestore(group: firebaseGroup)
         tableView.reloadData()
     }
@@ -76,8 +62,10 @@ class GroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? GroupsTableViewCell {
-            
-            cell.groupModel = groups[indexPath.row]
+            let group = groups[indexPath.row]
+            cell.membersCountLabel.isHidden = true
+            cell.avatar.image.load(url: URL(string: group.imageURL)!)
+            cell.nameLabel.text = group.name
             return cell
         }
         
