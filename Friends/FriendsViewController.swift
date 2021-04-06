@@ -50,7 +50,6 @@ final class FriendsViewController: UIViewController {
         super.viewDidLoad()
         searchTextField.delegate = self
         setupTableView()
-        
         setUsersRealmNotification()
     }
     
@@ -359,5 +358,24 @@ extension FriendsViewController: UITextFieldDelegate {
             tableView.reloadData()
         }
         return true
+    }
+}
+
+class GetDataOperation: Operation {
+    let token: String
+    var users: [User]?
+    let networkManager = NetworkManager.shared
+    let realmManager = RealmManager.shared
+    
+    override func main() {
+        networkManager.loadFriends(token: token) { [weak self] users in
+            try? self?.realmManager?.save(objects: users)
+            self?.users = users
+        }
+    }
+    
+    init(token: String) {
+        self.token = token
+        super.init()
     }
 }
