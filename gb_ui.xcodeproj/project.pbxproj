@@ -38,6 +38,9 @@
 		AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */; };
 		ABAEE791260AA715003355E9 /* NewsPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAEE790260AA715003355E9 /* NewsPost.swift */; };
 		ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */; };
+		ABDBBF05261F216900AF71FA /* GetDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF04261F216900AF71FA /* GetDataOperation.swift */; };
+		ABDBBF09261F345B00AF71FA /* ParseDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */; };
+		ABDBBF0C261F362000AF71FA /* SaveRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */; };
 		ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */; };
 		ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */; };
 		ABE5A636258E142E00CEFEA1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A634258E142E00CEFEA1 /* Main.storyboard */; };
@@ -84,6 +87,9 @@
 		AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
 		ABAEE790260AA715003355E9 /* NewsPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsPost.swift; sourceTree = "<group>"; };
 		ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermelonLoadingView.swift; sourceTree = "<group>"; };
+		ABDBBF04261F216900AF71FA /* GetDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataOperation.swift; sourceTree = "<group>"; };
+		ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataOperation.swift; sourceTree = "<group>"; };
+		ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRealmOperation.swift; sourceTree = "<group>"; };
 		ABE5A62B258E142E00CEFEA1 /* gb_ui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gb_ui.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABE5A62E258E142E00CEFEA1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -220,9 +226,20 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
+		ABDBBF03261F214100AF71FA /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				ABDBBF04261F216900AF71FA /* GetDataOperation.swift */,
+				ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */,
+				ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
 		ABE5A622258E142E00CEFEA1 = {
 			isa = PBXGroup;
 			children = (
+				ABDBBF03261F214100AF71FA /* Operations */,
 				AB177ABE2607E7FB00C8CD25 /* Utils */,
 				AB862E1D25FC122500781D09 /* Realm */,
 				AB326B4825D44AB2002AFBF3 /* NetworkManager */,
@@ -431,13 +448,16 @@
 				AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */,
 				ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */,
 				AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */,
+				ABDBBF0C261F362000AF71FA /* SaveRealmOperation.swift in Sources */,
 				AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */,
 				AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */,
 				AB67F46D25CC309100EE957D /* AnimatedNavigationController.swift in Sources */,
 				AB049AEE25D49649002176EA /* NetworkManager.swift in Sources */,
 				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
 				ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */,
+				ABDBBF05261F216900AF71FA /* GetDataOperation.swift in Sources */,
 				AB371B1425E002B4003C5D52 /* VKGetResponse.swift in Sources */,
+				ABDBBF09261F345B00AF71FA /* ParseDataOperation.swift in Sources */,
 				AB892B8B25E857BF00F97C89 /* User.swift in Sources */,
 				ABE5A631258E142E00CEFEA1 /* SceneDelegate.swift in Sources */,
 			);
