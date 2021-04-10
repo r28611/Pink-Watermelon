@@ -38,6 +38,8 @@
 		AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */; };
 		ABAEE791260AA715003355E9 /* NewsPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAEE790260AA715003355E9 /* NewsPost.swift */; };
 		ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */; };
+		ABBE000526221FB2006F7EEF /* VKFriendsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBE000426221FB2006F7EEF /* VKFriendsService.swift */; };
+		ABBE001426222C92006F7EEF /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBE001326222C92006F7EEF /* AsyncOperation.swift */; };
 		ABDBBF05261F216900AF71FA /* GetDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF04261F216900AF71FA /* GetDataOperation.swift */; };
 		ABDBBF09261F345B00AF71FA /* ParseDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */; };
 		ABDBBF0C261F362000AF71FA /* SaveRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */; };
@@ -87,6 +89,8 @@
 		AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
 		ABAEE790260AA715003355E9 /* NewsPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsPost.swift; sourceTree = "<group>"; };
 		ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermelonLoadingView.swift; sourceTree = "<group>"; };
+		ABBE000426221FB2006F7EEF /* VKFriendsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFriendsService.swift; sourceTree = "<group>"; };
+		ABBE001326222C92006F7EEF /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		ABDBBF04261F216900AF71FA /* GetDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataOperation.swift; sourceTree = "<group>"; };
 		ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataOperation.swift; sourceTree = "<group>"; };
 		ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRealmOperation.swift; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 				AB326B4925D44AD9002AFBF3 /* Session.swift */,
 				AB049AED25D49649002176EA /* NetworkManager.swift */,
 				AB371B1325E002B4003C5D52 /* VKGetResponse.swift */,
+				ABBE000426221FB2006F7EEF /* VKFriendsService.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -232,6 +237,7 @@
 				ABDBBF04261F216900AF71FA /* GetDataOperation.swift */,
 				ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */,
 				ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */,
+				ABBE001326222C92006F7EEF /* AsyncOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -424,6 +430,7 @@
 				ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */,
 				AB177AC52607E8C200C8CD25 /* Constants.swift in Sources */,
 				AB92810325DE865A00B694D9 /* Extentions.swift in Sources */,
+				ABBE001426222C92006F7EEF /* AsyncOperation.swift in Sources */,
 				AB862E1F25FC123C00781D09 /* RealmManager.swift in Sources */,
 				ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */,
 				AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */,
@@ -443,6 +450,7 @@
 				AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */,
 				ABFEC52E25DFB07300F5BF9A /* Photo.swift in Sources */,
 				AB67F46A25CC2CD700EE957D /* AnimateTransition.swift in Sources */,
+				ABBE000526221FB2006F7EEF /* VKFriendsService.swift in Sources */,
 				AB326B4A25D44AD9002AFBF3 /* Session.swift in Sources */,
 				AB049AF325D49E5E002176EA /* VKLoginViewController.swift in Sources */,
 				AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */,

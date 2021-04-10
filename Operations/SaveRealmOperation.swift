@@ -11,7 +11,8 @@ class SaveRealmFriendsOperation: Operation {
     private let realmManager = RealmManager.shared
     
     override func main() {
-        guard let parseDataOperation = dependencies.first as? ParseFriendsDataOperation else { return }
+        guard let parseDataOperation = dependencies.first as? ParseFriendsDataOperation,
+              !parseDataOperation.outputData.isEmpty else { return }
         
         let users = parseDataOperation.outputData
         try! self.realmManager?.save(objects: users)

@@ -28,7 +28,6 @@ final class FriendsViewController: UIViewController {
     private var sections = [FriendSection]()
     private var chosenUser: User!
     
-    private let networkManager = NetworkManager.shared
     private let realmManager = RealmManager.shared
     private var userResults: Results<User>? {
         let users: Results<User>? = realmManager?
@@ -59,9 +58,9 @@ final class FriendsViewController: UIViewController {
             self.users = results.toArray() as! [User]
             groupUsersForTable(users: self.users)
             render()
-        } else {
-            refresh(refreshControl)
         }
+        refresh(refreshControl)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,19 +78,14 @@ final class FriendsViewController: UIViewController {
     deinit {
         filteredUsersNotificationToken?.invalidate()
     }
-    
+
     @objc private func refresh(_ sender: UIRefreshControl) {
-        networkManager.loadFriends(token: Session.shared.token) { [weak self] users in
-            try? self?.realmManager?.save(objects: users)
-            #if DEBUG
-            if let fileURL = Realm.Configuration.defaultConfiguration.fileURL {
-                print(fileURL)
-            }
-            #endif
-            self?.users = users
-            DispatchQueue.main.async {
-                self?.render()
-                self?.refreshControl.endRefreshing()
+        VKFriendsService().get {
+            if let results = self.userResults {
+                self.users = results.toArray() as! [User]
+                self.groupUsersForTable(users: self.users)
+                self.render()
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -132,16 +126,11 @@ final class FriendsViewController: UIViewController {
                 self.users = users.toArray() as! [User]
                 self.groupUsersForTable(users: self.users)
                 self.render()
-//                self.tableView.beginUpdates()
-//                self.tableView.deleteRows(at: deletions.indexPaths, with: .automatic)
-//                self.tableView.insertRows(at: insertions.indexPaths, with: .automatic)
-//                self.tableView.reloadRows(at: modifications.indexPaths, with: .automatic)
-//                self.tableView.endUpdates()
                 break
             case .error(let error):
                 let alert = Alert()
                 alert.showAlert(title: "Error", message: error.localizedDescription)
-
+                
             }
         }
     }
