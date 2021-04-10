@@ -52,18 +52,14 @@ class NetworkManager {
         }
     }
     
-    func loadFriends(token: String, completion: @escaping ([User]) -> Void ) {
+    func loadFriends(token: String, completion: @escaping (AFDataResponse<Data>) -> Void ) {
         NetworkManager.sessionAF.request(Constants.vkFriendsURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "order": "mobile",
             "fields": "city,photo_100,online",
             "v": "5.130"
         ]).responseData { (response) in
-            guard let data = response.value else { return }
-            
-            if let friends = try? JSONDecoder().decode(VKGetResponse<User>.self, from: data).response.items {
-                completion(friends)
-            }
+            completion(response)
         }
     }
     

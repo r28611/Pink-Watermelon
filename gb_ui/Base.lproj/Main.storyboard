@@ -161,6 +161,7 @@
         <!--Signup View Controller-->
         <scene sceneID="V3Q-LA-nyn">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1aI-89-r6L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="9Xf-KG-Fsv" customClass="SignupViewController" customModule="gb_ui" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mPD-Sd-yhI">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
@@ -205,7 +206,6 @@
                         <outlet property="welcomeLabel" destination="Eyv-l5-00Z" id="MlM-ep-LZb"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1aI-89-r6L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-488" y="534"/>
         </scene>
