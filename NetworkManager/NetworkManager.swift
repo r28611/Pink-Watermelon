@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import Alamofire
+import PromiseKit
 
 class NetworkManager {
     
-    private static let sessionAF: Alamofire.Session = {
+    private static let sessionManager: SessionManager = {
         let configuration = URLSessionConfiguration.default
         configuration.allowsCellularAccess = false
-        let session = Alamofire.Session(configuration: configuration)
+        let session = SessionManager(configuration: configuration)
         return session
     }()
     
@@ -23,23 +23,37 @@ class NetworkManager {
         
     }
     
-    func loadGroups(token: String, completion: @escaping ([Group]) -> Void )  {
-        NetworkManager.sessionAF.request(Constants.vkGroupsURL + Constants.vkMethodGet, method: .get, parameters: [
-            "access_token": token,
-            "extended": 1,
-            "fields": "members_count",
-            "v": "5.130"
-        ]).responseData { (response) in
-            guard let data = response.value else { return }
-            if let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items {
-                completion(groups)
+    func loadGroups(token: String, on queue: DispatchQueue = .global(qos: DispatchQoS.QoSClass.background)) -> Promise<[Group]> {
+        let promise = Promise<[Group]> { resolver in
+            NetworkManager.sessionManager.request(Constants.vkGroupsURL + Constants.vkMethodGet, method: .get, parameters: [
+                "access_token": token,
+                "extended": 1,
+                "fields": "members_count",
+                "v": "5.130"
+            ]).responseData(queue: queue) { (response) in
+                guard let data = response.value,
+                      let groups = try? JSONDecoder().decode(VKGetResponse<Group>.self, from: data).response.items
+                else {
+                    resolver.reject(NetworkError.NotFound(message: "Error"))
+                    return
+                }
+                resolver.fulfill(groups)
             }
         }
-        
+        return promise
+    }
+    
+    func getAvatarData(url iconURL: URL) -> Promise<Data> {
+       
+        return URLSession.shared.dataTask(.promise, with: iconURL)
+            .then(on: DispatchQueue.global()) { response -> Promise<Data> in
+                let data = response.data
+                return Promise.value(data)
+        }
     }
     
     func searchGroup(token: String, group name: String, completion: @escaping ([Group]) -> Void ) {
-        NetworkManager.sessionAF.request(Constants.vkGroupsURL + Constants.vkMethodSearch, method: .get, parameters: [
+        NetworkManager.sessionManager.request(Constants.vkGroupsURL + Constants.vkMethodSearch, method: .get, parameters: [
             "access_token": token,
             "q": name, //текст поискового запроса
             "count": 10, //по умолчанию 20, максимальное значение 1000
@@ -52,8 +66,8 @@ class NetworkManager {
         }
     }
     
-    func loadFriends(token: String, completion: @escaping (AFDataResponse<Data>) -> Void ) {
-        NetworkManager.sessionAF.request(Constants.vkFriendsURL + Constants.vkMethodGet, method: .get, parameters: [
+    func loadFriends(token: String, completion: @escaping (DataResponse<Data>) -> Void ) {
+        NetworkManager.sessionManager.request(Constants.vkFriendsURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "order": "mobile",
             "fields": "city,photo_100,online",
@@ -64,7 +78,7 @@ class NetworkManager {
     }
     
     func getUserInfo(token: String, completion: @escaping (User) -> Void ) {
-        NetworkManager.sessionAF.request(Constants.vkUsersURL + Constants.vkMethodGet, method: .get, parameters: [
+        NetworkManager.sessionManager.request(Constants.vkUsersURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "user_ids": Session.shared.userId,
             "fields": "city,photo_100,counters,online",
@@ -83,7 +97,7 @@ class NetworkManager {
     }
     
     func loadPhotos(token: String, userId ownerId: Int, completion: @escaping ([Photo]) -> Void )  {
-        NetworkManager.sessionAF.request(Constants.vkPhotosURL + Constants.vkMethodGet, method: .get, parameters: [
+        NetworkManager.sessionManager.request(Constants.vkPhotosURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "owner_id": ownerId,
             "album_id": "profile", //wall — фотографии со стены, profile — фотографии профиля, saved — сохраненные фотографии
@@ -105,7 +119,7 @@ class NetworkManager {
     }
     
     func loadNewsPost(token: String, completion: @escaping ([NewsPost], [Int:User], [Int:Group]) -> Void ) {
-        NetworkManager.sessionAF.request(Constants.vkNewsURL + Constants.vkMethodGet, method: .get, parameters: [
+        NetworkManager.sessionManager.request(Constants.vkNewsURL + Constants.vkMethodGet, method: .get, parameters: [
             "access_token": token,
             "filters": "post",
             "return_banned": 0,
