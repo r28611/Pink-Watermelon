@@ -44,6 +44,7 @@ class GroupsTableViewCell: UITableViewCell {
             }
         }
         
+        self.backgroundColor = avatar.image.image?.findAverageColor(algorithm: .simple)
         nameLabel.text = name
         nameLabel.numberOfLines = nameLabel.calculateMaxLines()
         

@@ -40,6 +40,7 @@
 		ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */; };
 		ABBE000526221FB2006F7EEF /* VKFriendsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBE000426221FB2006F7EEF /* VKFriendsService.swift */; };
 		ABBE001426222C92006F7EEF /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBE001326222C92006F7EEF /* AsyncOperation.swift */; };
+		ABC313DB262703E90057AEED /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC313DA262703E90057AEED /* NetworkError.swift */; };
 		ABDBBF05261F216900AF71FA /* GetDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF04261F216900AF71FA /* GetDataOperation.swift */; };
 		ABDBBF09261F345B00AF71FA /* ParseDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */; };
 		ABDBBF0C261F362000AF71FA /* SaveRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */; };
@@ -91,6 +92,7 @@
 		ABAF93B925CC9B3300C6D6D4 /* WatermelonLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermelonLoadingView.swift; sourceTree = "<group>"; };
 		ABBE000426221FB2006F7EEF /* VKFriendsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFriendsService.swift; sourceTree = "<group>"; };
 		ABBE001326222C92006F7EEF /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		ABC313DA262703E90057AEED /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		ABDBBF04261F216900AF71FA /* GetDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataOperation.swift; sourceTree = "<group>"; };
 		ABDBBF08261F345B00AF71FA /* ParseDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataOperation.swift; sourceTree = "<group>"; };
 		ABDBBF0B261F362000AF71FA /* SaveRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRealmOperation.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				AB049AED25D49649002176EA /* NetworkManager.swift */,
 				AB371B1325E002B4003C5D52 /* VKGetResponse.swift */,
 				ABBE000426221FB2006F7EEF /* VKFriendsService.swift */,
+				ABC313DA262703E90057AEED /* NetworkError.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				ABF88937259F846900A29574 /* FriendsPhotosCollectionVC.swift in Sources */,
 				AB6E484A25B637B400F7B66B /* HeaderView.swift in Sources */,
 				ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */,
+				ABC313DB262703E90057AEED /* NetworkError.swift in Sources */,
 				AB177AC92607E9C800C8CD25 /* Alert.swift in Sources */,
 				ABF8893A25A2437B00A29574 /* PhotosCollectionViewCell.swift in Sources */,
 				AB6E424F25B1C75600E7FB2D /* PhotoViewController.swift in Sources */,
