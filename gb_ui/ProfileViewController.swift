@@ -44,7 +44,7 @@ final class ProfileViewController: UIViewController {
     func setupUi() {
         usernameLabel.text = user.name
         cityLabel.text = user.city?.title ?? user.surname
-        avatar.image.load(url: user.avatarURL)
+//        avatar.image.load(url: user.avatarURL)
     }
     
     @IBAction func didTapLogOut(_ sender: UIButton) {
@@ -62,7 +62,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsCell {
-            cell.authorAvatar.image.load(url: user.avatarURL)
+//            cell.authorAvatar.image.load(url: user.avatarURL)
             cell.timeLabel.text = "01/01/2021"
             cell.authorName.text = "\(user.name) \(user.surname)"
             cell.newsText.text = "Французский Индокитай, 1931 г. На побережье Сиамского залива проживает французская семья: вдова и двое её детей: 19-ти и 16-ти лет. Продавая этот участок чиновники умолчали о ежегодном затоплении земли со стороны моря. Семейство едва сводит концы с концами. Чтобы отгородить себя ещё от большего разорения мадам объявляет о строительстве дамбы. Женщина отказывается сдаться и отчаянно борется и против моря и против коррумпированных колониальных бюрократов..."

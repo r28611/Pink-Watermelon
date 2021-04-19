@@ -23,7 +23,7 @@ final class FriendsViewController: UIViewController {
     @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
-    
+    private var photoService: PhotoService?
     private var users = [User]()
     private var sections = [FriendSection]()
     private var chosenUser: User!
@@ -48,6 +48,7 @@ final class FriendsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
+        photoService = PhotoService(container: tableView)
         setupTableView()
         setUsersRealmNotification()
     }
@@ -229,7 +230,11 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
-            cell.userModel = user
+//            cell.userModel = user
+            cell.nameLabel.text = user.name + " " + user.surname
+            cell.cityLabel.text = user.city?.title
+            cell.onlineStatus.isHidden = !user.isOnline
+            cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: user.avatarURL)
             return cell
         }
         return UITableViewCell()
