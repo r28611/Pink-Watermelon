@@ -60,7 +60,6 @@ final class FriendsViewController: UIViewController {
             groupUsersForTable(users: self.users)
             render()
         }
-        refresh(refreshControl)
         
     }
     
@@ -230,11 +229,8 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
-//            cell.userModel = user
-            cell.nameLabel.text = user.name + " " + user.surname
-            cell.cityLabel.text = user.city?.title
-            cell.onlineStatus.isHidden = !user.isOnline
             cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: user.avatarURL)
+            cell.userModel = user
             return cell
         }
         return UITableViewCell()

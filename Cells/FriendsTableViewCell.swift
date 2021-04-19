@@ -27,7 +27,6 @@ class FriendsTableViewCell: UITableViewCell {
         let name = userModel.name
         let surname = userModel.surname
         let city = userModel.city?.title
-        let avatarURL = userModel.avatarURL
         let isOnline = userModel.isOnline
         
         nameLabel.text = name + " " + surname

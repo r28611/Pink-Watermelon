@@ -39,33 +39,15 @@ class GroupsTableViewController: UITableViewController {
     private func getGroupsData() {
         
         networkManager.loadGroups(token: Session.shared.token, on: .global())
-
             .get { [weak self] groups in
                 guard let self = self else { return }
                 try? self.realmManager?.save(objects: groups)
             }
-//            .thenMap { [weak self] group -> Promise<Data> in
-//                guard let self = self else { return Promise(error: PMKError.cancelled) }
-//                let promise = self.networkManager.getAvatarData(url: group.avatarURL)
-//                return promise
-//            }
-//            .done(on: .main) { [weak self] images in
-//                try? self?.realmManager?.update {
-//                    
-//                }
-//            }
             .catch { error in
                 let alert = Alert()
                 alert.showAlert(title: "Error", message: error.localizedDescription)
-                // Возвращаемся в исходное состояние контроллера
             }.finally {
                 self.refreshControl?.endRefreshing()
-                //        networkManager.loadGroups(token: Session.shared.token) { [weak self] groups in
-                //            DispatchQueue.main.async {
-                //                try? self?.realmManager?.save(objects: groups)
-                //                self?.refreshControl?.endRefreshing()
-                //            }
-                //        }
             }
     }
         
@@ -112,8 +94,8 @@ class GroupsTableViewController: UITableViewController {
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? GroupsTableViewCell,
                 let group = groups?[indexPath.row] {
-                cell.groupModel = group
                 cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
+                cell.groupModel = group
                 return cell
             }
             
@@ -131,7 +113,7 @@ class GroupsTableViewController: UITableViewController {
                 return
             }
             if editingStyle == .delete {
-                //реализовать удаление на api
+                //реализовать удаление на api когда-нибудь
                 try? realmManager?.delete(object: group)
             }
         }
