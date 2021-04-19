@@ -13,6 +13,7 @@ class GroupsTableViewController: UITableViewController {
     
     private let realmManager = RealmManager.shared
     private let networkManager = NetworkManager.shared
+    private var photoService: PhotoService?
     private var groupsNotificationToken: NotificationToken?
     private var groups: Results<Group>? {
         let groups: Results<Group>? = realmManager?
@@ -23,6 +24,7 @@ class GroupsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        photoService = PhotoService(container: tableView)
         setRefresher()
         setGroupRealmNotofocation()
     }
@@ -108,9 +110,10 @@ class GroupsTableViewController: UITableViewController {
         }
         
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? GroupsTableViewCell {
-                
-                cell.groupModel = groups?[indexPath.row]
+            if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.groupCellIdentifier, for: indexPath) as? GroupsTableViewCell,
+                let group = groups?[indexPath.row] {
+                cell.groupModel = group
+                cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
                 return cell
             }
             
