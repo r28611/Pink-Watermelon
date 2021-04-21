@@ -13,6 +13,11 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     private var newsPosts = [NewsPost]()
     private var users = [Int:User]()
     private var groups = [Int:Group]()
+    private var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
+        return dateFormatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +67,7 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
             let news = newsPosts[indexPath.row]
             parseTableData(news: news) { (newsPostViewModel) in
                 DispatchQueue.main.async {
-                    cell.setup(newsPostViewModel: newsPostViewModel)
+                    cell.setup(newsPostViewModel: newsPostViewModel, dateFormatter: self.dateFormatter)
                 }
             }
             return cell
