@@ -21,9 +21,11 @@ class GroupsTableViewController: UITableViewController {
             .sorted(byKeyPath: "membersCount", ascending: false) // по убыванию количества участников
         return groups
     }
+    private var testCell = GroupsTableViewCell()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(GroupsTableViewCell.self, forCellReuseIdentifier: Constants.groupCellIdentifier)
         photoService = PhotoService(container: tableView)
         setRefresher()
         setGroupRealmNotofocation()
@@ -103,7 +105,16 @@ class GroupsTableViewController: UITableViewController {
         }
         
         override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 66
+//            return 66
+            let cell = testCell
+            var cellSize: CGSize = .zero
+            if let group = groups?[indexPath.row] {
+                cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
+                cell.layoutAvatar()
+                cell.groupModel = group
+                cellSize = cell.cellSize()
+            }
+            return cellSize.height
         }
         
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

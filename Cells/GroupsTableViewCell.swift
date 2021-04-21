@@ -10,10 +10,10 @@ import RealmSwift
 
 class GroupsTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var avatar: RoundedImageWithShadow!
-    @IBOutlet weak var nameLabel: UILabel! 
-    @IBOutlet weak var subscribeLabel: UILabel!
-    @IBOutlet weak var membersCountLabel: UILabel!
+    var avatar = RoundedImageWithShadow()
+    var nameLabel = UILabel()
+    var subscribeLabel: UILabel? = UILabel()
+    var membersCountLabel: UILabel? = UILabel()
     struct Spec {
         static let offset: CGFloat = 8
         static let smallOffset: CGFloat = 3
@@ -26,6 +26,27 @@ class GroupsTableViewCell: UITableViewCell {
         
     }
     
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    func commonInit() {
+        addSubview(avatar)
+        addSubview(nameLabel)
+        addSubview(membersCountLabel!)
+        
+        nameLabel.font = .systemFont(ofSize: 17)
+        nameLabel.numberOfLines = 0
+        membersCountLabel?.font = .systemFont(ofSize: 12)
+        setup()
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutAvatar()
@@ -35,7 +56,7 @@ class GroupsTableViewCell: UITableViewCell {
         layoutMembersCountLabel()
     }
     
-    private func layoutAvatar() {
+    func layoutAvatar() {
         avatar.frame = CGRect(
             x: Spec.offset,
             y: Spec.offset,
@@ -105,15 +126,21 @@ class GroupsTableViewCell: UITableViewCell {
     }
     
     func cellSize() -> CGSize {
-        var height = nameLabel.frame.maxY + Spec.offset
+        var height = nameLabel.frame.height
+        let minHeight = Spec.offset + avatar.frame.height + Spec.offset
         if let members = membersCountLabel {
-            height += members.frame.maxY
+            height += members.frame.height
         }
         if let subscribe = subscribeLabel {
-            height += subscribe.frame.maxY
+            height += subscribe.frame.height
         }
+        if height > minHeight {
         return CGSize(width: bounds.width,
                       height: height)
+        } else {
+            return CGSize(width: bounds.width,
+                          height: minHeight)
+        }
     }
     
     var groupModel: Group? {
@@ -131,10 +158,13 @@ class GroupsTableViewCell: UITableViewCell {
         
         self.backgroundColor = avatar.image.image?.findAverageColor(algorithm: .squareRoot)
         nameLabel.text = name
+        layoutNameLabel()
         
         subscribeLabel?.text = isMember == 1 ? "✅" : "Subscribe"
         subscribeLabel?.tintColor = isMember == 1 ? .black : .systemPink
-        membersCountLabel?.text = "\(members) members" 
-
+        layoutSubscribeLabel()
+        
+        membersCountLabel?.text = "\(members) members"
+        layoutMembersCountLabel()
     }
 }
