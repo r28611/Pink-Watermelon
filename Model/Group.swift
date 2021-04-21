@@ -12,10 +12,7 @@ class Group: Object, Decodable {
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""
     @objc dynamic var isMember: Int = 0
-    @objc dynamic var avatar: String = Constants.vkNonexistentGroupPhotoURL
-    @objc dynamic var avatarData: Data? = nil
-    var avatarURL: URL { return URL(string: self.avatar)!}
-    
+    @objc dynamic var avatarURL: String = Constants.vkNonexistentGroupPhotoURL
     
     var members: Int {
         get { return membersCount.value ?? 0 }
@@ -34,14 +31,14 @@ class Group: Object, Decodable {
         if let members = try? container.decode(Int.self, forKey: .members) {
             self.members = members
         }
-        avatar = try container.decode(String.self, forKey: .avatar)
+        avatarURL = try container.decode(String.self, forKey: .avatarURL)
     }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
         case isMember = "is_member"
-        case avatar = "photo_100"
+        case avatarURL = "photo_100"
         case members = "members_count"
     }
     

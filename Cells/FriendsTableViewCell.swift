@@ -14,7 +14,7 @@ class FriendsTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var onlineStatus: UIImageView!
-    
+
     var userModel: User? {
         didSet {
             setup()
@@ -27,27 +27,12 @@ class FriendsTableViewCell: UITableViewCell {
         let name = userModel.name
         let surname = userModel.surname
         let city = userModel.city?.title
-        let avatarURL = userModel.avatarURL
-        let avatarData = userModel.avatarData
         let isOnline = userModel.isOnline
-        
-        if let data = avatarData {
-            avatar.image.image = UIImage(data: data)
-        } else {
-            avatar.image.getData(from: avatarURL) { (data) in
-                DispatchQueue.main.async {
-                    self.avatar.image.image = UIImage(data: data)
-                    let realm = RealmManager.shared
-                    try? realm?.update {
-                        userModel.avatarData = data
-                    }
-                }
-            }
-        }
         
         nameLabel.text = name + " " + surname
         cityLabel.text = city
         onlineStatus.isHidden = !isOnline
+
     }
     
 }

@@ -88,10 +88,12 @@ extension NewsTableViewController {
             var authorAvatar: URL
             if news.sourceID > 0 {
                 authorName = self.users[news.sourceID]!.name
-                authorAvatar = self.users[news.sourceID]!.avatarURL
+                authorAvatar = URL(string: "Constants.vkNonexistentPhotoURL")!
+//                authorAvatar = self.users[news.sourceID]!.avatarURL
             } else {
                 authorName = self.groups[-news.sourceID]!.name
-                authorAvatar = self.groups[-news.sourceID]!.avatarURL
+                authorAvatar = URL(string: "Constants.vkNonexistentPhotoURL")!
+//                authorAvatar = self.groups[-news.sourceID]!.avatarURL
             }
             let postViewModel = NewsPostViewModel(newsPost: news, authorName: authorName, avatarURL: authorAvatar)
             complition(postViewModel)

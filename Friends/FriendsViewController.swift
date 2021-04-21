@@ -23,8 +23,7 @@ final class FriendsViewController: UIViewController {
     @IBOutlet weak var searchCancelButtonLeading: NSLayoutConstraint!
     @IBOutlet weak var charPicker: CharacterPicker!
     @IBOutlet weak var tableView: UITableView!
-    
-    private var users = [User]()
+    private var photoService: PhotoService?
     private var sections = [FriendSection]()
     private var chosenUser: User!
     
@@ -48,19 +47,14 @@ final class FriendsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
+        photoService = PhotoService(container: tableView)
         setupTableView()
         setUsersRealmNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        if let results = userResults {
-            self.users = results.toArray() as! [User]
-            groupUsersForTable(users: self.users)
-            render()
-        }
-        refresh(refreshControl)
-        
+        render()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,15 +73,15 @@ final class FriendsViewController: UIViewController {
         filteredUsersNotificationToken?.invalidate()
     }
 
-    @objc private func refresh(_ sender: UIRefreshControl) {
+    private func updateFriendsData() {
         VKFriendsService().get {
-            if let results = self.userResults {
-                self.users = results.toArray() as! [User]
-                self.groupUsersForTable(users: self.users)
-                self.render()
-                self.refreshControl.endRefreshing()
-            }
+            self.render()
         }
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        updateFriendsData()
+        self.refreshControl.endRefreshing()
     }
     
     private func setupTableView() {
@@ -97,20 +91,24 @@ final class FriendsViewController: UIViewController {
         tableView.register(UINib(nibName: Constants.friendsSectionHeader, bundle: nil), forHeaderFooterViewReuseIdentifier: Constants.friendsSectionHeader)
     }
     
-    func groupUsersForTable(users: [User]) {
-        let friendsDictionary = Dictionary.init(grouping: users) {$0.surname.prefix(1)}
-        sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
-        sections.sort {$0.title < $1.title}
-        charPicker.chars = sections.map {$0.title}
-        charPicker.setupUi()
+    func setupSectionsChars(usersResults: Results<User>?) {
+        if let users = usersResults?.toArray() as? [User] {
+            let friendsDictionary = Dictionary.init(grouping: users) {$0.surname.prefix(1)}
+            sections = friendsDictionary.map {FriendSection(title: String($0.key), items: $0.value)}
+            sections.sort {$0.title < $1.title}
+            charPicker.chars = sections.map {$0.title}
+            charPicker.setupUi()
+        }
     }
     
     func render() {
         switch self.friendsFilterControl.selectedSegmentIndex {
         case 0:
-            groupUsersForTable(users: self.users)
+            setupSectionsChars(usersResults: userResults)
         default:
-            groupUsersForTable(users: self.users.filter({ $0.isOnline == true}))
+            setupSectionsChars(usersResults: realmManager?
+                                .getObjects()
+                                .filter("status == %@", 1))
             self.charPicker.isHidden = true
         }
         self.tableView.reloadData()
@@ -122,9 +120,7 @@ final class FriendsViewController: UIViewController {
             case .initial(let users):
                 print("Initialize \(users.count)")
                 break
-            case .update(let users, _, _, _):
-                self.users = users.toArray() as! [User]
-                self.groupUsersForTable(users: self.users)
+            case .update:
                 self.render()
                 break
             case .error(let error):
@@ -186,8 +182,7 @@ final class FriendsViewController: UIViewController {
         searchTextField.endEditing(true)
         guard searchTextField.text != "" else { return }
         searchTextField.text = ""
-        groupUsersForTable(users: self.users)
-        tableView.reloadData()
+        render()
     }
     
     // MARK: - Navigation
@@ -229,6 +224,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
                            })
             
             let user = sections[indexPath.section].items[indexPath.row]
+            cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: user.avatarURL)
             cell.userModel = user
             return cell
         }
@@ -296,56 +292,29 @@ extension FriendsViewController: UITextFieldDelegate {
                        })
     }
     
-    //какой из методов лучше читается?
-    // 1
-    
+
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if let text = self.searchTextField.text {
-            if text == "" {
-                switch self.friendsFilterControl.selectedSegmentIndex {
-                case 0:
-                    groupUsersForTable(users: self.users)
-                default:
-                    let filteredUsers = users.filter({$0.isOnline == true})
-                    self.groupUsersForTable(users: filteredUsers)
-                }
-            } else {
-                switch self.friendsFilterControl.selectedSegmentIndex {
-                case 0:
-                    let filteredUsers = users.filter({($0.name + $0.surname).lowercased().contains(text.lowercased())})
-                    groupUsersForTable(users: filteredUsers)
-                default:
-                    let filteredUsers = users
-                        .filter({$0.isOnline == true})
-                        .filter({($0.name + $0.surname).lowercased().contains(text.lowercased())})
-                    groupUsersForTable(users: filteredUsers)
-                }
+            guard text != "" else {
+                render()
+                return
             }
-            tableView.reloadData()
+            switch self.friendsFilterControl.selectedSegmentIndex {
+            case 0:
+                setupSectionsChars(usersResults: realmManager?
+                                    .getObjects()
+//добавить поиск по фамилии и сделать регистро-независимым
+//let filteredUsers = users.filter({($0.name + $0.surname).lowercased().contains(text.lowercased())})
+                                    .filter("name CONTAINS %@", String(text.lowercased())))
+            default:
+                setupSectionsChars(usersResults: realmManager?
+                                    .getObjects()
+                                    .filter("name CONTAINS %@", String(text.lowercased()))
+                                    .filter("status == %@", 1))
+                self.charPicker.isHidden = true
+            }
+            self.tableView.reloadData()
         }
     }
-    
-    // 2
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let text = self.searchTextField.text {
-            
-            if self.friendsFilterControl.selectedSegmentIndex == 0 && text == "" {
-                groupUsersForTable(users: self.users)
-            } else if self.friendsFilterControl.selectedSegmentIndex == 0 {
-                let filteredUsers = users.filter({($0.name + $0.surname).lowercased().contains(text.lowercased())})
-                groupUsersForTable(users: filteredUsers)
-            } else if text == "" {
-                let filteredUsers = users.filter({$0.isOnline == true})
-                self.groupUsersForTable(users: filteredUsers)
-            } else {
-                let filteredUsers = users
-                    .filter {$0.isOnline == true}
-                    .filter({($0.name + $0.surname).lowercased().contains(text.lowercased())})
-                self.groupUsersForTable(users: filteredUsers)
-            }
-            tableView.reloadData()
-        }
-        return true
-    }
+
 }

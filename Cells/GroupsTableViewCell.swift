@@ -26,23 +26,7 @@ class GroupsTableViewCell: UITableViewCell {
 
         let name = groupModel.name
         let isMember = groupModel.isMember
-        let avatarURL = groupModel.avatarURL
-        let avatarData = groupModel.avatarData
         let members = groupModel.members
-        
-        if let data = avatarData {
-            avatar.image.image = UIImage(data: data)
-        } else {
-            avatar.image.getData(from: avatarURL) { (data) in
-                DispatchQueue.main.async {
-                    self.avatar.image.image = UIImage(data: data)
-                    let realm = RealmManager.shared
-                    try? realm?.update {
-                        groupModel.avatarData = data
-                    }
-                }
-            }
-        }
         
         self.backgroundColor = avatar.image.image?.findAverageColor(algorithm: .simple)
         nameLabel.text = name
