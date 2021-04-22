@@ -21,8 +21,8 @@ class GroupsTableViewController: UITableViewController {
             .sorted(byKeyPath: "membersCount", ascending: false) // по убыванию количества участников
         return groups
     }
-    private var testCell = GroupsTableViewCell()
-    private var heightCellCache = [IndexPath: CGFloat]()
+
+    private var heightCellCache: CGFloat?
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(GroupsTableViewCell.self, forCellReuseIdentifier: Constants.groupCellIdentifier)
@@ -105,10 +105,10 @@ class GroupsTableViewController: UITableViewController {
         }
         
         override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            if let cachedHeight = heightCellCache[indexPath] {
-                return cachedHeight
+            if let height = heightCellCache {
+                return height
             } else {
-                let cell = testCell
+                let cell = GroupsTableViewCell()
                 var cellHeight: CGFloat = 0
                 if let group = groups?[indexPath.row] {
                     cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
@@ -116,7 +116,7 @@ class GroupsTableViewController: UITableViewController {
                     cell.groupModel = group
                     cellHeight = cell.cellSize().height
                 }
-                heightCellCache[indexPath] = cellHeight
+                heightCellCache = cellHeight
                 return cellHeight
             }
         }
