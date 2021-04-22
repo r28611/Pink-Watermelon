@@ -10,7 +10,7 @@ import UIKit
 class HeaderView: UITableViewHeaderFooterView {
 
     @IBOutlet weak var headerLabel: UILabel!
-    
+    var corners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner ]
     override func prepareForReuse() {
         super.prepareForReuse()
         
@@ -21,7 +21,7 @@ class HeaderView: UITableViewHeaderFooterView {
         super.layoutSubviews()
         self.tintColor = UIColor.systemPink.withAlphaComponent(0.3)
         layer.cornerRadius = frame.height / 2
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        layer.maskedCorners = corners
         layer.masksToBounds = true
     }
     

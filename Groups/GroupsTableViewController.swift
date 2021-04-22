@@ -22,7 +22,7 @@ class GroupsTableViewController: UITableViewController {
         return groups
     }
     private var testCell = GroupsTableViewCell()
-    
+    private var heightCellCache = [IndexPath: CGFloat]()
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(GroupsTableViewCell.self, forCellReuseIdentifier: Constants.groupCellIdentifier)
@@ -105,16 +105,20 @@ class GroupsTableViewController: UITableViewController {
         }
         
         override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//            return 66
-            let cell = testCell
-            var cellSize: CGSize = .zero
-            if let group = groups?[indexPath.row] {
-                cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
-                cell.layoutAvatar()
-                cell.groupModel = group
-                cellSize = cell.cellSize()
+            if let cachedHeight = heightCellCache[indexPath] {
+                return cachedHeight
+            } else {
+                let cell = testCell
+                var cellHeight: CGFloat = 0
+                if let group = groups?[indexPath.row] {
+                    cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
+                    cell.layoutAvatar()
+                    cell.groupModel = group
+                    cellHeight = cell.cellSize().height
+                }
+                heightCellCache[indexPath] = cellHeight
+                return cellHeight
             }
-            return cellSize.height
         }
         
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
