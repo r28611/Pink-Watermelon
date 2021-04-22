@@ -14,6 +14,15 @@ class GroupsTableViewCell: UITableViewCell {
     var nameLabel = UILabel()
     var subscribeLabel: UILabel? = UILabel()
     var membersCountLabel: UILabel? = UILabel()
+    private var averageColor: UIColor = .systemBackground {
+        willSet {
+            self.backgroundColor = newValue
+            nameLabel.backgroundColor = newValue
+            subscribeLabel?.backgroundColor = newValue
+            membersCountLabel?.backgroundColor = newValue
+            avatar.image.backgroundColor = newValue
+        }
+    }
     struct Spec {
         static let offset: CGFloat = 8
         static let smallOffset: CGFloat = 3
@@ -44,16 +53,17 @@ class GroupsTableViewCell: UITableViewCell {
         nameLabel.font = .systemFont(ofSize: 17)
         nameLabel.numberOfLines = 0
         membersCountLabel?.font = .systemFont(ofSize: 12)
-        setup()
+        setupInfo()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutAvatar()
         layoutNameLabel()
-        nameLabel.numberOfLines = nameLabel.calculateMaxLines()
         layoutSubscribeLabel()
         layoutMembersCountLabel()
+        
+        nameLabel.numberOfLines = nameLabel.calculateMaxLines()
     }
     
     func layoutAvatar() {
@@ -62,6 +72,13 @@ class GroupsTableViewCell: UITableViewCell {
             y: Spec.offset,
             width: Spec.imageSize.width,
             height: Spec.imageSize.height)
+        avatarAvaregeColor()
+    }
+    
+    private func avatarAvaregeColor() {
+        if let image = avatar.image.image {
+            self.averageColor = image.findAverageColor(algorithm: .squareRoot)!
+        }
     }
     
     private func layoutNameLabel() {
@@ -116,13 +133,12 @@ class GroupsTableViewCell: UITableViewCell {
         let maxWidth = bounds.width - Spec.offset - Spec.offset - Spec.imageSize.width - avatar.frame.origin.x
             let textBlock = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
         let rect = text.boundingRect(with: textBlock, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
-        /*
-            let width = Double(rect.size.width)
-            let height = Double(rect.size.height)
-            let size = CGSize(width: ceil(width), height: ceil(height))
-            return size
-        */
-        return rect.size
+
+        let width = Double(rect.size.width)
+        let height = Double(rect.size.height)
+        let size = CGSize(width: ceil(width), height: ceil(height))
+        return size
+
     }
     
     func cellSize() -> CGSize {
@@ -145,19 +161,19 @@ class GroupsTableViewCell: UITableViewCell {
     
     var groupModel: Group? {
         didSet {
-            setup()
+            setupInfo()
         }
     }
     
-    private func setup() {
+    private func setupInfo() {
         guard let groupModel = groupModel else { return }
 
         let name = groupModel.name
         let isMember = groupModel.isMember
         let members = groupModel.members
         
-        self.backgroundColor = avatar.image.image?.findAverageColor(algorithm: .squareRoot)
         nameLabel.text = name
+        nameLabel.backgroundColor = averageColor
         layoutNameLabel()
         
         subscribeLabel?.text = isMember == 1 ? "✅" : "Subscribe"
@@ -165,6 +181,7 @@ class GroupsTableViewCell: UITableViewCell {
         layoutSubscribeLabel()
         
         membersCountLabel?.text = "\(members) members"
+        membersCountLabel?.backgroundColor = averageColor
         layoutMembersCountLabel()
     }
 }
