@@ -266,6 +266,14 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return nil
     }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.friendsSectionHeader) as? HeaderView {
+            if section == 0 {
+                header.corners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+            }
+        }
+    }
 }
 
 // MARK: - Text Field extension

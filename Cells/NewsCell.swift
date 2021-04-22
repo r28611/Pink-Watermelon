@@ -20,12 +20,10 @@ final class NewsCell: UITableViewCell {
     @IBOutlet weak var viewedControl: LikeControl!
     private var newsPhotos = [UIImageView]()
     
-    func setup(newsPostViewModel: NewsPostViewModel) {
+    func setup(newsPostViewModel: NewsPostViewModel, dateFormatter: DateFormatter) {
         self.authorName.text = newsPostViewModel.authorName
         self.authorAvatar.image.load(url: newsPostViewModel.avatarURL)
         self.authorName.numberOfLines = self.authorName.calculateMaxLines()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
         let date = Date(timeIntervalSince1970: TimeInterval(newsPostViewModel.newsPost.date))
         self.timeLabel.text = "\(dateFormatter.string(from: date))"
         
