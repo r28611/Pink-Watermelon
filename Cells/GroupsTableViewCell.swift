@@ -127,7 +127,7 @@ class GroupsTableViewCell: UITableViewCell {
             additionalInfoLabel.text = "\(members) members"
         } else {
             additionalInfoLabel.text = isMember == 1 ? "✅" : "Subscribe"
-            additionalInfoLabel.tintColor = isMember == 1 ? .black : .systemPink
+            additionalInfoLabel.textColor = isMember == 1 ? .black : .systemPink
         }
         
         layoutAdditionalInfoLabel()

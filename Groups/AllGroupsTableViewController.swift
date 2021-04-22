@@ -15,9 +15,10 @@ final class AllGroupsTableViewController: UITableViewController {
     private let networkManager = NetworkManager.shared
     private var photoService: PhotoService?
     private var groups = [Group]()
-    
+    private var heightCellCache: CGFloat?
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(GroupsTableViewCell.self, forCellReuseIdentifier: Constants.groupCellIdentifier)
         searchBar.delegate = self
         photoService = PhotoService(container: tableView)
     }
@@ -39,7 +40,19 @@ final class AllGroupsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 66
+        if let height = heightCellCache {
+            return height
+        } else {
+            let cell = GroupsTableViewCell()
+            var cellHeight: CGFloat = 0
+            let group = groups[indexPath.row]
+            cell.avatar.image.image = photoService?.photo(atIndexpath: indexPath, byUrl: group.avatarURL)
+            cell.layoutAvatar()
+            cell.groupModel = group
+            cellHeight = cell.cellSize().height
+            heightCellCache = cellHeight
+            return cellHeight
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
