@@ -13,6 +13,7 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     private var newsPosts = [NewsPost]()
     private var users = [Int:User]()
     private var groups = [Int:Group]()
+    private var heightCellCache: CGFloat?
     private var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
@@ -22,7 +23,7 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         setRefresher()
-        tableView.register(UINib(nibName: Constants.newsCellIdentifier, bundle: nil), forCellReuseIdentifier: Constants.newsCellIdentifier)
+        tableView.register(NewsCell.self, forCellReuseIdentifier: Constants.newsCellIdentifier)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -65,11 +66,16 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
             parseTableData(news: news) { (newsPostViewModel) in
                 DispatchQueue.main.async {
                     cell.setup(newsPostViewModel: newsPostViewModel, dateFormatter: self.dateFormatter)
+                    self.heightCellCache = cell.cellSize().height
                 }
             }
             return cell
         }
         return UITableViewCell()
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

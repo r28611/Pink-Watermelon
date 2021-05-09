@@ -22,7 +22,6 @@
 		AB371B1425E002B4003C5D52 /* VKGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB371B1325E002B4003C5D52 /* VKGetResponse.swift */; };
 		AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EB25A6603000D99269 /* СharacterPicker.swift */; };
 		AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EE25A669C900D99269 /* FriendsViewController.swift */; };
-		AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB5814E225B7220000C39ACB /* NewsCell.xib */; };
 		AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5814E525B732D900C39ACB /* NewsCell.swift */; };
 		AB67F46A25CC2CD700EE957D /* AnimateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB67F46925CC2CD700EE957D /* AnimateTransition.swift */; };
 		AB67F46D25CC309100EE957D /* AnimatedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */; };
@@ -76,7 +75,6 @@
 		AB371B1325E002B4003C5D52 /* VKGetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKGetResponse.swift; sourceTree = "<group>"; };
 		AB54E5EB25A6603000D99269 /* СharacterPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СharacterPicker.swift"; sourceTree = "<group>"; };
 		AB54E5EE25A669C900D99269 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
-		AB5814E225B7220000C39ACB /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
 		AB5814E525B732D900C39ACB /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		AB67F46925CC2CD700EE957D /* AnimateTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateTransition.swift; sourceTree = "<group>"; };
 		AB67F46C25CC309100EE957D /* AnimatedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedNavigationController.swift; sourceTree = "<group>"; };
@@ -310,7 +308,6 @@
 				ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */,
 				ABF8893925A2437B00A29574 /* PhotosCollectionViewCell.swift */,
 				AB340A8125A35778000F6C34 /* GroupsTableViewCell.swift */,
-				AB5814E225B7220000C39ACB /* NewsCell.xib */,
 				AB5814E525B732D900C39ACB /* NewsCell.swift */,
 			);
 			path = Cells;
@@ -386,7 +383,6 @@
 			files = (
 				ABE5A63B258E142F00CEFEA1 /* LaunchScreen.storyboard in Resources */,
 				ABE5A638258E142F00CEFEA1 /* Assets.xcassets in Resources */,
-				AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */,
 				ABE5A636258E142E00CEFEA1 /* Main.storyboard in Resources */,
 				AB6E484725B6371A00F7B66B /* HeaderView.xib in Resources */,
 			);
