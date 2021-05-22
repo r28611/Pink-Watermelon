@@ -20,6 +20,10 @@
 		AB340A8525A39405000F6C34 /* AllGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */; };
 		AB340A8C25A39BDE000F6C34 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB340A8B25A39BDE000F6C34 /* Group.swift */; };
 		AB371B1425E002B4003C5D52 /* VKGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB371B1325E002B4003C5D52 /* VKGetResponse.swift */; };
+		AB5443762659244800F6CC6C /* + UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5443752659244800F6CC6C /* + UIColor.swift */; };
+		AB544378265926E900F6CC6C /* + UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB544377265926E900F6CC6C /* + UIImageView.swift */; };
+		AB54437A2659271100F6CC6C /* + UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5443792659271100F6CC6C /* + UILabel.swift */; };
+		AB54437C2659273A00F6CC6C /* + UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54437B2659273A00F6CC6C /* + UIImage.swift */; };
 		AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EB25A6603000D99269 /* СharacterPicker.swift */; };
 		AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB54E5EE25A669C900D99269 /* FriendsViewController.swift */; };
 		AB5814E325B7220000C39ACB /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB5814E225B7220000C39ACB /* NewsCell.xib */; };
@@ -32,7 +36,6 @@
 		AB7CEF9825B9D37E0092EF04 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7CEF9725B9D37E0092EF04 /* LoadingView.swift */; };
 		AB862E1F25FC123C00781D09 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB862E1E25FC123C00781D09 /* RealmManager.swift */; };
 		AB892B8B25E857BF00F97C89 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB892B8A25E857BF00F97C89 /* User.swift */; };
-		AB92810325DE865A00B694D9 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB92810225DE865A00B694D9 /* Extentions.swift */; };
 		AB98A30625CC7F0100E539F9 /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */; };
 		AB9DBEE525A3D7F8002B9B8A /* RoundedImageWithShedow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */; };
 		AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */; };
@@ -50,9 +53,7 @@
 		ABE5A636258E142E00CEFEA1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A634258E142E00CEFEA1 /* Main.storyboard */; };
 		ABE5A638258E142F00CEFEA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A637258E142F00CEFEA1 /* Assets.xcassets */; };
 		ABE5A63B258E142F00CEFEA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABE5A639258E142F00CEFEA1 /* LaunchScreen.storyboard */; };
-		ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF8885D258EAC1F00A29574 /* LoginViewController.swift */; };
 		ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */; };
-		ABF888E02596017200A29574 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF888DF2596017200A29574 /* SignupViewController.swift */; };
 		ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */; };
 		ABF88937259F846900A29574 /* FriendsPhotosCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF88936259F846900A29574 /* FriendsPhotosCollectionVC.swift */; };
 		ABF8893A25A2437B00A29574 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF8893925A2437B00A29574 /* PhotosCollectionViewCell.swift */; };
@@ -74,6 +75,10 @@
 		AB340A8425A39405000F6C34 /* AllGroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableViewController.swift; sourceTree = "<group>"; };
 		AB340A8B25A39BDE000F6C34 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		AB371B1325E002B4003C5D52 /* VKGetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKGetResponse.swift; sourceTree = "<group>"; };
+		AB5443752659244800F6CC6C /* + UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+ UIColor.swift"; sourceTree = "<group>"; };
+		AB544377265926E900F6CC6C /* + UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+ UIImageView.swift"; sourceTree = "<group>"; };
+		AB5443792659271100F6CC6C /* + UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+ UILabel.swift"; sourceTree = "<group>"; };
+		AB54437B2659273A00F6CC6C /* + UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+ UIImage.swift"; sourceTree = "<group>"; };
 		AB54E5EB25A6603000D99269 /* СharacterPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СharacterPicker.swift"; sourceTree = "<group>"; };
 		AB54E5EE25A669C900D99269 /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		AB5814E225B7220000C39ACB /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
@@ -86,7 +91,6 @@
 		AB7CEF9725B9D37E0092EF04 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		AB862E1E25FC123C00781D09 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		AB892B8A25E857BF00F97C89 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		AB92810225DE865A00B694D9 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extentions.swift; path = Utils/Extentions.swift; sourceTree = SOURCE_ROOT; };
 		AB98A30525CC7F0100E539F9 /* InteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveTransition.swift; sourceTree = "<group>"; };
 		AB9DBEE425A3D7F8002B9B8A /* RoundedImageWithShedow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageWithShedow.swift; sourceTree = "<group>"; };
 		AB9DBEFB25A60E57002B9B8A /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
@@ -106,9 +110,7 @@
 		ABE5A637258E142F00CEFEA1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ABE5A63A258E142F00CEFEA1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABE5A63C258E142F00CEFEA1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ABF8885D258EAC1F00A29574 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		ABF888DF2596017200A29574 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		ABF88933259F7C9400A29574 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		ABF88936259F846900A29574 /* FriendsPhotosCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsPhotosCollectionVC.swift; sourceTree = "<group>"; };
 		ABF8893925A2437B00A29574 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -149,7 +151,7 @@
 		AB177ABE2607E7FB00C8CD25 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				AB92810225DE865A00B694D9 /* Extentions.swift */,
+				AB5443742659243200F6CC6C /* Extentions */,
 				AB177AC42607E8C200C8CD25 /* Constants.swift */,
 				AB177AC82607E9C800C8CD25 /* Alert.swift */,
 			);
@@ -197,6 +199,17 @@
 				ABFEC52D25DFB07300F5BF9A /* Photo.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		AB5443742659243200F6CC6C /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				AB5443752659244800F6CC6C /* + UIColor.swift */,
+				AB544377265926E900F6CC6C /* + UIImageView.swift */,
+				AB5443792659271100F6CC6C /* + UILabel.swift */,
+				AB54437B2659273A00F6CC6C /* + UIImage.swift */,
+			);
+			path = Extentions;
 			sourceTree = "<group>";
 		};
 		AB6E484C25B63B3A00F7B66B /* Friends */ = {
@@ -294,9 +307,7 @@
 				ABE5A630258E142E00CEFEA1 /* SceneDelegate.swift */,
 				ABE5A634258E142E00CEFEA1 /* Main.storyboard */,
 				AB049AF225D49E5E002176EA /* VKLoginViewController.swift */,
-				ABF888DF2596017200A29574 /* SignupViewController.swift */,
 				ABF888DC2595FBCD00A29574 /* ProfileViewController.swift */,
-				ABF8885D258EAC1F00A29574 /* LoginViewController.swift */,
 				ABE5A637258E142F00CEFEA1 /* Assets.xcassets */,
 				ABE5A639258E142F00CEFEA1 /* LaunchScreen.storyboard */,
 				ABE5A63C258E142F00CEFEA1 /* Info.plist */,
@@ -443,14 +454,14 @@
 			files = (
 				ABAF93BA25CC9B3300C6D6D4 /* WatermelonLoadingView.swift in Sources */,
 				AB177AC52607E8C200C8CD25 /* Constants.swift in Sources */,
-				AB92810325DE865A00B694D9 /* Extentions.swift in Sources */,
 				ABBE001426222C92006F7EEF /* AsyncOperation.swift in Sources */,
 				AB862E1F25FC123C00781D09 /* RealmManager.swift in Sources */,
-				ABF8885E258EAC1F00A29574 /* LoginViewController.swift in Sources */,
 				AB9DBEFC25A60E57002B9B8A /* LikeControl.swift in Sources */,
+				AB54437C2659273A00F6CC6C /* + UIImage.swift in Sources */,
 				AB7CEF9825B9D37E0092EF04 /* LoadingView.swift in Sources */,
 				AB340A7F25A3571B000F6C34 /* GroupsTableViewController.swift in Sources */,
 				ABAEE791260AA715003355E9 /* NewsPost.swift in Sources */,
+				AB544378265926E900F6CC6C /* + UIImageView.swift in Sources */,
 				AB9DBEE525A3D7F8002B9B8A /* RoundedImageWithShedow.swift in Sources */,
 				AB11236625B8952E0082898E /* NewsTableViewController.swift in Sources */,
 				ABF88937259F846900A29574 /* FriendsPhotosCollectionVC.swift in Sources */,
@@ -471,13 +482,14 @@
 				AB54E5EF25A669C900D99269 /* FriendsViewController.swift in Sources */,
 				ABF88934259F7C9400A29574 /* FriendsTableViewCell.swift in Sources */,
 				AB5814E625B732D900C39ACB /* NewsCell.swift in Sources */,
+				AB54437A2659271100F6CC6C /* + UILabel.swift in Sources */,
+				AB5443762659244800F6CC6C /* + UIColor.swift in Sources */,
 				ABDBBF0C261F362000AF71FA /* SaveRealmOperation.swift in Sources */,
 				AB340A8225A35778000F6C34 /* GroupsTableViewCell.swift in Sources */,
 				AB54E5EC25A6603000D99269 /* СharacterPicker.swift in Sources */,
 				AB67F46D25CC309100EE957D /* AnimatedNavigationController.swift in Sources */,
 				AB049AEE25D49649002176EA /* NetworkManager.swift in Sources */,
 				ABC317F52629C56B0057AEED /* PhotoService.swift in Sources */,
-				ABF888E02596017200A29574 /* SignupViewController.swift in Sources */,
 				ABF888DD2595FBCD00A29574 /* ProfileViewController.swift in Sources */,
 				ABDBBF05261F216900AF71FA /* GetDataOperation.swift in Sources */,
 				AB371B1425E002B4003C5D52 /* VKGetResponse.swift in Sources */,
