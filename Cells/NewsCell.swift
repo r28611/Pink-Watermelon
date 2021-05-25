@@ -20,15 +20,15 @@ final class NewsCell: UITableViewCell {
     @IBOutlet weak var viewedControl: LikeControl!
     private var newsPhotos = [UIImageView]()
     
-    func setup(newsPostViewModel: NewsPostViewModel, dateFormatter: DateFormatter) {
-        self.authorName.text = newsPostViewModel.authorName
-        self.authorAvatar.image.load(url: newsPostViewModel.avatarURL)
-        self.authorName.numberOfLines = self.authorName.calculateMaxLines()
-        let date = Date(timeIntervalSince1970: TimeInterval(newsPostViewModel.newsPost.date))
-        self.timeLabel.text = "\(dateFormatter.string(from: date))"
+    func configure(with viewModel: NewsPostViewModel) {
+    
+        authorName.text = viewModel.authorName
+        authorName.numberOfLines = authorName.calculateMaxLines()
         
-        self.newsText.text = newsPostViewModel.newsPost.text
-        self.newsText.numberOfLines = 3
+        authorAvatar.image = viewModel.authorAvatar
+        timeLabel.text = viewModel.date
+        newsText.text = viewModel.newsText
+        newsText.numberOfLines = 3
         
         self.likeControl.counter = newsPostViewModel.newsPost.likes.count
         self.likeControl.isLiked = newsPostViewModel.newsPost.likes.isLiked == 1

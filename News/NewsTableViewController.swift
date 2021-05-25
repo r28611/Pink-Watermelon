@@ -13,11 +13,6 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     private var newsPosts = [NewsPost]()
     private var users = [Int:User]()
     private var groups = [Int:Group]()
-    private var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
-        return dateFormatter
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +57,7 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newsCellIdentifier, for: indexPath) as? NewsCell {
             let news = newsPosts[indexPath.row]
-            parseTableData(news: news) { (newsPostViewModel) in
-                DispatchQueue.main.async {
-                    cell.setup(newsPostViewModel: newsPostViewModel, dateFormatter: self.dateFormatter)
-                }
-            }
+
             return cell
         }
         return UITableViewCell()
@@ -80,25 +71,5 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
             cell.newsText.numberOfLines = cell.newsText.calculateMaxLines()
         }
         tableView.endUpdates()
-    }
-}
-
-extension NewsTableViewController {
-    func parseTableData(news: NewsPost, complition: @escaping (NewsPostViewModel) -> ()) {
-        DispatchQueue.global().async {
-            var authorName = ""
-            var authorAvatar: URL
-            if news.sourceID > 0 {
-                authorName = self.users[news.sourceID]!.name
-                authorAvatar = URL(string: "Constants.vkNonexistentPhotoURL")!
-//                authorAvatar = self.users[news.sourceID]!.avatarURL
-            } else {
-                authorName = self.groups[-news.sourceID]!.name
-                authorAvatar = URL(string: "Constants.vkNonexistentPhotoURL")!
-//                authorAvatar = self.groups[-news.sourceID]!.avatarURL
-            }
-            let postViewModel = NewsPostViewModel(newsPost: news, authorName: authorName, avatarURL: authorAvatar)
-            complition(postViewModel)
-        }
     }
 }
