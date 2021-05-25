@@ -12,5 +12,9 @@ struct NewsPostViewModel {
     let authorAvatar: UIImageView
     let date: String
     let newsText: String
-    let newsPhotos: [UIImageView]
+    let attachment: [Attachment]?
+    let likes: Like
+    let views: Views
+    let reposts: Repost
+    let comments: Comment
 }

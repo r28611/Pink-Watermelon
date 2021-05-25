@@ -27,12 +27,20 @@ final class NewsPostViewModelFactory {
     private func viewModel(from newsPost: NewsPost, authorName: String, authorAvatarURL: String) -> NewsPostViewModel {
         let avatar = UIImageView()
         DispatchQueue.global().async {
-        avatar.load(url: URL(string: authorAvatarURL)!)
+            avatar.load(url: URL(string: authorAvatarURL)!)
         }
         let newsText = newsPost.text
         let date = NewsPostViewModelFactory.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(newsPost.date)))
         
-        return NewsPostViewModel(authorName: authorName, authorAvatar: avatar, date: date, newsText: newsText, newsPhotos: [])
+        return NewsPostViewModel(authorName: authorName,
+                                 authorAvatar: avatar,
+                                 date: date,
+                                 newsText: newsText,
+                                 attachment: newsPost.attachments,
+                                 likes: newsPost.likes,
+                                 views: newsPost.views,
+                                 reposts: newsPost.reposts,
+                                 comments: newsPost.comments)
     }
     
     private static let dateFormatter: DateFormatter = {

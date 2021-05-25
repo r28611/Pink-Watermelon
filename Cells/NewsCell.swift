@@ -30,22 +30,15 @@ final class NewsCell: UITableViewCell {
         newsText.text = viewModel.newsText
         newsText.numberOfLines = 3
         
-        self.likeControl.counter = newsPostViewModel.newsPost.likes.count
-        self.likeControl.isLiked = newsPostViewModel.newsPost.likes.isLiked == 1
-        self.commentControl.counter = newsPostViewModel.newsPost.comments.count
-        self.shareControl.counter = newsPostViewModel.newsPost.reposts.count
-        self.viewedControl.counter = newsPostViewModel.newsPost.views.count
-        var photos = [Photo]()
+        likeControl.counter = viewModel.likes.count
+        likeControl.isLiked = viewModel.likes.isLiked == 1
+        commentControl.counter = viewModel.comments.count
+        shareControl.counter = viewModel.reposts.count
+        viewedControl.counter = viewModel.views.count
             
-        if let attachments = newsPostViewModel.newsPost.attachments {
-            for attachment in attachments {
-                if let photo = attachment.photo {
-                    photos.append(photo)
-                }
-            }
-        }
-        if photos.count > 0 {
-            self.configureNewsPhotoCollection(photos: photos)
+        if let photos = viewModel.attachment,
+            photos.count > 0 {
+            configureNewsPhotoCollection(photos: photos.compactMap({ $0.photo }))
             photoCollection.reloadData()
         }
     }
