@@ -10,9 +10,8 @@ import UIKit
 final class NewsTableViewController: UITableViewController, UICollectionViewDelegate {
     
     let networkManager = NetworkManager.shared
-    private var newsPosts = [NewsPost]()
-    private var users = [Int:User]()
-    private var groups = [Int:Group]()
+    private let viewModelFactory = NewsPostViewModelFactory()
+    private var viewModels: [NewsPostViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +27,7 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     private func getNewsData() {
         networkManager.loadNewsPost(token: Session.shared.token) { [weak self] news, users, groups in
             DispatchQueue.main.async {
-                self?.newsPosts = news
-                self?.users = users
-                self?.groups = groups
+                self?.viewModels = (self?.viewModelFactory.constructViewModels(from: news, users: users, groups: groups))!
                 self?.tableView.reloadData()
                 self?.refreshControl?.endRefreshing()
             }
@@ -51,13 +48,12 @@ final class NewsTableViewController: UITableViewController, UICollectionViewDele
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return newsPosts.count
+        return viewModels.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newsCellIdentifier, for: indexPath) as? NewsCell {
-            let news = newsPosts[indexPath.row]
-
+            cell.configure(with: viewModels[indexPath.row])
             return cell
         }
         return UITableViewCell()
