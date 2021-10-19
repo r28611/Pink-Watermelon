@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 
-class NetworkManager {
+class NetworkManager: NetworkManagerInterface {
     
     private static let sessionManager: SessionManager = {
         let configuration = URLSessionConfiguration.default

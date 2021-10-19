@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		218D65707FFC69ABE65ACE64 /* Pods_gb_ui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAE412889D61EBB414F355DD /* Pods_gb_ui.framework */; };
+		AB029A40271F45DF00C1B626 /* NetworkManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB029A3F271F45DF00C1B626 /* NetworkManagerInterface.swift */; };
+		AB029A42271F462F00C1B626 /* NetworkManagerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB029A41271F462F00C1B626 /* NetworkManagerProxy.swift */; };
 		AB049AEE25D49649002176EA /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB049AED25D49649002176EA /* NetworkManager.swift */; };
 		AB049AF325D49E5E002176EA /* VKLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB049AF225D49E5E002176EA /* VKLoginViewController.swift */; };
 		AB049AF625D4AE94002176EA /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB049AF525D4AE94002176EA /* WebKit.framework */; };
@@ -68,6 +70,8 @@
 /* Begin PBXFileReference section */
 		364CC1CF3037713B26DE2F0A /* Pods-gb_ui.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gb_ui.release.xcconfig"; path = "Target Support Files/Pods-gb_ui/Pods-gb_ui.release.xcconfig"; sourceTree = "<group>"; };
 		6A337E86A54EC635BD0B7E42 /* Pods-gb_ui.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gb_ui.debug.xcconfig"; path = "Target Support Files/Pods-gb_ui/Pods-gb_ui.debug.xcconfig"; sourceTree = "<group>"; };
+		AB029A3F271F45DF00C1B626 /* NetworkManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerInterface.swift; sourceTree = "<group>"; };
+		AB029A41271F462F00C1B626 /* NetworkManagerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerProxy.swift; sourceTree = "<group>"; };
 		AB049AED25D49649002176EA /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		AB049AF225D49E5E002176EA /* VKLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginViewController.swift; sourceTree = "<group>"; };
 		AB049AF525D4AE94002176EA /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -196,6 +200,8 @@
 				AB371B1325E002B4003C5D52 /* VKGetResponse.swift */,
 				ABBE000426221FB2006F7EEF /* VKFriendsService.swift */,
 				ABC313DA262703E90057AEED /* NetworkError.swift */,
+				AB029A3F271F45DF00C1B626 /* NetworkManagerInterface.swift */,
+				AB029A41271F462F00C1B626 /* NetworkManagerProxy.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -485,6 +491,7 @@
 				AB7CEF9825B9D37E0092EF04 /* LoadingView.swift in Sources */,
 				AB340A7F25A3571B000F6C34 /* GroupsTableViewController.swift in Sources */,
 				ABAEE791260AA715003355E9 /* NewsPost.swift in Sources */,
+				AB029A42271F462F00C1B626 /* NetworkManagerProxy.swift in Sources */,
 				AB544378265926E900F6CC6C /* + UIImageView.swift in Sources */,
 				AB9DBEE525A3D7F8002B9B8A /* RoundedImageWithShedow.swift in Sources */,
 				AB11236625B8952E0082898E /* NewsTableViewController.swift in Sources */,
@@ -493,6 +500,7 @@
 				ABE5A62F258E142E00CEFEA1 /* AppDelegate.swift in Sources */,
 				ABC313DB262703E90057AEED /* NetworkError.swift in Sources */,
 				AB177AC92607E9C800C8CD25 /* Alert.swift in Sources */,
+				AB029A40271F45DF00C1B626 /* NetworkManagerInterface.swift in Sources */,
 				ABF8893A25A2437B00A29574 /* PhotosCollectionViewCell.swift in Sources */,
 				AB6E424F25B1C75600E7FB2D /* PhotoViewController.swift in Sources */,
 				AB544382265C512400F6CC6C /* Size.swift in Sources */,

@@ -9,7 +9,7 @@ import UIKit
 
 final class NewsTableViewController: UITableViewController, UICollectionViewDelegate {
     
-    let networkManager = NetworkManager.shared
+    let networkManager = NetworkManagerProxy(networkManager: NetworkManager.shared)
     private let viewModelFactory = NewsPostViewModelFactory()
     private var viewModels: [NewsPostViewModel] = []
     
